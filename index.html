@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>一碗海风的迁徙</title>
+<meta name="description" content="一碗海风的迁徙——闽粤桂琼四省美食地图 H5，6 个文化地域、34 道菜，记录海内外交融中的舌尖变迁。">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Ctext y=%27.9em%27 font-size=%2790%27%3E%F0%9F%8D%9C%3C/text%3E%3C/svg%3E">
+<style>
+:root{
+  /* v8：晴海蓝为底 × 单一亮黄。蓝色整体提亮到 #81D4FA 一档，深墨蓝只作字色与线框 */
+  --paper:#81D4FA;      /* 屏幕主底：明亮浅蓝（用户锚点） */
+  --paper-2:#4FC3F7;    /* 次底 / 海域 / 特殊条 */
+  --ink:#0A3B66;        /* 主文字：深墨蓝（浅底必须深字） */
+  --muted:#1E5A8C;      /* 次要文字 */
+  --sea:#0288D1;        /* 主蓝：线 / 描边 / 选中态 */
+  --sea-soft:#7FC4F5;   /* 蓝块 */
+  --sea-pale:#B3E5FC;   /* 内嵌块底 / 海 */
+  --cinnabar:#FFEB3B;   /* 对比黄：全站唯一黄 */
+  --cinnabar-soft:#FFEB3B;
+  --line:#2E86C1;       /* 蓝色分隔线 */
+  --white:#B3E5FC;      /* 兼容旧变量名：容器底（浅蓝，非白） */
+  --navy-950:#0288D1; --navy-900:#4FC3F7;
+  --sun:#FFEB3B; --sun-lit:#FFEB3B; --sun-deep:#FFEB3B; --sun-ink:#0B2E4F;
+  --txt-3:#3E7BA8; --card:#B3E5FC; --card-2:#4FC3F7;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#0288D1;color:var(--ink);font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;padding:34px 30px 56px;line-height:1.75}
+.wrap{max-width:1300px;margin:0 auto}
+header{display:flex;align-items:baseline;gap:16px;flex-wrap:wrap}
+h1{font-family:"Songti SC","Noto Serif CJK SC",serif;font-size:25px;font-weight:600;letter-spacing:1px}
+.version{font-size:12px;color:var(--sun);border:1px solid var(--sun-deep);border-radius:20px;padding:2px 10px}
+.sub{font-size:13px;color:var(--muted);margin:6px 0 26px}
+.stage{display:flex;justify-content:center;align-items:flex-start;padding-top:24px}
+
+.phone{width:375px;height:760px;background:var(--white);border:9px solid #0288D1;border-radius:38px;box-shadow:0 16px 38px rgba(43,43,43,.18);overflow:hidden;display:flex;flex-direction:column}
+.screen{flex:1;background:var(--paper);position:relative;overflow:hidden;
+  -webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.screen ::selection{background:transparent;color:inherit}
+.page{position:absolute;inset:0;display:flex;flex-direction:column;opacity:0;pointer-events:none;z-index:1;transition:opacity 2s ease}
+.page.active{opacity:1;pointer-events:auto;z-index:2}
+
+/* ---------- ① 封面 ---------- */
+.cover{background:linear-gradient(165deg,#B3E5FC 0%,#81D4FA 48%,#4FC3F7 100%);color:var(--ink);padding:40px 28px 34px;justify-content:space-between;overflow:hidden}
+.cover .deco{position:absolute;inset:0;pointer-events:none;opacity:.42}
+.cover .top{position:relative;z-index:1}
+.cover .eyebrow{font-size:13px;letter-spacing:3px;opacity:.85}
+.cover .rule{width:38px;height:2px;background:var(--sun);opacity:.65;margin:14px 0 0}
+.cover .mid{position:relative;z-index:1;margin-top:-30px}
+.cover .book{font-family:"Songti SC","Noto Serif CJK SC",serif;font-size:30px;letter-spacing:2px;line-height:1.55;text-shadow:0 2px 12px rgba(0,0,0,.12)}
+.cover .sub2{font-size:14px;line-height:1.9;opacity:.9;margin-top:16px;max-width:270px}
+.cover .dotline{display:flex;gap:7px;margin-top:22px;align-items:center}
+.cover .dotline i{width:6px;height:6px;border-radius:50%;background:var(--sun);opacity:.8}
+.cover .dotline span{font-size:13px;letter-spacing:1px;opacity:.85;margin-left:6px}
+.cover .bottom{position:relative;z-index:1}
+.cover .authors{font-size:12px;text-align:center;letter-spacing:.5px;margin-bottom:12px;opacity:.85}
+.cover .enter{display:block;text-align:center;background:var(--sun);color:var(--sun-ink);font-size:15px;letter-spacing:2px;padding:13px;border-radius:26px;cursor:pointer;border:none;width:100%;font-weight:600;transition:transform .2s,box-shadow .2s}
+.cover .enter:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,0,0,.18)}
+.cover .small{font-size:12px;opacity:.7;text-align:center;margin-top:14px;letter-spacing:1px}
+
+/* ---------- ② 目录 ---------- */
+.index{background:var(--paper)}
+.index-bg{position:absolute;inset:0;pointer-events:none;opacity:1}
+.index-bg svg{display:block;width:100%;height:100%}
+.index-veil{position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(225,245,254,.34) 0%,rgba(225,245,254,.06) 40%,rgba(225,245,254,.26) 78%,rgba(225,245,254,.44) 100%)}
+.index-inner{position:relative;z-index:2;display:flex;flex-direction:column;height:100%;padding:28px 20px 16px}
+.index .kicker{font-size:12px;letter-spacing:3px;color:var(--sun)}
+.index .it{font-family:"Songti SC","Noto Serif CJK SC",serif;font-size:22px;letter-spacing:2px;margin-top:2px}
+.index .idesc{font-size:13px;color:var(--muted);margin-top:6px;line-height:1.7}
+.bars{margin-top:16px;display:flex;flex-direction:column;gap:9px}
+.bar{display:flex;align-items:center;gap:12px;background:rgba(179,229,252,.40);border:1px solid rgba(2,136,209,.28);border-left:4px solid var(--accent,#0288D1);border-radius:12px;padding:10px 13px;box-shadow:0 2px 8px rgba(10,59,102,.10);cursor:pointer;opacity:.30;transform:translateY(10px);transition:opacity 2s ease,transform 2s cubic-bezier(.22,.68,.24,1),background .2s,border-color .2s,box-shadow .2s}
+.bar.in{opacity:.88;transform:translateY(0)}
+.bar:hover{background:rgba(179,229,252,.74);border-color:var(--sun);box-shadow:0 6px 16px rgba(255,235,59,.26)}
+.bar .ord{font-family:"Songti SC","Noto Serif CJK SC",serif;font-size:18px;color:var(--sun);width:22px;text-align:center;flex:none}
+.bar .bmid{flex:1;min-width:0}
+.bar .bt{font-size:15px;font-weight:600;letter-spacing:.5px;line-height:1.35;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar .bs{font-size:13px;color:var(--muted);margin-top:2px;line-height:1.35;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar .arw{font-size:18px;color:var(--muted);flex:none}
+.bar.wide{justify-content:center;background:rgba(79,195,247,.32);border-left-color:var(--muted)}
+.bar.wide .bt{font-size:14px;font-weight:500;color:var(--muted)}
+.index-foot{margin-top:auto;padding-top:14px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.index-foot .backlink{font-size:13px;color:var(--sun);cursor:pointer}
+.index-foot .cnote{font-size:12px;color:var(--muted);text-align:right;line-height:1.5;max-width:230px}
+
+/* ---------- ③ 地图 ---------- */
+.masthead{padding:14px 18px 8px;flex:none;display:flex;align-items:baseline;justify-content:space-between}
+.masthead .t{font-family:"Songti SC","Noto Serif CJK SC",serif;font-size:22px;letter-spacing:2px}
+.masthead .s{font-size:12px;color:var(--muted);letter-spacing:1px}
+.filters{padding:4px 14px 10px;display:flex;flex-wrap:wrap;gap:5px;flex:none}
+.chip{font-size:12px;padding:4px 8px;border-radius:15px;border:1px solid var(--line);color:var(--muted);background:var(--white);cursor:pointer;transition:.2s}
+.chip:hover{border-color:var(--sun)}
+.chip.on{background:var(--sea);border-color:var(--sea);color:var(--ink)}
+.chip.alt{border-color:var(--cinnabar);color:var(--cinnabar)}
+.mapwrap{position:relative;flex:1;margin:0 12px;border-radius:14px;border:1px solid var(--line);overflow:hidden;background:var(--sea-pale)}
+.svghost{position:absolute;inset:0}
+.svghost svg,.index-bg svg{display:block;width:100%;height:100%}
+.mapnote{position:absolute;left:10px;bottom:8px;font-size:12px;color:var(--muted);letter-spacing:.3px;pointer-events:none}
+.stage-badge{position:absolute;right:10px;top:10px;font-size:12px;color:var(--hi-ink);background:var(--hi);border:1px solid var(--sea-soft);border-radius:14px;padding:3px 10px;pointer-events:none;transition:opacity .4s ease}
+/* v20：详情态里地域已不可点，胶囊留着会变成错误提示，故淡出 */
+.mapwrap.detail .stage-badge{opacity:0}
+.region{transform-box:view-box;transform-origin:var(--ox) var(--oy);transition:transform 2s cubic-bezier(.22,.68,.24,1),opacity 2s ease;cursor:pointer}
+.region .shape{fill:var(--sea-soft);stroke:var(--sea);stroke-width:1.3;transition:fill .25s}
+.region:hover .shape{fill:#0288D1}
+.region .rlabel{font-size:13px;fill:var(--ink);font-family:-apple-system,"PingFang SC",sans-serif;font-weight:500;pointer-events:none}
+.region.zoomed{opacity:0}
+.coast{fill:none;stroke:#0288D1;stroke-width:2.1;transition:opacity 2s}
+.land{fill:#4FC3F7;opacity:.9}
+.arc-layer{transition:opacity 2s}
+.arc-out{fill:none;stroke:var(--sea);stroke-width:1.7;opacity:.8}
+.arc-back{fill:none;stroke:var(--cinnabar);stroke-width:1.7;stroke-dasharray:5 4}
+.mapwrap.detail .region:not(.zoomed){opacity:0}
+.mapwrap.detail .arc-layer{opacity:0}
+.mapwrap.detail .coast{opacity:.22}
+.mapwrap.detail .land{opacity:.5}
+.mapwrap.detail .mapnote{opacity:0}
+.detail-layer{position:absolute;inset:0;background:rgba(10,59,102,.18);opacity:0;pointer-events:none;transition:opacity 2s ease;display:flex;align-items:flex-end}
+.mapwrap.detail .detail-layer{opacity:1;pointer-events:auto}
+.detail-card{width:100%;max-height:70%;overflow:auto;border-top:1px solid var(--line);background:var(--card);border-radius:20px 20px 0 0;padding:12px 18px 18px;box-shadow:0 -8px 26px rgba(43,43,43,.12);transform:translateY(103%);transition:transform 2s cubic-bezier(.22,.68,.24,1)}
+.mapwrap.detail .detail-card{transform:translateY(0)}
+.grab{width:38px;height:4px;border-radius:2px;background:var(--line);margin:0 auto 12px}
+.tag{display:inline-block;font-size:13px;color:var(--sun-ink);background:var(--sun);border-radius:5px;padding:3px 9px;margin-bottom:6px}
+.dish{font-family:"Songti SC","Noto Serif CJK SC",serif;font-size:21px;letter-spacing:2px;margin-bottom:6px}
+.meta{font-size:13px;color:var(--muted);margin-bottom:10px}
+.lead{font-size:14px;line-height:1.8;color:var(--ink);padding-bottom:10px;border-bottom:1px solid var(--line)}
+.sec{font-size:13px;color:var(--sun);letter-spacing:1px;margin:12px 0 7px;font-weight:600}
+.pills{display:flex;gap:6px;flex-wrap:wrap}
+.pill{font-size:13px;padding:4px 10px;border:1px solid var(--line);border-radius:14px;background:var(--card-2);color:var(--ink)}
+.route-line{font-size:14px;line-height:1.8;color:var(--ink)}
+.audio{display:flex;align-items:center;gap:10px;background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:9px 11px;margin-top:8px}
+.audio .btn{width:30px;height:30px;border-radius:50%;background:var(--sun);position:relative;flex:none;cursor:pointer;border:none}
+.audio .btn:after{content:"";position:absolute;left:12px;top:9px;border-left:9px solid var(--sun-ink);border-top:6px solid transparent;border-bottom:6px solid transparent}
+.audio .wave{flex:1;height:14px;background:repeating-linear-gradient(90deg,#0288D1 0 2px,transparent 2px 5px);opacity:.7}
+.audio .txt{font-size:13px;color:var(--muted)}
+.audio.none{color:var(--muted);font-size:13px}
+.back{margin-top:12px;text-align:center;font-size:14px;color:var(--sun);border:1px solid var(--sun-deep);border-radius:22px;padding:8px;cursor:pointer;background:var(--paper-2)}
+.legend{display:flex;gap:13px;padding:8px 16px 0;font-size:12px;color:var(--muted);flex:none;flex-wrap:wrap}
+.legend i{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--sun);margin-right:4px;vertical-align:middle}
+.legend .ln{display:inline-block;width:14px;height:0;border-top:2px solid var(--sea);margin-right:4px;vertical-align:middle}
+.legend .ln.r{border-top:2px dashed var(--cinnabar)}
+.player{margin:9px 12px 0;background:var(--sun);border:1px solid var(--sun-deep);border-radius:12px;padding:9px 12px;display:flex;align-items:center;gap:10px;flex:none}
+.play{width:28px;height:28px;border-radius:50%;background:var(--cinnabar);position:relative;flex:none}
+.play:after{content:"";position:absolute;left:11px;top:9px;border-left:9px solid var(--sun-ink);border-top:5px solid transparent;border-bottom:5px solid transparent}
+.player .txt{font-size:12px;color:var(--sun-ink);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.player .bar{height:3px;background:rgba(10,59,102,.25);border-radius:2px;width:60px;position:relative;flex:none}
+.player .bar:after{content:"";position:absolute;left:0;top:0;width:38%;height:3px;background:var(--sun-ink);border-radius:2px}
+.footer{margin-top:auto;padding:8px 18px 12px;font-size:12px;color:var(--muted);display:flex;justify-content:space-between;border-top:1px solid var(--line);flex:none}
+.footer .link{cursor:pointer;color:var(--sun)}
+
+/* ---------- 右侧说明 ---------- */
+.side{background:var(--white);border:1px solid var(--line);border-radius:16px;padding:22px 24px}
+.side h2{font-family:"Songti SC","Noto Serif CJK SC",serif;font-size:17px;font-weight:600;margin-bottom:4px}
+.side .lead2{font-size:13px;color:var(--muted);margin-bottom:18px}
+.flowbar{display:flex;gap:5px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
+.fnode{font-size:12px;padding:4px 10px;border-radius:14px;border:1px solid var(--line);color:var(--muted);transition:.25s}
+.fnode.on{background:var(--sea);border-color:var(--sea);color:var(--ink)}
+.fsep{font-size:12px;color:var(--line)}
+.block{margin-bottom:20px}
+.block h3{font-size:13px;color:var(--sun);letter-spacing:1px;margin-bottom:9px;font-weight:600}
+.steps{list-style:none}
+.steps li{font-size:14px;padding:7px 0 7px 30px;position:relative;border-bottom:1px solid var(--line);color:var(--ink)}
+.steps li span{position:absolute;left:0;top:8px;width:20px;height:20px;border-radius:50%;background:var(--sun);color:var(--sun-ink);font-size:12px;text-align:center;line-height:20px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+td{padding:6px 5px;border-bottom:1px solid var(--line);vertical-align:top}
+td:first-child{color:var(--muted);width:100px}
+.note{background:var(--card);border-left:3px solid var(--sun);border-radius:0 8px 8px 0;padding:10px 12px;font-size:13px;color:var(--ink);line-height:1.8}
+.warn{background:rgba(255,235,59,.20);border-left:3px solid var(--sun);border-radius:0 8px 8px 0;padding:10px 12px;font-size:13px;color:var(--sun-lit);line-height:1.8;margin-top:9px}
+.btnrow{display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap}
+.abtn{font-size:13px;padding:7px 14px;border-radius:18px;border:1px solid var(--line);color:var(--ink);background:var(--card);cursor:pointer}
+.abtn:hover{background:var(--card-2)}
+.hint{font-size:12px;color:var(--muted);margin-top:8px}
+.endnote{margin-top:24px;font-size:12px;color:var(--muted);text-align:center}
+@media(max-width:900px){.stage{grid-template-columns:1fr}.phone{margin:0 auto}}
+
+  /* v4.1：合规行政区轮廓层 + 大头针地名标注（原椭圆标注已取消） */
+  .provs .prov{stroke:#0288D1;stroke-width:1.6;stroke-linejoin:round;
+    transition:transform 2s cubic-bezier(.22,.68,.24,1),opacity 2s ease;
+    transform-origin:var(--ox,187px) var(--oy,200px)}
+  .provs .prov.zoomed{opacity:1;stroke-width:2.4}
+  /* 16px 地域名：与所在大头针同色，浅色描边保证压在海域/轮廓线上仍清晰 */
+  .region .rlabel{font-size:16px;font-weight:600;letter-spacing:1px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+    pointer-events:none;paint-order:stroke;stroke:#E1F5FE;stroke-width:3px;stroke-linejoin:round}
+  .region .hit{cursor:pointer}
+  .region.mini{pointer-events:none}
+  .region .shape{display:none}
+
+
+/* ---------- ⑤ 菜品页（v5 新增） ---------- */
+.dishpage{background:var(--paper)}
+.dishpage .dtop{flex:none;padding:11px 16px 9px;display:flex;align-items:center;justify-content:space-between;gap:10px;border-bottom:1px solid var(--line)}
+.dishpage .dback{font-size:14px;color:var(--sun);cursor:pointer;flex:none}
+.dishpage .dcrumb{font-size:12px;color:var(--muted);text-align:right;line-height:1.45}
+.dishbody{flex:1;overflow:auto;padding:14px 18px 10px}
+.dishname{font-family:"Songti SC","Noto Serif CJK SC",serif;font-size:26px;letter-spacing:2px;line-height:1.35}
+.dishregion{font-size:13px;color:var(--muted);margin:5px 0 12px}
+.dishimg{position:relative;width:100%;height:190px;border:1px dashed #0288D1;border-radius:14px;overflow:hidden;background:var(--card)}
+.dishimg img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:none}
+.dishimg.hasimg{border-color:transparent}
+.imgph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:var(--muted)}
+.imgph b{font-size:13px;color:var(--ink);font-weight:600;letter-spacing:.5px}
+.imgph small{font-size:11px;color:var(--txt-3);font-family:ui-monospace,Menlo,Consolas,monospace}
+.dishaudio{margin-top:12px;display:flex;align-items:center;gap:11px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.dishaudio .aplay{width:38px;height:38px;border-radius:50%;background:var(--sun);border:none;cursor:pointer;position:relative;flex:none}
+.dishaudio .aplay:after{content:"";position:absolute;left:15px;top:13px;border-left:11px solid var(--sun-ink);border-top:7px solid transparent;border-bottom:7px solid transparent}
+.dishaudio .ainfo{flex:1;min-width:0}
+.dishaudio .at{font-size:14px;font-weight:600;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dishaudio .as{font-size:11px;color:var(--muted);font-family:ui-monospace,Menlo,Consolas,monospace;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px}
+.dishaudio .awave{width:34px;height:16px;background:repeating-linear-gradient(90deg,#0288D1 0 2px,transparent 2px 5px);opacity:.7;flex:none}
+.dishsec{margin-top:14px}
+.dishsec h4{font-size:13px;color:var(--sun);letter-spacing:1px;margin-bottom:5px;font-weight:600}
+.dishsec p{font-size:14px;line-height:1.85;color:var(--ink);white-space:pre-line}
+.dishsec p.pending{color:var(--txt-3);font-size:13px}
+/* v21：家族记忆来稿人署名——换行、破折号开头、右对齐 */
+.dishsec .contributor{text-align:right;font-size:13px;line-height:1.7;color:var(--ink);opacity:.85;letter-spacing:.5px;margin-top:6px}
+.dishbg{margin-top:14px;background:var(--card);border-left:3px solid var(--sun);border-radius:0 8px 8px 0;padding:10px 12px;font-size:13px;line-height:1.8;color:var(--ink)}
+.dishbg b{color:var(--sun);font-weight:600}
+.dishnav{display:flex;gap:8px;margin:16px 0 10px;align-items:center}
+.dishnav .nb{flex:1;text-align:center;font-size:14px;color:var(--ink);border:1px solid var(--line);border-radius:22px;padding:9px 6px;cursor:pointer;background:var(--card)}
+.dishnav .nb.mid{flex:none;border-color:var(--line);color:var(--muted);cursor:default;padding:9px 12px;font-size:13px}
+.dishfoot{flex:none;padding:8px 18px 10px;border-top:1px solid var(--line);display:flex;justify-content:space-between;font-size:12px;color:var(--muted)}
+.dishfoot .link{cursor:pointer;color:var(--sun)}
+/* 地域详情里的菜品列表（替代原 pill 标签） */
+.dishlist{display:flex;flex-direction:column;gap:5px}
+.dishitem{display:flex;align-items:center;gap:9px;background:var(--card);border:1px solid var(--line);border-radius:9px;padding:7px 10px;cursor:pointer;transition:background .2s,border-color .2s}
+.dishitem:hover{background:var(--card-2);border-color:var(--sun)}
+.dishitem .di{font-size:12px;color:var(--sun);width:16px;text-align:center;flex:none}
+.dishitem .dn{flex:1;font-size:14px;color:var(--ink)}
+.dishitem .da{font-size:16px;color:var(--muted);flex:none}
+.sectip{font-weight:400;color:var(--muted);font-size:12px;letter-spacing:0;margin-left:6px}
+
+
+/* ===== v6：ocean-depths 配色补充 / 柠檬黄高亮 ===== */
+:root{ --hi:#FFEB3B; --hi-strong:#FFEB3B; --hi-soft:#FFEB3B; --hi-ink:#0B2E4F; }
+.chip.on{background:var(--hi);border-color:var(--hi-strong);color:var(--hi-ink);font-weight:600}
+.stage-badge{background:var(--hi);border-color:var(--hi-strong);color:var(--hi-ink);font-weight:600}
+.fnode.on{background:var(--hi);border-color:var(--hi-strong);color:var(--hi-ink);font-weight:600}
+.player{background:var(--hi);border-color:var(--hi-strong)}
+.player .txt{color:var(--hi-ink)}
+.warn{background:rgba(255,235,59,.20);border-color:var(--hi-strong);color:var(--hi-soft)}
+.bar:hover{box-shadow:0 6px 16px rgba(255,235,59,.30)}
+.arc-back{stroke:var(--hi);stroke-width:2}
+.legend .ln.r{border-top-color:var(--hi)}
+.dishbg{border-left-color:var(--hi)}
+/* 16px 地域名：与针同色系，统一降明度保证浅蓝也读得清 */
+.region .rlabel{filter:none;stroke-width:3px;stroke:#E1F5FE}
+/* ===== v6：程序性脚注统一 9px / 靠角落 / 弱对比 ===== */
+.prog,.mapnote,.index-foot .cnote{font-size:9px;letter-spacing:.2px;color:var(--txt-3);opacity:.82;line-height:1.4}
+.mapnote{right:8px;left:auto;bottom:6px;text-align:right;max-width:236px}
+.index-foot .cnote{max-width:190px}
+/* ===== v6：地域迁徙线（概述 + 案例罗列） ===== */
+.route-block .ov{font-size:14px;line-height:1.8;color:var(--ink);margin-bottom:9px}
+.route-block .cases{display:flex;flex-direction:column;gap:5px}
+.route-block .case{position:relative;font-size:13px;line-height:1.65;color:var(--ink);background:var(--card);border-left:2px solid var(--hi);border-radius:0 7px 7px 0;padding:5px 9px 5px 20px}
+.route-block .case:before{content:"·";position:absolute;left:8px;color:var(--hi);font-weight:700}
+/* ===== v6：下滑退出提示 ===== */
+.swipe-tip{text-align:center;font-size:10px;color:var(--muted);margin:-5px 0 10px;letter-spacing:1px}
+/* ===== v6：菜品页滑动引导（3 秒）与跨地域提示 ===== */
+.swipe-guide{position:absolute;left:50%;top:33%;transform:translate(-50%,-50%);z-index:30;pointer-events:none;opacity:0;transition:opacity .35s;background:rgba(255,235,59,.96);color:var(--hi-ink);border-radius:22px;padding:11px 18px;font-size:13px;letter-spacing:.5px;white-space:nowrap;box-shadow:0 8px 24px rgba(10,59,102,.24)}
+.swipe-guide.on{opacity:1}
+.swipe-guide b{color:#0B2E4F;font-weight:700}
+.cross-toast{position:absolute;left:50%;bottom:64px;transform:translateX(-50%);z-index:31;pointer-events:none;opacity:0;transition:opacity .3s;background:var(--hi);color:var(--hi-ink);border:1px solid var(--hi-strong);border-radius:18px;padding:8px 14px;font-size:12px;font-weight:600;white-space:nowrap;box-shadow:0 5px 16px rgba(10,59,102,.22)}
+.cross-toast.on{opacity:1}
+
+/* ===== v8：浅蓝底上亮黄字对比不足，文字统一深墨蓝，黄色只作底 / 边框 / 点位 ===== */
+.version,.index .kicker,.bar .ord,.index-foot .backlink,.sec,.back,
+.footer .link,.block h3,.dishpage .dback,.dishsec h4,.dishbg b,
+.dishfoot .link,.dishitem .di,.chip.alt,.route-block .case:before,
+.warn,.warn code{color:var(--ink)}
+.swipe-guide b{color:var(--sun-ink)}
+
+/* ===== v12：南海诸岛并入主图（取消附图） ===== */
+.provs.mainmap .prov{stroke-width:1.9}
+.provs.mainmap .nh-islands{pointer-events:none}
+.mapwrap.detail .prov:not(.zoomed){opacity:.16}
+/* ===== v12：菜品页栏目标题醒目化（黄底横条 × 蓝左栏） ===== */
+.dishsec{margin-top:20px}
+.dishsec h4{
+  display:inline-block;
+  font-size:16px;font-weight:700;letter-spacing:2.5px;line-height:1;
+  color:var(--sun-ink);background:var(--sun);
+  border-left:4px solid #0288D1;border-radius:0 8px 8px 0;
+  padding:8px 14px 8px 11px;margin:0 0 10px;
+  box-shadow:0 2px 6px rgba(2,136,209,.16)
+}
+/* ===== v13：地图放大落幅 / 地域菜条图片背景 / 引导语 ===== */
+#mapRoot{transform-box:view-box;transform-origin:0 0;
+  transition:transform 2s cubic-bezier(.22,.68,.24,1)}
+.mapwrap.detail .deco-south{opacity:0}
+.deco-south{transition:opacity 2s ease}
+.mapwrap.detail .region{opacity:0}
+/* 放大后省界不随倍率变粗，保持制图线条感 */
+.mapwrap.detail .provs .prov{vector-effect:non-scaling-stroke;stroke-width:1.5}
+/* 放大后省界不随倍率变粗，保持制图线条感 */
+.mapwrap.detail .provs .prov{vector-effect:non-scaling-stroke;stroke-width:1.5}
+.swipe-guide{text-align:center;line-height:1.7}
+
+/* 详情卡头部收紧：标签 / 区名 / 介绍 / 小标题让位给菜条 */
+.detail-card{padding-top:10px}
+.detail-card .grab{height:3px;width:34px;margin:0 auto 8px}
+.detail-card .swipe-tip{margin:-4px 0 6px}
+.detail-card .tag{font-size:12px;padding:2px 8px;margin-bottom:5px}
+.detail-card .dish{font-size:19px;margin-bottom:4px}
+.detail-card .meta{font-size:12px;margin-bottom:8px}
+.detail-card .lead{font-size:13px;line-height:1.65;padding-bottom:8px;
+  display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.detail-card .sec{margin:9px 0 6px}
+.dishlist{gap:6px}
+
+/* 地域详情菜品条：菜品图满幅、完全不透明（v14 取消压色蒙版，保留原图鲜色） */
+.dishitem{position:relative;display:flex;align-items:center;gap:10px;height:58px;padding:0 13px;
+  border:0;border-radius:12px;overflow:hidden;cursor:pointer;isolation:isolate;
+  background-color:#0E4A78;background-size:cover;background-position:center;
+  box-shadow:0 2px 9px rgba(10,59,102,.16);
+  transition:transform .18s ease,box-shadow .18s ease}
+.dishitem:hover{transform:translateY(-1px);box-shadow:0 7px 18px rgba(10,59,102,.28)}
+/* v15：取消左端暗角层——它在图上是一块边界可见的矩形暗影，压在字样下方像贴片色块。
+   图片完全裸露，可读性全部交给字体自身的 text-shadow（见下三条规则）。 */
+.dishitem>*{position:relative;z-index:1}
+.dishitem .di{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+  font-size:13px;font-weight:700;color:#fff;width:20px;text-align:center;flex:none;
+  text-shadow:0 0 1px rgba(0,0,0,.90),0 1px 2px rgba(0,0,0,.70)}
+.dishitem .dn{flex:1;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+  font-size:17px;font-weight:700;line-height:1.2;letter-spacing:.6px;color:#fff;
+  /* v16：0 模糊贴边 + 1px 微投影，总扩散 ≤2px；去掉 11px 大光晕（那层会铺成一块灰底） */
+  text-shadow:0 0 1px rgba(0,0,0,.90),0 1px 2px rgba(0,0,0,.72);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dishitem .da{font-size:18px;color:#fff;flex:none;
+  text-shadow:0 0 1px rgba(0,0,0,.90),0 1px 2px rgba(0,0,0,.70)}
+
+/* ===== v14：背景音乐开关 ===== */
+.bgmbtn{position:absolute;right:19px;bottom:13px;z-index:60;width:28px;height:28px;padding:0;
+  border:1px solid rgba(255,255,255,.70);border-radius:50%;cursor:pointer;
+  background:#0B2E4F;   /* 实色：半透明会让手机框的圆角透过按钮，观感发脏 */
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 2px 7px rgba(10,59,102,.30);opacity:.92;
+  transition:opacity .25s ease,transform .18s ease,background .2s ease}
+.bgmbtn:hover{opacity:1;transform:translateY(-1px);background:#123C63}
+.bgmbars{display:flex;align-items:flex-end;gap:2.5px;height:12px}
+.bgmbars i{display:block;width:2.5px;height:4px;border-radius:1.5px;background:#FFEB3B;
+  animation:bgmbar 1.15s ease-in-out infinite;animation-play-state:paused}
+.bgmbars i:nth-child(1){animation-delay:-.34s}
+.bgmbars i:nth-child(2){animation-delay:-.68s}
+.bgmbars i:nth-child(3){animation-delay:-.12s}
+.bgmbtn.playing .bgmbars i{animation-play-state:running}
+.bgmbtn.muted .bgmbars i{animation:none;height:3px;background:rgba(255,255,255,.85)}
+@keyframes bgmbar{0%,100%{height:4px}50%{height:12px}}
+/* 开关落在右下角，为各页底部文字与可滚动内容让出位置 */
+.index-foot{padding-right:48px}
+.dishfoot{padding-right:58px}
+.page .footer{padding-right:56px}
+.mapnote{right:50px}
+.detail-card{padding-bottom:46px}
+.dishbody{padding-bottom:46px}
+
+/* ===== 部署版适配：手机全屏铺满，桌面居中手机框 ===== */
+@media (max-width:520px){
+  body{padding:0;background:var(--paper)}
+  .stage{display:block;padding-top:0}
+  .phone{width:100vw;height:100vh;height:100dvh;border:none;border-radius:0;box-shadow:none}
+}
+</style>
+</head>
+<body>
+<div class="stage">
+<div class="phone"><div class="screen">
+
+    <!-- ① 封面 -->
+    <div class="page cover active" id="pageCover">
+      <svg class="deco" viewBox="0 0 357 742" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M-20 540 Q90 470 180 520 T380 480" fill="none" stroke="#0288D1" stroke-width="1.2" opacity=".7"/>
+        <path d="M-20 566 Q90 496 180 546 T380 506" fill="none" stroke="#0288D1" stroke-width="1" opacity=".5"/>
+        <path d="M-20 592 Q90 522 180 572 T380 532" fill="none" stroke="#0288D1" stroke-width="1" opacity=".35"/>
+        <circle cx="286" cy="150" r="52" fill="none" stroke="#0288D1" stroke-width="1" opacity=".35"/>
+        <circle cx="286" cy="150" r="76" fill="none" stroke="#0288D1" stroke-width="1" opacity=".2"/>
+        <circle cx="286" cy="150" r="5" fill="#FFEB3B" opacity=".8"/>
+        <circle cx="70" cy="238" r="3" fill="#FFEB3B" opacity=".6"/>
+        <circle cx="112" cy="268" r="2.5" fill="#FFEB3B" opacity=".5"/>
+      </svg>
+      <div class="top">
+        <div class="eyebrow">2026秋《出版与数字出版》结课作品</div>
+        <div class="rule"></div>
+      </div>
+      <div class="mid">
+        <div class="book">一碗海风的迁徙</div>
+        <div class="sub2">这是一份关于闽粤桂琼四省的美食地图<br>记载着<br>华南地区的饮食结晶<br>也见证着百余年来<br>海内外交融之中的舌尖变迁</div>
+        
+      </div>
+      <div class="bottom">
+        <!-- v21：作者署名，置于「开启旅程」上方；字号与「4 省份 / 34 道菜」一致（12px） -->
+        <div class="authors">作者：许湘俞 颜诗玲 张一丁 赖伟超 秦雨晴 谢雅婷</div>
+        <button class="enter" id="toIndexFromCover">开启旅程</button>
+        <div class="small">4 省份 / 34 道菜</div>
+      </div>
+    </div>
+
+    <!-- ② 目录 -->
+    <div class="page index" id="pageIndex">
+      <div class="index-bg" id="indexBg"></div>
+      <div class="index-veil"></div>
+      <div class="index-inner">
+        <div class="kicker">目 录 · 六处海风落点</div>
+        <div class="it">按地域浏览</div>
+        <div class="idesc">从六处海风落点，走进一碗迁徙。</div>
+        <div class="bars" id="bars"></div>
+        <div class="index-foot">
+          <span class="backlink" id="toCover">← 返回封面</span>
+          <span class="cnote">天地图行政区轮廓 · 文化地域示意</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ③ 地图 -->
+    <div class="page" id="pageMap">
+      <div class="masthead"><span class="t">一碗海风的迁徙</span><span class="s">电子地图</span></div>
+      <div class="filters" id="filters">
+        <span class="chip on" data-id="all">全部</span>
+        <span class="chip" data-id="minnan">闽南</span><span class="chip" data-id="mindong">闽东</span>
+        <span class="chip" data-id="kejia">客家</span><span class="chip" data-id="hainan">海南</span>
+        <span class="chip" data-id="guangfu">广府</span><span class="chip" data-id="guangxi">广西</span>
+      </div>
+
+      <div class="mapwrap" id="mapwrap">
+        <div class="svghost" id="mapSvgHost"></div>
+        <span class="stage-badge" id="badge">点击任一地区</span>
+        <span class="mapnote">天地图 V2.0 · 含南海诸岛 · 课堂展示示意</span>
+
+        <div class="detail-layer" id="detailLayer">
+          <div class="detail-card">
+            <div class="grab"></div>
+            <div class="swipe-tip">↓ 下滑返回地图</div>
+            <span class="tag" id="dTag">第一章</span>
+            <div class="dish" id="dName">闽南</div>
+            <div class="meta" id="dMeta"></div>
+            <div class="lead" id="dLead"></div>
+            <div class="sec">本地区的菜 · 点按查看 <span class="sectip">共 <b id="dDishCount">0</b> 道</span></div>
+            <div class="dishlist" id="dPills"></div>
+            <div class="sec">海风迁徙线</div>
+            <div class="route-line" id="dRoute"></div>
+            <div class="back" id="dBack">返回地图</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="legend"><span><i></i>菜品点位</span><span><span class="ln"></span>出海</span><span><span class="ln r"></span>回流</span><span>6 地域 / 34 道</span></div>
+      <div class="player"><span class="play"></span><span class="txt">迁徙播放 · 闽南 → 南洋</span><span class="bar"></span></div>
+      <div class="footer"><span class="link" id="toIndexFromMap">← 目录</span><span class="prog">底图：天地图 · 课堂展示</span><span>03 / 05</span></div>
+    </div>
+
+
+    <!-- ⑤ 菜品页：每道菜独立页面，图片位与音频位均为活占位 -->
+    <div class="page dishpage" id="pageDish" data-id="">
+      <div class="swipe-guide" id="swipeGuide">← 左右滑动切换菜品<br>↓ 下滑返回本地区 &nbsp;<b>引导 3 秒后消失</b></div>
+      <div class="cross-toast" id="crossToast"></div>
+      <div class="dtop">
+        <span class="dback" id="dishBack">← 返回本地区</span>
+        <span class="dcrumb" id="dishCrumb"></span>
+      </div>
+      <div class="dishbody">
+        <div class="dishname" id="dishName"></div>
+        <div class="dishregion" id="dishRegion"></div>
+
+        <div class="dishimg" id="dishImgBox">
+          <div class="imgph" id="dishImgPh">
+            <svg width="36" height="30" viewBox="0 0 36 30" aria-hidden="true">
+              <rect x="2" y="3" width="32" height="24" rx="3" fill="none" stroke="#0288D1" stroke-width="1.6"/>
+              <circle cx="12" cy="11" r="3" fill="none" stroke="#0288D1" stroke-width="1.6"/>
+              <path d="M4 24 L14 15 L21 21 L27 16 L33 24" fill="none" stroke="#0288D1" stroke-width="1.6" stroke-linejoin="round"/>
+            </svg>
+            <b>图片位 · 待统一补齐</b>
+            <small id="dishImgPath"></small>
+          </div>
+          <img id="dishImgEl" alt="菜品图片"/>
+        </div>
+
+        <div class="dishaudio" id="dishAudioWrap">
+          <button class="aplay" id="dishPlay" aria-label="播放音频"></button>
+          <div class="ainfo">
+            <div class="at" id="dishAudioNote"></div>
+            <div class="as" id="dishAudioPath"></div>
+          </div>
+          <span class="awave"></span>
+        </div>
+
+        <div class="dishsec"><h4>菜品名片</h4><p id="dishCard"></p></div>
+        <div class="dishsec"><h4>海风迁徙线</h4><p id="dishRoute"></p></div>
+        <div class="dishsec"><h4>家族记忆</h4><p id="dishMemory"></p><p class="contributor" id="dishContrib"></p></div>
+        <div class="dishsec"><h4>极简菜谱</h4><p id="dishRecipe"></p></div>
+
+        <div class="dishbg" id="dishBg"></div>
+
+        <div class="dishnav">
+          <span class="nb" id="dishPrev">← 上一道</span>
+          <span class="nb mid" id="dishPos"></span>
+          <span class="nb" id="dishNext">下一道 →</span>
+        </div>
+      </div>
+      <div class="dishfoot">
+        <span class="link" id="dishBackIndex">← 目录</span>
+        <span class="prog">底图：天地图 · 课堂展示</span>
+        <span>05 / 05</span>
+      </div>
+    </div>
+
+    <!-- v14：背景音乐（常驻 .screen，不随翻页重建，故切页 / 进出各级都不会中断） -->
+    <audio id="bgm" preload="auto" playsinline></audio>
+    <button class="bgmbtn" id="bgmBtn" type="button" aria-label="关闭背景音乐"
+            title="背景音乐 · 舌尖上的中国 01–03 循环">
+      <span class="bgmbars" aria-hidden="true"><i></i><i></i><i></i></span>
+    </button>
+
+  </div></div>
+</div>
+
+<script>
+(function(){
+  var R={
+    minnan:{ch:'第一章 · 闽南·海风入厦',name:'闽南',count:9,cities:'厦门、泉州、漳州、石码',
+      lead:'九道菜沿海风落点厦漳泉。沙茶从南洋回来，润饼往南洋去，一进一出是这一章的底色。',
+      dishes:['厦门沙茶面','润饼菜','烧肉粽','海蛎煎','面线糊'],
+      route:'沙茶源自南洋「沙嗲」，清末下南洋的闽南华侨把配方带回厦门，加入虾干、扁鱼改成熬汤酱料；成型后又随人口流动传入泉州、漳州。润饼则随北方移民南迁入闽，再被带到印尼、马来西亚，落地为隆比亚。',
+      audio:'沙茶面.mp3',audioDish:'厦门沙茶面',cx:243,cy:150,count2:9},
+    mindong:{ch:'第二章 · 闽东·山潮赴福',name:'闽东',count:7,cities:'福州、福鼎、福安、沙埕港',
+      lead:'七道菜沿闽江与沙埕港铺开。山与海之间，出洋是另一条出路。',
+      dishes:['佛跳墙','福鼎肉片','福安光饼','荔枝肉','煎对蟹'],
+      route:'福鼎是闽东侨乡，清末民初福鼎人从沙埕港下南洋，到新加坡、马来西亚、印尼的橡胶园与码头谋生，肉片先落在华人街。福安光饼也随华人移民走向东南亚、日本、美国等地。',
+      audio:'福鼎肉片.m4a',audioDish:'福鼎肉片',cx:300,cy:70,count2:7},
+    kejia:{ch:'第三章 · 客家·山香绕汀',name:'客家',count:4,cities:'汀州/长汀、梅州',
+      lead:'四道菜藏在山里。客家先民从中原南迁，把包饺子的手艺换成了酿。',
+      dishes:['酿豆腐','梅菜扣肉','盐焗鸡','酿辣椒酿芋头'],
+      route:'酿豆腐别名「无饺之饺」：客家先民从中原南迁，落脚闽西汀州与粤东山区，种稻不种麦，便以豆腐代饺皮。客家人下南洋又把它带到新加坡、马来西亚、印尼与泰国，在星马按客家话音译为 Yong Tau Foo。',
+      audio:null,cx:165,cy:132,count2:4},
+    hainan:{ch:'第四章 · 海南·椰风临琼',name:'海南',count:7,cities:'海口、文昌',
+      lead:'七道菜从海口与文昌出发。蘸料从海外来，整只鸡又往海外去。',
+      dishes:['白切鸡','椰子鸡','海南粉','斑斓及其制品','清补凉'],
+      route:'海南白切鸡的蘸料配伍源于海外：清末民初大批海南人下南洋，带回酸辣口味；海南人又把这道菜带出去，最知名的是新加坡海南鸡饭。椰子鸡则诞生于上世纪末，由一位海南籍印尼华侨在广东深圳首创。',
+      audio:'文昌白切鸡.m4a',audioDish:'白切鸡',audioExtra:[{file:'海南咖啡.m4a',dish:'歌碧欧'}],cx:95,cy:410,count2:7},
+    guangfu:{ch:'第五章 · 广府·粤韵入穗',name:'广府',count:3,cities:'广州、江门（五邑）',
+      lead:'三道菜从广州与江门五邑出发。侨乡的手艺跟着人一起过海。',
+      dishes:['烧鹅','豉汁蒸排骨','蒜蓉时蔬'],
+      route:'广府五邑是著名侨乡，近代大批乡亲下南洋、赴港澳、闯欧美，把烧鹅手艺带往异乡。豉汁蒸排骨随「一盅两件」进入东南亚与欧美唐人街；蒜蓉时蔬也随粤人出洋，唐人街菜园复种菜心、芥兰。',
+      audio:null,cx:176,cy:236,count2:3},
+    guangxi:{ch:'第六章 · 广西·酸香漫桂',name:'广西',count:4,cities:'桂林、柳州、南宁',
+      lead:'四道菜沿桂柳与桂南分野。酸味在区内流布，粉则走得更远。',
+      dishes:['酸嘢','螺蛳粉','桂林米粉','冬瓜盅'],
+      route:'酸嘢随人口迁徙与商贸在广西内部流布：桂柳近湘黔，腌得久、辣得烈；桂南与沿海偏酸甜、重酸鲜。螺蛳粉上世纪七八十年代在柳州谷埠街夜市成形，2014 年第一包袋装粉下线，2016 年起远销三十多个国家。',
+      audio:null,cx:68,cy:238,count2:4}
+  };
+  var REGION_OVERVIEW={"minnan": {"sum": "一进一出：南洋的酱料随归侨回来，本地的节令菜随移民出去。", "cases": ["沙茶 ← 南洋「沙嗲」，清末归侨带回厦门，加虾干、扁鱼改成熬汤酱料", "润饼 ← 中原春饼，随北方移民南迁入闽", "润饼 → 印尼、马来西亚，落地为隆比亚", "沙茶面 → 泉州、漳州，成型后就地微调"]}, "mindong": {"sum": "从沙埕港出海，是山与海之间的另一条出路，手艺先落在华人街。", "cases": ["清末民初福鼎人从沙埕港下南洋，到新加坡、马来西亚、印尼的橡胶园与码头谋生", "福鼎肉片 → 先落在当地华人街", "福安光饼 → 东南亚、日本、美国等地"]}, "kejia": {"sum": "从中原南迁进山，又以汀州、梅州为起点继续下南洋。", "cases": ["酿豆腐：南迁后种稻不种麦，以豆腐代饺皮，别名「无饺之饺」", "酿豆腐 → 新加坡、马来西亚、印尼、泰国", "在星马按客家话音译为 Yong Tau Foo"]}, "hainan": {"sum": "蘸料从海外来，整只鸡又往海外去，近年还有一条回流线。", "cases": ["白切鸡蘸料 ← 清末民初下南洋的海南人带回的酸辣口味", "白切鸡 → 新加坡，落地为海南鸡饭", "椰子鸡：上世纪末由海南籍印尼华侨在深圳首创，近年随连锁反向传回海南"]}, "guangfu": {"sum": "侨乡的手艺跟着人一起过海，落在唐人街的一盅两件里。", "cases": ["五邑乡亲近代下南洋、赴中国香港、中国澳门、闯欧美，烧鹅手艺带往异乡", "豉汁蒸排骨 → 随「一盅两件」进入东南亚与欧美唐人街", "蒜蓉时蔬 → 唐人街菜园复种菜心、芥兰"]}, "guangxi": {"sum": "酸味在区内分野，粉从柳州夜市走上更远的路。", "cases": ["酸嘢随人口迁徙与商贸在广西内部流布：桂柳近湘黔，腌得久、辣得烈；桂南与沿海偏酸甜、重酸鲜", "螺蛳粉上世纪七八十年代在柳州谷埠街夜市成形", "2014 年第一包袋装粉下线，2016 年起远销三十多个国家"]}};
+  Object.keys(REGION_OVERVIEW).forEach(function(k){R[k].overview=REGION_OVERVIEW[k];});
+  var SHAPES={};
+  // 文化地域标注层：大头针 + 16px 地域名，颜色与目录条形一致（示意分区，非行政区界）
+  // 原椭圆标注已取消：椭圆容易互相挤压，也容易被误读为行政区范围。
+  var ANCHORS={"mindong": {"cx": 322.7, "cy": 115.5, "prov": "fujian", "dir": "left", "color": "#0277BD"}, "minnan": {"cx": 304.7, "cy": 159.5, "prov": "fujian", "dir": "right", "color": "#0288D1"}, "kejia": {"cx": 274.7, "cy": 165.5, "prov": "fujian", "dir": "left", "color": "#039BE5"}, "guangfu": {"cx": 212.5, "cy": 198.3, "prov": "guangdong", "dir": "right", "color": "#01579B"}, "guangxi": {"cx": 113.3, "cy": 187.2, "prov": "guangxi", "dir": "left", "color": "#03A9F4"}, "hainan": {"cx": 153.1, "cy": 256.5, "prov": "hainan", "dir": "right", "color": "#2E9FD8"}};
+  Object.keys(R).forEach(function(k){
+    var a=ANCHORS[k]; if(!a)return;
+    R[k].cx=a.cx; R[k].cy=a.cy; R[k].prov=a.prov;
+  });
+
+  var DISHES=[{"id": "ch1-01", "region": "minnan", "ch": 1, "chName": "第一章 · 闽南·海风入厦", "name": "厦门沙茶面", "idx": 1, "total": 9, "img": "assets/图片/ch1-01.jpg", "audioStd": "assets/音频汇总/ch1-01.mp3", "audioCandidates": ["assets/音频汇总/ch1-01.mp3"], "audioLabel": "音频 · ch1-01.mp3", "card": "沙茶作为南洋的“沙嗲”，原本是用来配烤肉串的香辣蘸料。清末下南洋的闽南华侨把配方带回厦门，又加入虾干、扁鱼等，把它改成适合熬汤的酱料。它早期是码头苦力的饱腹吃食，香浓够味，一碗就能驱散海风的湿冷。因为闽南话里“嗲”和“茶”读音相近，慢慢被叫成沙茶，才有了如今这个名字。一碗面，藏着华侨漂洋过海的乡愁。", "route": "海内迁徙：沙茶面成型于厦门，随后顺着闽南人口流动，传入泉州、漳州，各地就地微调：泉州多用沙茶炒海鲜，漳州发展出沙茶火锅；它跟着求学、务工人群扩散至福建全省，成为闽南风味的标志性小吃。\n海外迁徙：清末闽南人下南洋，在印尼、马来西亚接触到烤肉蘸酱“sate”（沙嗲）。归国华侨把酱料配方带回厦门，加入虾干、扁鱼、花生，改造成适合熬汤的沙茶酱，和碱面结合诞生沙茶面。后续海外闽南侨民又把改良后的沙茶风味反向带往东南亚、欧美华人社区，在当地华人餐馆售卖，成为跨洋的乡愁符号，实现饮食文化双向传播。", "memory": "沙茶面不只是沙茶酱、面条、青菜、豆芽的简单组合，实则还有着很多分支。大致有三类：甜辣口、甜口、咸口，对于信徒来说当然是都完全喜欢，全然接纳。再配上五香卷和醋肉，对土生土长的闽南人而言简直夯爆了！", "recipe": "配料：碱面、虾、扇贝、鱿鱼、豆腐泡、青菜、豆芽、沙茶酱、花生酱、蒜末、葱花、高汤、生抽、盐、白胡椒\n做法：①锅里放少许油，把蒜末炒香，加入沙茶酱、花生酱略炒，倒入高汤调味，小火熬汤；②另外烧水煮面、烫熟配菜；③碗里放上面和配菜，浇上热汤，撒葱花。", "contrib": "颜诗玲"}, {"id": "ch1-02", "region": "minnan", "ch": 1, "chName": "第一章 · 闽南·海风入厦", "name": "润饼菜", "idx": 2, "total": 9, "img": "assets/图片/ch1-02.jpg", "audioStd": "assets/音频汇总/ch1-02.mp3", "audioCandidates": ["assets/音频汇总/ch1-02.mp3"], "audioLabel": "音频 · ch1-02.mp3", "card": "润饼的冷知识，藏在它“一皮卷万象”的包容里：一张薄如纸的面皮，卷进各种配菜。相传它源自中原古代春饼，随北方移民南迁入闽，在闽南演变成清明节、春节里家家户户必吃的节令菜。它漂洋过海后在印尼被音译成\"Lumpia\"（隆比亚），加入椰丝、本地芽菜，成了风靡街头的国民小吃。同一道菜，海峡两岸各有一套吃法，卷起的是随遇而安的烟火气与乡愁。", "route": "海内迁徙：润饼源于中原春饼习俗，随北方士族南迁入闽，落地闽南后改用当地的时蔬与海鲜，成为泉州、厦门、漳州一带清明祭祖、春节围炉的节令菜。因馅料可荤可素，它也逐渐走上日常餐桌。随着闽南人求学、务工迁徙，润饼传遍福建各地，并在台湾省演变为夜市常见的“润饼卷”，成为两岸共同的节令记忆。\n海外迁徙：大批闽南移民下南洋，把润饼带到印尼、马来西亚。它在印尼按闽南语被音译为\"Lumpia\"（隆比亚），饼皮与馅料大幅本地化，加入椰丝、芽菜与香料，从家常菜变成国民小吃；在马来西亚、菲律宾也有各自版本。更有趣的是，南洋Lumpia的吃法又反向影响闽南家庭，一些侨眷开始在南洋式馅料里加椰丝。同一张薄饼，在海峡两岸各自演化，成为饮食文化双向交流的鲜活例证。", "memory": "ycyz2024届高三一班有一半是会吃的饕餮，于是我成了AAA润饼菜代购。菜市场的润饼菜阿姨随心情出摊，但我每天早上路过都会满怀期待地往摊位方向观望。高三有多累，课间的润饼菜就有多好吃，豆干是五香的，豆芽胡萝卜脆嫩，炸过的粉丝酥脆，第一个想出在馅儿里撒海苔白糖的一定是天才，一张薄饼内的世界竟别有洞天……", "recipe": "配料：润饼皮（面粉）、胡萝卜丝、笋丝、豆芽、包菜丝、豆干丝、肉丝、海苔酥、花生碎、芫荽、葱花、甜辣酱（或沙拉酱）\n做法：①面粉加盐加水调成稀面糊，平底锅小火摊成薄饼皮，每张煎至边缘微焦即揭起。②各类蔬菜丝、肉丝分别炒熟装盘。③食用时取饼皮铺平，依喜好铺上馅料，撒海苔酥、花生碎、芫荽，卷紧成筒，蘸酱料即可食。", "contrib": "咔咔玉米花"}, {"id": "ch1-03", "region": "minnan", "ch": 1, "chName": "第一章 · 闽南·海风入厦", "name": "烧肉粽", "idx": 3, "total": 9, "img": "assets/图片/ch1-03.jpg", "audioStd": "assets/音频汇总/ch1-03.mp3", "audioCandidates": ["assets/音频汇总/ch1-03.mp3"], "audioLabel": "音频 · ch1-03.mp3", "card": "闽南肉粽重点在一个“烧”字——“烧”在闽南话里是“热”的意思。早年夜市里，小贩肩挑竹篓、敲着竹板吆喝“烧肉粽”，热气腾腾的粽子是许多人的记忆。它与北方甜粽不同：糯米先炒香，馅料扎实。传说端午投粽的习俗随中原移民南来，在闽南演变成这款咸香肉粽；后来它被带到南洋，催生出加香兰叶、椰丝的娘惹粽。一颗粽，包着迁徙与乡愁。", "route": "海内迁徙：粽子的习俗源自中原端午投粽纪念屈原的传说，随北方移民南迁传入闽南，逐渐演变成馅料丰盛的咸味“烧肉粽”。厦漳泉一带讲究糯米先炒、馅料分层。它既是端午应节食品，也是街头常年供应的夜宵。随着闽南人迁徙，烧肉粽传遍福建并进入台湾，成为两岸共有的小吃记忆。\n海外迁徙：闽南烧肉粽随移民传入东南亚。在马来西亚、印尼、新加坡，华人保留着端午包粽的习惯。峇峇娘惹更在此基础上改良出“娘惹粽”（Nyonya zongzi），加入香兰叶、椰丝与香料，用蝶豆花把糯米染成蓝绿色，风味独树一帜。而南洋闽南社群依旧保留传统肉粽的馅料做法。侨客回乡，第一口常想吃的就是肉粽——那是最熟悉的家乡味道。一颗粽子，在海外既守住传统，也长出了新枝。", "memory": "小时候每年端午节前，我总会和妈妈、姑姑一起包粽子。将清洗后的一摞粽叶扎在一旁，每次把一片叶折成漏斗状，先往里铺一层糯米压实，再装入配料。但由于我挑食，总是给自己多放一个鹌鹑蛋而不放海蛎干。接着再在最上层铺上糯米，把粽叶封闭包实，用马兰草把粽子扎紧，一个饱满的粽子就等待下锅啦！\n关于肉粽最先涌上来的回忆是小时候和爷爷奶奶一起坐在电视机前看台剧《牵手》，里面的主角的名字我已经记不清了，只记得女主是一个坚强温柔的女人，家里开着一家烧肉粽店。每每想起这部剧都会想起蒸腾的水汽白烟和清透的粽叶香味，肉粽总是潮暖的，和家庭给我的感受一样温润，虽然没有试过亲手包肉粽，但是作为小孩的时候看着大人包粽子会感到安稳和幸福。", "recipe": "配料：糯米、五花肉、咸蛋黄、香菇、虾米、莲子、栗子、生抽、五香粉、葱头油、粽叶、棉线；蘸食：花生酱、甜辣酱、蒜末、香菜\n做法：①糯米洗净沥干，加生抽、五香粉、葱头油炒香；②五花肉切块卤入味，粽叶煮软。③取粽叶折漏斗，铺米，依次放肉和各类配菜，盖米压实扎紧。④冷水下锅，大火煮两小时至软糯，趁热剥叶蘸酱食用。", "contrib": "颜诗玲、心语"}, {"id": "ch1-04", "region": "minnan", "ch": 1, "chName": "第一章 · 闽南·海风入厦", "name": "海蛎煎", "idx": 4, "total": 9, "img": "assets/图片/ch1-04.jpg", "audioStd": "assets/音频汇总/ch1-04.mp3", "audioCandidates": ["assets/音频汇总/ch1-04.mp3"], "audioLabel": "音频 · ch1-04.mp3", "card": "夜市里金黄酥脆的海蛎煎，其实出身“贫寒”。相传明末郑成功军队缺粮，就地取材把蚵仔、番薯粉加水煎成饼充饥，最早叫“煎食追”；也有说法是番薯从南洋传入后，闽南人在灾年以番薯配牡蛎果腹。它在闽南叫蚵仔煎、海蛎煎，在潮汕叫蚝烙，在台湾则成了夜市招牌。2018年入选福建十大经典名菜，是沿海先民向海讨生活的智慧。", "route": "海内迁徙：海蛎煎发源于福建泉州，随着明清时期闽南人渡海而传入台湾，最早在台南安平一带被称为“煎食追”，后来成为夜市最著名的招牌之一。传到潮汕之后则演变成用猪油煎、配沙茶酱的“蚝烙”。三地做法同源而异彩：闽南讲究海蛎品质与“外脆里嫩”，台湾多用较稠粉浆并淋甜辣酱，潮汕强调猪油香。一盘海蛎煎，串起了闽、台、潮沿海人群的迁徙足迹。\n海外迁徙：随着闽南与潮汕移民下南洋，海蛎煎也被带到新加坡、马来西亚一带，当地称“蚝煎”，以牡蛎、番薯粉与鸡蛋煎制，佐以辣椒酱，成为星马街头与餐馆常见的华人小吃。它从福建沿海出发，一路迁徙到台湾、潮汕与东南亚，在不同口岸落地生根、改名换料，却始终保留着“鲜蚵＋粉浆”的核心，成为海洋移民共同的乡味记忆。", "memory": "海蛎煎吃起来就是地瓜粉的Q弹、海蛎的鲜甜还有蛋的柔软，经典蘸酱是甜辣酱，也可以蘸番茄酱吃。再配上酸甜口的白萝卜丝，搭着吃很清爽，不然这东西毕竟是拿油煎的，也容易腻。地瓜粉品质好坏对菜品口感影响很大，不好的地瓜粉就凝结不起来，也不Q弹。", "recipe": "配料：新鲜海蛎、番薯粉（地瓜粉）、鸡蛋、韭菜、青蒜、盐、白胡椒、甜辣酱（或蒜蓉酱）\n做法：①海蛎洗净沥干，加少许盐与番薯粉拌匀；②韭菜切段、青蒜切珠。③平底锅热油，倒入蚵仔摊平，中火煎至定型，淋入蛋液，撒韭菜、蒜珠，两面煎至金黄酥脆。④起锅沥油，配甜辣酱或蒜蓉酱食用。", "contrib": "颜诗玲"}, {"id": "ch1-05", "region": "minnan", "ch": 1, "chName": "第一章 · 闽南·海风入厦", "name": "醋肉", "idx": 5, "total": 9, "img": "assets/图片/ch1-05.jpg", "audioStd": "assets/音频汇总/ch1-05.mp3", "audioCandidates": ["assets/音频汇总/ch1-05.mp3"], "audioLabel": "音频 · ch1-05.mp3", "card": "外地人常纳闷：别处炸肉放椒盐、放孜然，泉州炸肉为什么偏要放醋？这一勺老醋，是海边人藏了几百年的保鲜智慧。相传明清晋江渔民出海，海上闷热潮湿，鲜肉易坏，渔家妇人便用老醋先腌肉，再裹地瓜粉下锅炸，醋能去腥杀菌、软化肉质，炸好后凉了仍酥脆，能够带上船当干粮。中原酥肉技法到了滨海潮湿的泉州，经过本地老醋与地瓜粉的重新改造，成了外酥里嫩、酸香解腻的闽南醋肉。", "route": "海内迁徙：炸肉古法源自中原，重咸香椒盐，适配北方干燥气候。传入滨海潮湿的闽南后，先民用永春老醋中和油腻、祛除腥膻，再以本地地瓜粉挂糊，炸出的外皮酥而不硬、凉后不回软，与北方面粉炸制的硬壳截然不同。醋肉从渔村走上古城街巷，又登上婚寿宴席，成为泉州人离不开的烟火味，配着面线糊共同食用更佳。\n海外迁徙：明清时期，炸醋肉随闽南移民传播到台湾、东南亚。在台湾，口味偏甜，醋肉常作为夜市咸酥小吃；在新加坡、马来西亚、菲律宾等闽南语地区，醋肉融入娘惹菜元素，成为华人家宴与节庆的常见炸物。海外侨胞回乡，总忘不了那一口酸香酥脆。一盘醋肉，从中原技法到闽南风味，再随侨踪跨海，成了家乡味的代名词。", "memory": "闽南小孩对醋肉应该都不陌生吧，从小无论在逢年过节，还是街边小巷，醋肉一定是最常见的小吃之一。家乡人用永春老醋+蒜提前腌制，裹地瓜粉现炸，外皮金黄酥脆，咬开内里肉嫩多汁，淡淡的醋香解腻，蒜香很突出，越嚼越香。既可以直接当零食，也丢进面线糊里吃，简直是闽南炸物天花板！", "recipe": "配料：猪里脊肉、永春老醋、蒜蓉、生抽、白糖、盐、鸡蛋、地瓜粉、五香粉\n做法：里脊切薄片，加老醋、蒜蓉、生抽、糖、盐抓匀腌数小时；拌入鸡蛋与地瓜粉挂糊。油七成热下肉炸至定型捞出，升高油温复炸二十秒至金黄酥脆，沥油装盘。", "contrib": "颜诗玲"}, {"id": "ch1-06", "region": "minnan", "ch": 1, "chName": "第一章 · 闽南·海风入厦", "name": "面线糊", "idx": 6, "total": 9, "img": "assets/图片/ch1-06.jpg", "audioStd": "assets/音频汇总/ch1-06.mp3", "audioCandidates": ["assets/音频汇总/ch1-06.mp3"], "audioLabel": "音频 · ch1-06.mp3", "card": "“面线糊”的根在南北交融。面线细如发丝，做法融合了北方的面食智慧与闽南米粉的精细工艺；相传清乾隆下江南，到泉州罗甲村遇粮荒，秀才妻子用猪骨鱼刺熬汤，下把面线碎和木薯粉，熬出一碗“龙须珍珠粥”，这便是面线糊的由来。泉州人清晨用油条蘸着吃，加醋肉、大肠等配菜。一碗糊，藏着中原移民南迁与海上丝绸之路的烟火气。", "route": "海内迁徙：中原南迁的汉人来到泉州后，将面食与本地米粉工艺结合，演变成细可穿针的面线。宋元时期泉州港“市井十洲人”，面线作为耐储存的干粮随商船往来，催生了把面线碎熬成糊的吃法。它在泉州扎根成为早餐“硬通货”，又随闽南人的足迹传到厦门、漳州；永春的手工面线更被列入非遗，寓意长寿圆满，祝寿、婚嫁、满月都少不了一碗面线。\n海外迁徙：泉州是著名侨乡，面线随海上丝绸之路输往亚洲乃至欧洲，明清至近代又随华侨下南洋，传入马来西亚、新加坡、印尼。海外闽南社群逢年过节、婚寿喜庆必吃面线，离乡时还把面线捆好带走；印尼归侨回到泉州，第一件事便是吃一碗面线糊。一根细长不断的面线，成了海外游子认祖归乡的味觉信物，实现饮食文化的双向流动。", "memory": "大家好，我来自福建泉州永春，特别爱吃面线糊。我觉得面线糊的汤特别稀，特别清淡，喝起来特别爽，特别好喝，非常非常好喝。还可以加很多自己喜欢的配料，再配上油条简直是绝了！\n上小学的时候，爸爸经常带我去学校附近的一家早餐店吃早饭。刚开始我不太爱面线糊，所以总是点花生汤配油条，而我爸吃的总是面线糊加醋肉。后来有天我一时兴起也点了面线糊，可能是味蕾觉醒了吧，感觉配上油条简直是惊为天人！来厦门上大学之后，虽然也身处闽南，但没再吃过和家里味道一样的面线糊。想回泉州吃好吃的了......", "recipe": "配料：细面线、番薯粉、猪骨高汤、海蛎、醋肉、大肠、油条、葱花、胡椒粉、盐、生抽\n做法：猪骨熬高汤，下海蛎、大肠等配料煮熟；面线剪短，与番薯粉水调匀，缓缓倒入滚汤搅成糊，调味后撒葱花、胡椒粉；配油条碎、醋肉食用。", "contrib": "颜诗玲"}, {"id": "ch1-07", "region": "minnan", "ch": 1, "chName": "第一章 · 闽南·海风入厦", "name": "漳州四果汤", "idx": 7, "total": 9, "img": "assets/图片/ch1-07.jpg", "audioStd": "assets/音频汇总/ch1-07.mp3", "audioCandidates": ["assets/音频汇总/ch1-07.mp3"], "audioLabel": "音频 · ch1-07.mp3", "card": "名字叫“四果”，碗里却远不止四样。它最早只有绿豆、薏米、莲子、银耳四味，配的是“药食同源”的祛暑古方：相传唐代女将魏敬为北方士兵消解闽地暑热，以绿豆、莲子、银耳、薏米合煮成汤。漳州人讲究用石花膏打底、铺绵密冰沙，再加木薯粉做的“阿达子”，如今配料已扩到十几种。一碗清甜，是闽南人夏天的开场白。", "route": "海外迁徙：四果汤随闽南移民传入台湾、新加坡、马来西亚。星马华人称它为四果汤，也叫“清补凉”，配料以燕菜、龙眼干、银耳、绿豆为主，最接近传统原貌。有趣的是，漳州标志性的“阿达子”，有美食记者推测是早年下南洋的漳州人吃过东南亚的亚答籽后，为还原口感用木薯粉创造的丸子，这也是海外文化反向滋养家乡的见证。", "memory": "高中时，每次我妈接我晚自习放学，我都会下意识看她有没有给我准备一碗四果汤。虽然如果没有也不会咋样，但是如果有四果汤喝的话就会超级开心！！！", "recipe": "配料：石花膏、仙草冻、阿达子、绿豆、薏米、莲子、银耳、西瓜、菠萝、冰糖水、冰沙\n做法：绿豆、薏米、莲子分别蒸熟，银耳焯两分钟，阿达子煮熟过凉水；石花膏、仙草冻切条。碗中铺冰沙，依喜好加入配料，淋冰糖水即成。", "contrib": "空谷幽兰"}, {"id": "ch1-08", "region": "minnan", "ch": 1, "chName": "第一章 · 闽南·海风入厦", "name": "五香卷", "idx": 8, "total": 9, "img": "assets/图片/ch1-08.jpg", "audioStd": "assets/音频汇总/ch1-08.mp3", "audioCandidates": ["assets/音频汇总/ch1-08.mp3"], "audioLabel": "音频 · ch1-08.mp3", "card": "五香卷最早的外皮并非豆腐皮，而是猪网油——猪腹腔间那层薄如纱的网状油脂。旧时闽南人家珍惜食材，闽南人舍不得倒掉年节剩下的猪肉边角、荸荠头和葱头，剁剁卷卷下油锅，就是一碟。后来豆皮接了网油的班，名字却留在香料上：八角、桂皮、丁香现配现磨的那一撮“五香粉”。在闽南，它不止是小吃，更是祭祀、团圆桌上的固定角色：逢年过节、婚寿喜庆，卤面加五香才像样。", "route": "海内迁徙：五香卷以九龙江口的石码最出名，沿海岸线向外扩散。1931年《厦门指南》已记厦门中华路一家名号“五香苞”的摊子。往北传入泉州，它改叫“鸡卷”，名称与旧称“鸡管”同源。随闽人东渡，它跨过海峡到台湾，《台日大辞典》“雞管”条记的仍是早年以猪网纱油裹馅炸制的做法；台湾至今仍叫鸡卷，南部另称“肉繭仔”。向西到闽粤交界，受闽南移民饮食影响，潮汕发展出形态相近的粿肉，在地调味又走出自己的路。\n海外迁徙：晚清民国，闽南人大批下南洋。行囊里除了被褥和锡罐，常还压着一小包家乡药铺磨好的五香粉——那是年节味道里最轻、也最难替代的一件。到槟城，五香卷沿用故乡“配卤汁吃”的习惯，蘸的是卤面摊上那勺浓稠卤汤，当地人索性叫它“卤肉”，Loh Bak。过一道海峡到新加坡，旧名被原样保留：Ngo Hiang，五香。它成了菜饭柜里最寻常的一格炸物，劳工吃得起，宴席上也摆得出。移民就地取材，用南洋的沙葛替下荸荠，凉薯的清甜接住了马蹄的脆。从福建的祭桌供品，到南洋街头日日可尝的吃食，它在他乡完成落地与调适。", "memory": "闽南的年，从腊月廿八拜天公就拉开序幕，五香卷是供桌上万万不能少的一件。这天下午，妈妈便忙开了，坐在餐桌前包五香卷，馅料备得足足的，既要让天公享用，也盼一家人吃上热乎的一口。我在一旁有样学样地卷着豆皮，手笨总是封不牢，包好的卷子处处露馅。\n夜里油锅一响，我守着灶台不肯走。炸好的第一根五香，妈妈总先递来让我尝鲜。我急着入口，烫得在嘴里来回倒腾，惹得她笑个不停，念叨着“心急可吃不了热五香”。滚烫酥脆的肉香在舌尖散开，这就是刻在我心里过年的味道。", "recipe": "做法：七瘦三肥猪前腿肉切粗粒，搭配马蹄丁、红葱头碎与少许洋葱丁，调入五香粉、鱼露、白糖、地瓜粉，顺着一个方向搅至馅料上劲。薄豆皮铺馅卷成长条，淀粉水封紧收口。五成油温慢炸至外皮金黄浮起，切段蘸甜辣酱，也可配卤汁食用。", "contrib": "谢雅婷"}, {"id": "ch1-09", "region": "minnan", "ch": 1, "chName": "第一章 · 闽南·海风入厦", "name": "地瓜芋圆糖水", "idx": 9, "total": 9, "img": "assets/图片/ch1-09.jpg", "audioStd": "", "audioCandidates": [], "audioLabel": "", "card": "这碗糖水的两样主角，都不是本地户口。番薯原产美洲，明代万历年间才入中国：福建长乐人陈振龙在吕宋经商，见当地朱薯“生熟可茹”，便把薯藤绞进船缆、抹泥伪装带回福州，正值闽中大旱，巡抚金学曾下令推广，饥荒由此缓解，闽人一度称之为“金薯”。“地瓜”是北方的叫法，闽南与台湾都称“番薯”。芋圆的历史要短得多：1946年瑞芳的蔡林保云用树薯粉混蒸熟的芋头揉成小球，煮后加蔗糖，是公认的第一代芋圆。", "route": "海外迁徙：番薯和芋圆都跟着闽台移民出了海。番薯本身就是“海风带来的作物”，从美洲到吕宋再到闽南，四百多年后又随移民回到南洋与美洲的菜园。芋圆则借珍珠奶茶与台式甜品店走向世界，英文菜单一般写作 Taro Balls、Sweet Potato Balls，常与豆花、刨冰、红豆汤同碗出售；新加坡、马来西亚与香港的甜品店把它列在“台式甜品”一栏，杯装的芋圆奶茶也成了街饮。九份老街那碗三色圆仔，如今在旧金山、伦敦的甜品铺里换了容器，Q弹的口感与番薯的甜，还是同一套配方。", "memory": "夏天家里经常煮地瓜芋圆糖水，甚至会拿来卖。外婆会亲手搓芋圆，槟榔芋蒸熟压泥，加上木薯粉反复揉，搓成一颗颗小圆子。下锅之后芋圆浮起来就代表熟了。再加上切块的番薯，一起熬一锅清甜糖水。放凉之后放进冰箱冰一会，吃起来最舒服。后来物价越来越高，家里人觉得涨价也不太好，所以就不常卖了，只是偶尔做一做，兴起多做了就拿出来卖一卖，那是我回到老家的一个小确幸。", "recipe": "配料：番薯、芋头、地瓜粉（树薯粉）、红豆、红糖或蔗糖、姜片、清水\n做法：①番薯与芋头分别去皮切块蒸熟，趁热压成泥；②分次拌入地瓜粉与少许糖，揉成不粘手的面团，搓条切丁；③宽水煮沸，下圆子煮至浮起再滚一分钟，捞出过凉水；④红豆提前浸软煮至开花，加糖与姜片成糖水，与圆仔同盛即可。", "contrib": "颜诗玲"}, {"id": "ch2-01", "region": "mindong", "ch": 2, "chName": "第二章 · 闽东·山潮赴福", "name": "佛跳墙", "idx": 1, "total": 7, "img": "assets/图片/ch2-01.jpg", "audioStd": "", "audioCandidates": [], "audioLabel": "", "card": "佛跳墙原本不叫这个名字，叫“福寿全”。清光绪二年，福州官钱局一位官员宴请福建布政使周莲，他的绍兴籍内眷以绍兴酒坛装鸡、鸭、猪肉与几样海鲜同煨，取“福寿双全”之意。周莲赞赏不已，命衙厨郑春发仿制；郑春发添入鲍鱼、海参、干贝、鱼唇，以萝卜衬底、荷叶封坛、炭火慢煨，成菜远胜原版。而“福寿全”与“佛跳墙”在福州话里读音相近，俗名遂取代了正名。2008年，聚春园佛跳墙制作技艺列入第二批国家级非物质文化遗产名录。", "route": "海外迁徙：佛跳墙出海，先遇到的难题是名字。英文菜单通常直译 Buddha Jumps Over the Wall，也译作 Buddha’s Temptation（佛的诱惑），近年来越来越多场合干脆用拼音 Fotiaoqiang。新加坡安详山的聚春园分店自2007年起已卖出上万碗；2022年，1.5万份冷冻佛跳墙经美国FDA认证发往美国商超与餐馆。对海外福州人来说，它更像一桌宴席的压轴：婚宴、寿宴、春节，开坛揭盖的一刻才算开席。名字里的“佛”，如今更多是一句修辞，而不是食材的宣言。", "memory": "佛跳墙是不大可能经常做的，工序太繁琐。最初的印象还来自于课本上，听到佛跳墙的典故——连佛家人都因为这道菜太好吃跳出墙来偷吃。做这道菜要提前备好好多料，挨个泡发，放进瓦坛，然后煮很久。等到煮成，一掀开盖子那香味真的可以飘满整屋子。一坛佛跳墙端上桌，往往是家里有了重要的事情，是一种隆重的仪式感。", "recipe": "配料：土鸡、番鸭、猪蹄、上排、羊肘、鲍鱼、海参、干贝、鱼唇、墨鱼、蹄筋、鸽蛋、花菇、冬笋、萝卜、绍兴花雕、桂皮、茴香、老姜、荷叶\n做法：①各料分别焯水、煸炒、汆熟备用；②萝卜切块垫坛底，按荤、海味、菌笋分层码入；③注入花雕与香料，荷叶封口；④炭火或小火煨四五小时，原坛上席，开盖即食。", "contrib": "小红书博主"}, {"id": "ch2-02", "region": "mindong", "ch": 2, "chName": "第二章 · 闽东·山潮赴福", "name": "畲族乌米饭", "idx": 2, "total": 7, "img": "assets/图片/ch2-02.jpg", "audioStd": "", "audioCandidates": [], "audioLabel": "", "card": "乌米饭，畲族口中的“山哈乌饭”，是三月三乌饭节的特色吃食。它不靠人工染料，只取山间乌稔树（南烛）的嫩叶，捣碎滤出青黑汁水浸泡糯米，木甑蒸熟，米粒乌黑透亮，带草木清气。最广为流传的说法是纪念唐代畲族首领雷万兴：义军被困山中，靠乌稔果度过寒冬。次年春天无果可摘，族人便采叶浸米蒸饭，从此成俗。另有“谷米过生日”“吃了乌饭不怕山蚁咬”诸说。对畲家人，它是祭祖的供品、节庆对歌的伴食，也是走亲访友的礼食。", "route": "海内迁徙：畲族自称 “山哈”，意为山里的客人。他们长期游耕，辗转于闽粤赣交界的山林，乌米饭也跟着族群的脚步向外播散。祖地在广东潮州凤凰山，宋元以后，畲人一支支向北、向东迁移：一部分进入闽东的宁德、霞浦，更远的翻过山岭进了浙南的景宁、丽水，再延伸到赣东、粤北的山区。景宁是畲族入浙最早的落脚点，今天也是中国唯一的畲族自治县。每迁到一处新的山林，只要山上长着乌稔树，采叶蒸饭的传统就接得上。有意思的是，这碗饭并不独属于畲族。江南汉族立夏食用，古称 “青精饭”，原为道家斋食，后用作佛寺浴佛供品；湘黔桂交界的苗、侗民众四月初八过黑饭节、姑娘节，接出嫁女儿归家，流传杨八妹以乌饭送牢饭的故事。同一株南烛叶，落在不同族群，便生出不一样的节俗与传说。在畲汉混居的村落里，习俗慢慢交融：有的地方拌红糖甜吃，有的搭配腊肉、春笋咸炒。浙江部分畲家立夏也蒸乌饭，汉族邻里也会在三月三结伴上山采叶。叶子依旧，节俗却在往来之间，成为各族邻里共有的山野滋味。", "memory": "三月三清早，雾还缠在半山，外婆就把我从被窝里唤起来。她的手浸着乌稔叶的墨色，是昨夜捣叶染上的，两三天都洗不干净，指缝里凝着一层深青。每到三月三，外婆总会系上那条旧围裙，一年又一年，布料上积下洗不去的乌痕。我躲着不让她碰我的脸，她却笑着伸手，在我额头轻轻一点：“点个印，山蚂蚁就不咬你了。” 那枚黑指印我顶着逛了一整天，村里的小伙伴都笑我画了花脸。\n晌午归家，木甑里还留着半甑乌饭。她捏起一团塞到我手心，在白糖里滚一圈：“吃完记得舔手指。” 吃完我才发现指尖是乌叶的黑，但舌尖裹着清甜。", "recipe": "做法：采乌稔嫩叶，挑去老梗、杂质，洗净捣烂，反复揉搓析出墨绿汁水，静置片刻，滤去叶渣；糯米放入滤好的叶汁中浸泡一夜，期间翻动一两次，让米粒均匀染透，泡好后沥干多余汁水；木甑内铺上纱布，放入糯米，水开上汽后大火蒸四十分钟，中途不揭盖；蒸好取出，趁热拌红糖直接吃，或是添猪油、腊肉丁、春笋丁下锅翻炒。", "contrib": "谢雅婷"}, {"id": "ch2-03", "region": "mindong", "ch": 2, "chName": "第二章 · 闽东·山潮赴福", "name": "福鼎肉片", "idx": 3, "total": 7, "img": "assets/图片/ch2-03.jpg", "audioStd": "assets/音频汇总/ch2-03.mp3", "audioCandidates": ["assets/音频汇总/ch2-03.mp3"], "audioLabel": "音频 · ch2-03.mp3", "card": "福鼎肉片的名字里，藏着一桩明朝初年的婚事。相传南京丹徒的青年吴旺三与邻村苏姓姑娘相恋，提亲那天撞上抬着十几倍聘礼的富家子弟董七。姑娘出题：谁能让满桌宾客吃饱，就嫁给谁。董七把瘦肉切丁，只够几人尝鲜；旺三把肉剁碎拌上淀粉，一斤肉变作两斤，手揪成块下锅，竟盛出十来碗。婚事成了，这道菜被取名“肉圆”，圆了姻缘；因“圆”“丸”同音，渐渐唤作“肉片”。后来苏氏避乱迁居福鼎管阳镇西阳村，手艺传了六百多年。", "route": "海内迁徙：福鼎肉片的起点在山里，落脚却在海边。西阳村属管阳镇，山高田少，肉片早年是待客才舍得端出的“硬菜”。清末民初，桐山溪西桥一带成为商埠，挑担小贩把摊子摆到码头街市，一碗滚烫的肉片汤成了扛货人的宵夜。后来福鼎人外出谋生，先到温州、福州、厦门，再往上海、杭州。肉片一口锅、一张案板就能开张，夫妻店一守十几年。据福鼎市烹饪协会统计，仅闽浙两省注册门店就有五千多家，全国数以万计；2020年《福鼎肉片制作规范》团体标准出台，街头手艺有了可循的尺子。\n海外迁徙：福鼎是闽东侨乡，海路向来是另一条出路。清末民初，福鼎人从沙埕港下南洋，到新加坡、马来西亚、印尼的橡胶园与码头谋生。肉片先落在华人街的厨房，再走进当地人的碗里。2013年，福鼎人王伟君在旧金山唐人街开出全美第一家福鼎肉片店，纽约布鲁克林同年也有了肉片小吃店；加拿大、澳大利亚与东南亚此后陆续有人专营。为适应当地口味，汤底更清、辣椒更轻，肉却依旧手捶手揪。一碗上桌，酸香里还是家乡。", "memory": "学校西门有很多福鼎肉片的摊位，每个招牌上都有正宗福鼎肉片的字样，但我只挑有黄辣椒水和姜丝的那家。姜丝驱寒，黄辣椒是家乡的特色，这应该是我吃过最刺激的辣椒了，不敢加多，微微辣够口腔回暖就好。碗底先铺紫菜，虾皮，姜丝，浇一勺热汤，在淋米醋，撒黄辣椒水和香菜。冬天想家就去点一碗福鼎肉片，第一口下去，想起的是妈妈微信语音里的“多穿衣，要保暖”。", "recipe": "配料：猪后腿精肉、地瓜粉（肉粉比约1∶0.7）、盐、小苏打、姜丝、米醋、辣椒、香菜、紫菜\n做法：①肉去筋，捶成泥。②加盐、小苏打、地瓜粉揉上劲。③水微沸，手揪小块下锅。④浮起后调醋、辣椒、姜丝、香菜，连汤盛碗。", "contrib": "Tsing"}, {"id": "ch2-04", "region": "mindong", "ch": 2, "chName": "第二章 · 闽东·山潮赴福", "name": "福安光饼", "idx": 4, "total": 7, "img": "assets/图片/ch2-04.jpg", "audioStd": "assets/音频汇总/ch2-04.mp3", "audioCandidates": ["assets/音频汇总/ch2-04.mp3"], "audioLabel": "音频 · ch2-04.mp3", "card": "麻绳一穿，肩头一挂，单手一扯，边走边炫。相传嘉靖年间，闽东沿海倭寇作乱。戚继光带兵入闽抗倭，行军至山水交错的福安。人多赶路急，吃饭成问题。福安百姓拿出珍贵稀少的白面，拿出面粉，加盐，揉匀、擀圆、炭炉猛烤。烤得外头焦脆、内里韧劲，放几天不坏。此外将饼心戳孔串绳，让将士挂在胸前，饿了直接啃，不耽误行军。之后光饼融入当地民间，成了走亲的伴手礼、商旅赶路的口粮。一块“继光饼”，串起四百多年英雄的功绩、先烈的忠勇和百姓的烟火。", "route": "海内迁徙：旧时，福安与寿宁之间通过山路、富春溪水运相连，寿宁斜滩的茶叶、山货由挑夫运至码头，其中不缺作为日常食品和祭祀供品的光饼，再经船只运往福安赛岐。商贸往来中，福安制饼师傅也曾应邀前往外地传授技艺。光饼因此在闽浙交界地区留下传播痕迹：浙江苍南蒲城逐渐形成咸光饼，制作方法与此相似，却发展出季节性生产和夹猪头肉的地方吃法。同一块小饼，随着师傅与商旅的脚步走出故乡，在不同地域延续出各自的生活滋味。\n海外迁徙：一块诞生于闽东的传统面饼，如何走向世界？2020年，美国纪录片媒体Great Big Story发布短片How a 500-Year-Old Chinese“Bagel”Helped Win a War，走进福安光饼作坊，记录黄益林一家以传统炭炉制作光饼的过程，并以“中国贝果”向海外观众介绍这一传统美食。此后，Tasting Table、Goldthread等媒体也通过文字与影像介绍福建光饼的历史和制作技艺。与此同时，福建光饼随华人移民走向海外（东南亚，日本，美国等地），在不同地区融入当地饮食文化，形成多样的风味与吃法。从地方作坊到国际镜头，福安光饼借助影像传播走向世界，成为海外观众认识福建饮食文化的一扇窗口。", "memory": "记忆中的福安光饼，除了出现在专门的饼店里，更多出现在车站附近的小摊上。它似乎总与一些特别的时刻产生共鸣：离家时，自己先上车，父母会买上几块光饼从车窗外递进来，留下一袋光饼和一句“路上吃”；归家时，车站旁熟悉的光饼摊，柔软的味道扑面而来，唤起沉睡几个月的家乡味道；清明时节，要回家乡祭祖，路过车站买袋光饼，再背着上山祭祖，将它们摆放在墓前，饼香和纸灰流向天空，寄托着对祖先的追念。一块寻常的光饼，竟然能串联起离别、团圆与追思，也在一代代人的生活中，留下那份独特的味觉记忆。", "recipe": "配料：面粉、温水、酵母、盐、食用油。\n做法：①面粉加入酵母、盐和温水，揉成光滑面团，醒发至两倍大。②将面团分成小剂子，揉圆压扁，表面刷少许水，并在饼面戳孔。③将饼胚贴入预热的缸炉内壁，烘烤至表面金黄、底部酥脆即可。", "contrib": "崔圭圭"}, {"id": "ch2-05", "region": "mindong", "ch": 2, "chName": "第二章 · 闽东·山潮赴福", "name": "荔枝肉", "idx": 5, "total": 7, "img": "assets/图片/ch2-05.jpg", "audioStd": "", "audioCandidates": [], "audioLabel": "", "card": "荔枝肉是福州经典闽菜，虽名带荔枝，盘中却并无真实荔枝。民间流传两则趣味传说：一说闽王女儿十八娘嗜食荔枝，鲜果难久得，王府家厨便把猪肉剞花油炸，蜷曲红亮酷似荔枝，解她口腹念想；另一说梅妃身居宫中，思念闽地荔枝，御厨创制此菜慰藉乡愁。菜品流传约两三百年，列入福州市第一批闽菜保护名录。传统以红曲上色，搭配荸荠（马蹄）增脆解腻，用酱油、香醋、白糖调和酸甜，是福州婚寿宴席常见的头道热菜。", "route": "海内迁徙：荔枝肉发源于福州府城，顺着闽江航运与人口流动传遍福州十邑，乡间红白宴都少不了这道炸熘菜肴。向外传播途中，受本地物产影响，做法逐步流变：福州本土坚守红曲调色的古法；莆田改用厚切五花肉，口味更为醇厚；闽南还衍生出将肉馅填入鲜荔枝果壳的特别吃法。近代不少福州人迁居台湾，把荔枝肉技艺带到当地宴席，调味也发生双向交融。\n海外迁徙：下南洋的福州人，行李箱里装不下整本菜谱，能带走的是手上的刀法。新马闽菜馆里，糖醋炸肉一直都有：肉照样剞花、下锅，卷成一颗颗小荔枝；只是红曲不易得，颜色便交给番茄酱，酸甜也照着本地人的口味调浅。一盘端上来，形还在，红已不是福州的那种红，这是漂泊游子借一味吃食寄托故土念想，也是在当地环境下生出的文化交融。", "memory": "过年摆家宴，厨房里人来人往，满是烟火气。我总爱蹲守在灶台边黏着外公，看他忙活。案板上摊着削好的荸荠，润白白的。\n我格外爱吃甜食，心里早知道，跟着外公就有好吃的，打从外公准备调味的时候，我就寸步不离守在一旁。外公心里记着我的口味，调芡时便悄悄多加一勺糖，侧过头冲着我眉眼弯弯：“晓得你好甜口，特意给你调的。”\n肉块滑进油锅，油星噼啪作响，我吓得往后躲。酸甜的香气一点点漫满整个屋子。菜刚盛出锅，冒着腾腾热气，外公知道我心急，拿起筷子夹起一块，放在嘴边轻轻吹凉，稳稳搁进我的碗里。\n我趁热咬上一大口，甜香在嘴里散开，马蹄的脆爽混着肉香，正是我最中意的味道。外公就站在一旁擦着手，笑眯眯望着我说道：“以前肉难得，这道菜只有过年待客才拿得出来，现在就顺着你的喜好，多吃些。”", "recipe": "做法：取猪瘦肉切约一厘米厚片，肉面剞斜十字花刀（刀深至肉三分之二，不可切断），改切斜形块；荸荠（俗称马蹄）削皮切厚片，和肉块一同加入红曲粉、大部分湿淀粉抓匀上浆。旺火起锅倒油，油温烧至八成热，下入肉块、荸荠翻炸约两分钟，待肉片卷曲成形、状如荔枝，捞出沥油。锅留少许底油，爆香蒜米、葱段，兑入白糖、香醋、少许酱油、骨汤、芝麻油，调入剩余湿淀粉勾糖醋芡汁，倒入炸好的主料快速翻拌裹匀即可。市面番茄酱版本属于近现代改良，并非福州传统古法。", "contrib": "谢雅婷"}, {"id": "ch2-06", "region": "mindong", "ch": 2, "chName": "第二章 · 闽东·山潮赴福", "name": "福安猪油拌面", "idx": 6, "total": 7, "img": "assets/图片/ch2-06.jpg", "audioStd": "assets/音频汇总/ch2-06.mp3", "audioCandidates": ["assets/音频汇总/ch2-06.mp3"], "audioLabel": "音频 · ch2-06.mp3", "card": "在福安，拌面不单卖。走进店，先听见两口锅的声音：一口水滚下面，一口小火煨汤。面是碱面，滚几滚就起；汤是小肠汤，套成一层层，加草药慢炖几个钟头，颜色深，味道厚。面端上来先拌，猪油遇热化开，酱色裹住每一根，蒜末和葱花顶在上面。本地人说这碗面便宜得理直气壮：不放肉、不放海鲜，只靠一勺炼过的猪油和一勺虾油撑住整碗的鲜。清晨五点半开门，学生、买菜的、干活的挤在同一张矮桌前，面吃完、汤喝完，抹嘴起身，一天才算开始。", "route": "海内迁徙：拌面是福安早餐的主角。面店配方各家不同，有的加榨菜末，有的加青菜丝，有的浇一勺肉末，但猪油、酱油、醋、蒜末这几样不能少。福安人说自己的拌面比福州拌面更结实、更有嚼头：福州拌面带汤水，多拌花生酱；福安只用碱面、猪油和蒜头醋，干香到底。这些年它又走了两步，一步是搭上炖罐店的套餐，一步是做成一百三十克的速食包，漂到海外华人的货架上。\n海外迁徙：真正把这碗面带过海的，是福州十邑的人。1901年至1902年，黄乃裳为“新福州”招募的1118名垦民里，就有古田、屏南、闽清、闽侯人。垦荒年月穷，吃不起浇头，就把自制面条煮熟、抖干，拌一勺猪油、一点盐、一把葱——诗巫的干盘面（Kampua）就这么来的。名字也是福州话“干拌”的音译，写着写着成了“干盘”。它分白、黑两版：白的只放猪油、炸葱油、盐和白胡椒，黑的再加一勺黑酱油。后来添上叉烧、咖喱鸡，八十年代从诗巫传去民都鲁、美里、古晋和吉隆坡。福安与诗巫之间隔着古田、屏南，两碗面不是同一碗，却是同一种做法：热面、猪油、葱，一双筷子把日子拌开。", "memory": "福安人的早餐有很多选择：煎包、米粉、粉干，可最后总会想到拌面。宵夜也很多：肉片、炖罐、炒面，想到的还是拌面。远在他乡，惦记的味道更多，炸黄鱼、煎对蟹、穆阳烤肉，可夜里翻来覆去，想的仍是拌面。\n如果有一个味道能把所有福安人串在一起，那一定是面条拌开时腾起的那股猪油香。它在儿时天没亮就出门上学的清晨，在午间将就一顿、安抚劳作的时刻，也在夜里约上旧友、围一方矮木桌说笑的桌边。说到底，我们想起的从来不只是面。", "recipe": "做法：碱面150克，滚水下锅1分钟，捞起抖干水。碗底放猪油1勺、酱油1勺、虾油半勺、香醋几滴、蒜末与葱花各少许；面趁热扣入，从底往上拌30秒，拌到油光裹匀即可。", "contrib": "灭霸的爸爸是灭建国"}, {"id": "ch2-07", "region": "mindong", "ch": 2, "chName": "第二章 · 闽东·山潮赴福", "name": "煎对蟹", "idx": 7, "total": 7, "img": "assets/图片/ch2-07.jpg", "audioStd": "assets/音频汇总/ch2-07.mp3", "audioCandidates": ["assets/音频汇总/ch2-07.mp3"], "audioLabel": "音频 · ch2-07.mp3", "card": "煎对蟹的“对”，是对半的“对”。活蟹不蒸，先一刀劈成两半，切面朝下贴住锅底，膏在高温里凝成一层硬壳，把汁水封在蟹里——闽东人认定，这是吃蟹最不浪费的一种方式。明代《闽中海错疏》已把闽地海蟳列为海味上品，闽江口的琅岐红蟳旧时还做过贡品。闽东办喜事、祭祖，桌上要有蟹；蟹性寒，就用姜、蒜、老酒把它煎热，寒气压下去，鲜味顶上来。所以这道菜不叫“煎蟹”，叫“煎对蟹”——刀口对着锅，也对着海。", "route": "海内迁徙：闽东人吃蟹分得清：蟳（xún）壳硬膏厚，宜煎；蠘（jié）就是梭子蟹，壳脆肉甜，宜蒸。福安的喜宴上，煎对蟹是镇桌的一道。家常则更简单——梭子蟹对半劈开，猪油煎到边角焦黄，下蒜头、自家酿的米酒和一点糖提鲜，汤水收到将干就起锅。往南到福州、厦门的酒楼把它做成“对半煎蟹”：切面拍一层生粉封口，姜丝煸香，开口朝下中大火煎，添开水焖六七分钟，福建老酒沿锅边一炝，葱段收汁。同一只手到了闽南，换成麻油和大量姜片，煎红蟳，成了给产妇补月子的菜。\n海外迁徙：闽东人下南洋，落脚新加坡、马来西亚的港口城市，巴刹里卖的是斯里兰卡蟹、缅甸青蟹，壳更厚，肉更实。姜、蒜、老酒都还买得到，锅也还是那口锅。1950年代，华人摊主徐炎珍在加冷河边推车卖炒蟹，把惯用的番茄酱换成瓶装辣椒酱，酸甜里带辣，辣椒螃蟹就此成名，2019年被列入新加坡非物质文化遗产清单。它和闽东的对半煎并不是同一道菜：一个收成干香，一个熬成浓汁；可蒜姜爆香、糖醋提味、最后收汁的顺序，是同一路。蟹壳红起来的那一刻，站在灶前的人，做的还是故乡那一套。", "memory": "小时候吃煎对蟹，我只认一样——螃蟹大脚。整盘蟹端上来，别的都不碰，只盯着大钳子。壳硬，一咬，白肉整条蹦出来，还带着一点焦香。在家，父亲把他那半只蟹的脚扯下来放进我碗里，母亲也扯；到外公外婆家，换一桌人，做的还是同一件事；姑妈来串门，也顺手把大脚掰给我。一只蟹只有两只大脚，一顿饭我总能吃到一小堆。\n“大脚”是我起的名字，一叫十几年，全家跟着叫。时至今日，我依然是饭桌上吃螃蟹大脚最多的那一个。有时会不好意思，觉得自己怎么还像个小孩子。可家人给的关爱，我想全都接过来。", "recipe": "做法：蟳或梭子蟹刷净，去鳃去脐，活体对半劈开，切面拍薄生粉。猪油烧热，切面朝下煎3分钟至膏结壳，下姜片、蒜头煎香，淋米酒，添水至蟹身一半，糖少许，盖盖中火焖6分钟，收汁留一点，撒葱段。", "contrib": "灭霸的爸爸是灭建国"}, {"id": "ch3-01", "region": "kejia", "ch": 3, "chName": "第三章 · 客家·山香绕汀", "name": "酿豆腐", "idx": 1, "total": 4, "img": "assets/图片/ch3-01.jpg", "audioStd": "", "audioCandidates": [], "audioLabel": "", "card": "客家酿豆腐有个别名叫“无饺之饺”。客家先民从中原南迁，落脚闽西汀州与粤东山区时，这里种稻不种麦，年节包不成饺子。于是有人以豆腐代饺皮，中间戳一个洞，塞进剁碎的猪肉香菇馅，煎至金黄，形似饺子，聊解乡愁——“酿”在客家话里正是“塞入、植入馅料”的意思。这道菜后来成了客家人的谐音吉语：“酿”谐音“让”，“腐”谐音“富”，寓意谦让与富足。2018年，它入选中国烹饪协会“中国菜”之广东十大经典名菜。", "route": "海内迁徙：酿豆腐诞生于客家人在闽西、粤东的定居岁月。客家人先抵汀州、后到梅州，长汀至今仍有一种以豆腐作皮、包肉馅的“豆腐饺”，形制极近北方水饺，被视为酿豆腐的活化石。豆腐之所以能当饺子皮，是因为闽西山区盛产黄豆却少产小麦。明清以后，这道菜从年节祭祖的大菜变成“无酿不成席”的宴客菜，又衍生出酿苦瓜、酿茄子、酿辣椒的“酿三宝”，乃至“十八酿”。随着客家人迁往广西贺州、四川洛带与台湾苗栗、高雄美浓，它也在香港大埔、西贡的客家菜馆里落成了街头小吃“煎酿三宝”。\n海外迁徙：客家人下南洋，把酿豆腐带到了新加坡、马来西亚、印尼与泰国。在星马，它按客家话音译为“Yong Tau Foo”，并从“豆腐塞肉”发展成“万物皆可酿”：苦瓜、茄子、辣椒、腐皮、香菇皆可入馅，馅料因南洋海产丰富改用鱼浆，吃法分化出清汤、干捞与配粿条；马来西亚沙巴斗湖一带更演化出油炸配参巴酱的“Yum Yum”。在泰国，这道菜干脆以族群命名，叫“粿条加”，意即“客家粿条”，汤底因红腐乳而呈粉色。从闽西山间的一口豆腐，到东南亚街头的自选酿料，客家人把“塞进去”的手艺酿成了跨越山海的乡愁。", "memory": "过节时家里往往会做酿豆腐，由阿婆来动手，需要老一点的豆腐。酿豆腐是“让”豆腐的意思，所以一定不能多吃。刚出锅时候的酿豆腐最香，豆腐吸饱汤汁，非常的鲜嫩，配上豆腐又刚好抵消了腻味，所以虽然要“让”，但儿时我总是被“让”的那一位。", "recipe": "配料：嫩豆腐、猪前腿肉、干香菇、虾米、葱花、生抽、蚝油、白胡椒、淀粉、高汤\n做法：①香菇泡发，与肉、虾米同剁成馅，加生抽、淀粉搅至上劲；②豆腐切长方块，中央挖孔，酿入肉馅抹平；③馅面朝下煎至金黄，加高汤、蚝油小火焖五分钟，勾芡撒葱花。", "contrib": "赖伟超"}, {"id": "ch3-02", "region": "kejia", "ch": 3, "chName": "第三章 · 客家·山香绕汀", "name": "梅菜扣肉", "idx": 2, "total": 4, "img": "assets/图片/ch3-02.jpg", "audioStd": "", "audioCandidates": [], "audioLabel": "", "card": "梅菜扣肉的“扣”其实是个动作：肉先炸后焖，再切片码进碗里、上铺梅菜，蒸透后连碗倒扣在盘中，整块肉才“扣”得出来。而梅菜的本相是芥菜——苏东坡谪居惠州时，曾向邻居王参军借了不到半亩地种菜，种的正是芥菜。后人传说他派两位厨子远赴杭州学“东坡扣肉”，回惠后改用本地梅菜垫底，才有了这道菜，故又称“东坡梅菜扣肉”。梅菜晒干腌藏、久放不坏，清代还是进贡宫廷的“惠州贡菜”。", "route": "海外迁徙：下南洋的船上，最能久存的就是腌菜。客家人把梅菜与扣肉的做法一并带到新加坡、马来西亚、印尼与香港。在星马，它按方言写作“Mui Choy Kau Yuk”，是客家菜馆的招牌：新加坡1967年开业的梅村酒家，至今仍把它列在套餐里。本地客家版本偏甜，与福建人咸味的“扣肉包”（Kong Ba Pao）各成一派。吉隆坡沙叻秀的老字号客家饭店亦以它闻名。在马来西亚，客家人还把它与本地盛产的芋头同蒸，衍生出“芋香扣肉”。在香港新界客家村落与市区菜馆，它则成了家常饭桌上的常客。", "memory": "梅菜扣肉是每次我回老家时，外公总会给我做的一道菜，很多不熟悉的人可能不太了解，梅菜扣肉的核心不是肉而是梅菜。外公总是把刚做好的梅菜扣肉端出来，反着往盘子上一扣，满满的全是梅菜，肉在哪里呢，拨一拨梅菜，下面就是很薄的肉，那肥肉吃起来一点都不腻，几乎是入口即化，就算腻了，只需要配上一些梅菜，几碗饭下肚完全不是问题，是刻在记忆里的家乡味道。", "recipe": "配料：带皮五花肉、惠州梅菜（梅干菜）、姜片、蒜、八角、老抽、生抽、蚝油、客家黄酒、冰糖、高汤\n做法：①梅菜泡发洗净沙、挤干，干锅炒香；②五花肉整块煮透，趁热抹老抽，皮朝下炸至上色，泡软后切厚片；③肉片皮朝下码碗，铺梅菜，加原汤、黄酒、八角蒸两小时；④滗出原汁，倒扣装盘，原汁勾芡淋上。", "contrib": "赖伟超"}, {"id": "ch3-03", "region": "kejia", "ch": 3, "chName": "第三章 · 客家·山香绕汀", "name": "盐焗鸡", "idx": 3, "total": 4, "img": "assets/图片/ch3-03.jpg", "audioStd": "", "audioCandidates": [], "audioLabel": "", "card": "盐焗鸡最妙的地方，是它原本不是一道“现做现吃”的菜，而是一块“在路上的肉”。客家人南迁时活禽不便携带，便将鸡宰杀后用盐包封，贮存着随身带走；东江沿海盐场的盐民，更早把熟鸡插进盐堆密封保存，这便是“东江咸鸡”的前身。后来厨师把腌过的鸡用草纸包好，埋进炒热的粗盐里，靠盐的余温文火焗熟，“焗”字由此而来。客家素有“无鸡不成宴”之说，这道皮爽肉滑、骨带咸香的鸡，正是宴席上的头牌。", "route": "海外迁徙：客家人下南洋，把盐焗鸡也带到了新加坡、马来西亚与香港。它在英文里叫 Salt-Baked Chicken，方言读音被写作“Yan Guk Gai”，是海外客家菜馆菜单上的常设头牌。新加坡老店茂林酒家自1965年起便供应这道菜，后起的客语（Hakka Yu）把它作为招牌，现焗现撕、配辣椒酱；马来西亚的客家菜馆还发展出药膳版本，以当归、枸杞、米酒焗制，称作“药膳盐焗鸡”。在香港，它搭配沙姜蘸料，是酒楼与茶餐厅都常见的鸡馔。一锅热盐包着整只鸡，从东江盐场焗到南洋街市，肉香里始终带着客家族群共同的乡愁记忆。", "memory": "家里办酒席或者来客，桌上总少不了盐焗鸡。外婆会用粗铁锅，铺上一大包粗盐，用纱纸把整鸡包严实埋进热盐里焗。后来图省事改成电饭锅版本，味道虽然不一样，但依旧很香。吃盐焗鸡讲究手撕，不用菜刀切，撕开的时候还会流油，蘸上自制的沙姜油，香气一下子就散开。因为我是家里年纪最小的，小时候长辈总是会把鸡腿和鸡翅给我，把最好吃的给我，让我补补身体。", "recipe": "配料：嫩项鸡（三黄鸡）1只、粗盐、姜片、葱条、沙姜、蒜蓉、熟花生油、盐、芝麻油\n做法：①鸡洗净吊干，腔内填姜葱，抹盐与沙姜，湿草纸包裹；②粗盐下锅炒至发烫，埋入鸡包，加盖文火焗30—40分钟；③取出拆骨手撕装盘；④沙姜、蒜蓉捣碎，淋熟花生油成蘸料佐食。", "contrib": "赖伟超"}, {"id": "ch3-04", "region": "kejia", "ch": 3, "chName": "第三章 · 客家·山香绕汀", "name": "酿辣椒酿芋头", "idx": 4, "total": 4, "img": "assets/图片/ch3-04.jpg", "audioStd": "", "audioCandidates": [], "audioLabel": "", "card": "“酿”，在客家话里就是塞馅。相传客家先人从中原一路南迁，落脚山里，买不到面粉包饺子，便把肉馅塞进豆腐、辣椒、芋头里，拿菜蔬顶替那张饺子皮——这是流传最广的一说。一桌酿菜里，酿辣椒最下饭：青椒剖开去籽，塞满三肥七瘦的肉馅，煎到起焦再焖，咸香里带一点辣；酿芋头最绵软：粉芋头切夹刀片，中间夹一层肉，蒸到筷子一戳就塌。肉少菜多，一盘能顶一桌席；客家人讲“无菜不能酿”，逢年过节，桌上总有一盘。", "route": "海内迁徙：酿菜跟着客家人的脚步走。客家由中原经赣南、闽西入粤东，散在龙岩、永定、上杭与梅州、河源的山间，山多地少，肉要省着吃，于是把馅塞进手边最便宜的菜里。豆腐、茄子、苦瓜三样最出名，合称“煎酿三宝”；辣椒、芋头、腐竹、鸡蛋也都能酿。这套做法后来越过客家的边界。闽西、粤东的乡间宴席以酿菜待客，一桌能摆出七八样；闽南的馆子也加入了这一菜谱，酿芋头进了厦门人的家常菜单，只是肉馅调得更甜些。\n海外迁徙：十九世纪客家下南洋，把这一手也带去了新马。客家话里 “酿” 音同 yong，一碗 “酿豆腐” 写进了当地的拼音菜单。起初只酿豆腐，后来苦瓜、辣椒、茄子、豆卜都上了台，馅从猪肉换成当地易得的鱼浆；粤籍小贩再接过去，做成自选一碗、汤干两吃的街头生意。这门填馅入蔬的手艺，本是客家人南迁时 “以菜代饺” 的生存智慧。漂洋过海之后，不再固守故土食材，而是就地取舍改造，既是游子对家乡味道的牵挂，也是移民社群和在地环境彼此和解交融的印记。今天在新马的熟食中心里点一碗 Yong Tau Foo，里头那根酿辣椒，依旧藏着客家山里的饮食记忆。", "memory": "逢年过节张罗一桌菜，酿辣椒、酿芋头向来是外公的活计。他把辣椒剖开剔净籽，满满实实填上肉馅，整整齐齐码在盘子上。晓得我受不住辣味，他会特意分出两份，专门给我挑几乎没有辣味的辣椒。\n小时候嘴挑，我专扒里面的肉馅，辣椒本身一口不动，就那么撂在碗底。外公也不会多说什么，只是默默地把剩下的辣椒收去自己吃下。\n比起酿辣椒，我更贪恋酿芋头。经过蒸制，芋头吸饱肉汁，质地软绵。外公懂得我偏爱这份粉糯，每次都会把切得最厚实的那一块夹到我碗里，随口叮嘱一句：“这块厚，多吃点长高个儿。”", "recipe": "做法：青椒剖开去籽，内壁抹一层生粉；三肥七瘦的猪肉剁馅，加红葱头、盐、胡椒粉搅上劲，塞进辣椒抹平。肉面朝下小火煎至金黄，下蒜末、豆豉，添半碗水焖五六分钟收汁。芋头切夹刀片，夹同一份肉馅，上锅蒸十五到二十分钟，出锅淋一勺豉油。", "contrib": "谢雅婷"}, {"id": "ch4-01", "region": "hainan", "ch": 4, "chName": "第四章 · 海南·椰风临琼", "name": "白切鸡", "idx": 1, "total": 7, "img": "assets/图片/ch4-01.jpg", "audioStd": "assets/音频汇总/ch4-01.mp3", "audioCandidates": ["assets/音频汇总/ch4-01.mp3"], "audioLabel": "音频 · ch4-01.mp3", "card": "白切鸡是海南餐桌不可缺少的主菜，以琼北地区的文昌鸡最为代表性，为“海南四大名菜”之首。海南地区吃白斩鸡的传统，与两广地区同源同宗，大多选取自然放养的新鲜整鸡，低温慢煮，配以蘸料。在传统姜蒜料的基础上，加入本地的小青桔和小米辣，以鸡汤和生抽做底，味道清淡微酸。正宗的蘸料，搭配慢煮后的鸡肉，汁水充盈，丝丝分明，油香四溢，鲜美无比。", "route": "海外迁徙：海南白切鸡源于岭南汉族食用鸡肉的传统，“鸡”通“吉”，因而成为逢年过节必备的食物。蘸料的配伍则源于海外：清末民初，海南大批人口下南洋谋生，也将东南亚酸辣、香料、水果入菜的饮食习惯带回家乡。海南文昌鸡的蘸料，以小青桔为主要特色，酸爽解腻，富有侨乡特色。海南人也将引以为傲的白切鸡带到异乡，最经典的案例是新加坡名菜“海南鸡饭”，该菜即为在海南白切鸡饭的基础上，融合南洋地方特色的产物。", "memory": "过年煮鸡是每个海南小孩的童年记忆。小时候每年过年，家里都会提前买两只活鸡，一只阉鸡、一只母鸡，养在垫了报纸的竹笼子里。年前一大乐趣，就是尝试用各种不同的菜叶子喂鸡，史称神鸡尝百草。大年三十下午，外婆就会杀鸡煮鸡，没有一丝的不舍，全是对鸡肉的渴望。长大后，家里不再买活鸡，而是提前定鲜鸡。煮鸡、斩件的任务也逐渐交给了我。从年头到年尾，在飘满文昌鸡香气的、蒸汽腾腾的厨房里和外婆一起备菜炒菜，就是关于年饭最温暖的记忆。", "recipe": "做法：文昌鸡整鸡劏净放血。大锅烧水，下入少许生姜，拎着鸡头将整鸡没入沸水中烫10秒，捞出，迅速过冷水降温，如此三烫三冲，使鸡皮紧绷。转文火，将整鸡浸入水中，使水保持微滚状态，水温约90度，低温慢煮。根据整鸡大小浸煮25-45分钟，煮至鸡肉无血，骨髓微红的状态即可。捞出，迅速过冰水，使鸡肉收缩鸡皮脆爽。捞出，冷却，斩件，摆盘。蘸料为姜蓉、蒜蓉、香菜碎、小青桔、沙姜碎、小米辣、少许生抽和盐，冲入清鸡汤，最后淋入少许山柚油，即可食用。", "contrib": "张一丁"}, {"id": "ch4-02", "region": "hainan", "ch": 4, "chName": "第四章 · 海南·椰风临琼", "name": "椰子鸡", "idx": 2, "total": 7, "img": "assets/图片/ch4-02.jpg", "audioStd": "assets/音频汇总/ch4-02.mp3", "audioCandidates": ["assets/音频汇总/ch4-02.mp3"], "audioLabel": "音频 · ch4-02.mp3", "card": "椰子鸡来源于海南，吸收了华南和南洋多地风味，选取新鲜文昌鸡、清远鸡或三黄鸡，斩小件，与新鲜椰子水、椰肉同煮，佐以沙姜、香菜、小米辣、小青桔和酱油搭配的蘸料食用。椰子鸡讲究先喝汤后吃肉，烹饪过程中不放浓口调料，完全靠椰子水本身的糖分与风味浸煮，最大限度保留鸡的原味，肉质紧实，口感清甜，广受各地食客欢迎。", "route": "与白斩鸡不同，椰子鸡的历史其实十分短暂，甚至一度被当作“游客菜”。它诞生于上世纪末，由一位海南籍印尼华侨在广东深圳首创。近年来，随着主打清淡、原味、少油低盐的健康饮食兴起，这道富有海南风味的创新融合菜在全国迅速风靡，成为海南美食的崭新代表，也受众多本地人喜爱。从椰子鸡开始，海南人充分发挥自己对于鸡肉的理解，陆续开发出椰奶鸡炖盅、椰子鸡火锅等新派琼菜。", "memory": "离开海南上大学之前，我对椰子鸡一直抱着怀疑的态度。在海南，这不是一个非常传统的做法，当时的我坚信，只有白斩才是对一只鸡最大的尊重。但厦门并没有文昌鸡饭店，而椰子鸡的招牌却早已风靡全国。于是，为了吃到最接近家乡味的鸡，我被迫走进一家老乡阿姐开的椰子鸡饭店，斗胆尝试……惊为天人！青椰子水浸煮的鸡肉，丝毫不输白切鸡的鲜嫩，更多了一丝椰香与清甜。椰子、鸡肉、小青桔，来自家乡的饮食符号太过强烈，吸引我一次次投入到椰子鸡的怀抱中，无法自拔。", "recipe": "做法：新鲜鸡肉斩小块，洗去血水。嫩青椰若干，剖开取水。又取老椰肉，切粗条备用。沙姜切大块，拍裂备用。锅中下椰子水、椰肉、沙姜、枸杞，煮沸，下入鸡肉并转文火，使水保持微沸状态，浸煮片刻。鸡肉无血水即可捞出。蘸料用沙姜末、蒜蓉、香菜碎、小米辣、小青桔，椰子鸡汤做底，加入少许酱油，淋数滴山柚油即可。", "contrib": "张一丁"}, {"id": "ch4-03", "region": "hainan", "ch": 4, "chName": "第四章 · 海南·椰风临琼", "name": "海鲜羹", "idx": 3, "total": 7, "img": "assets/图片/ch4-03.jpg", "audioStd": "", "audioCandidates": [], "audioLabel": "", "card": "海鲜羹，海南方言中称作“gĕing”，意为用海鲜、番茄和香料等煮成的浓汤羹。靠海吃海，海鲜羹里可以放入任何时令的海产，但本地小种番茄和新鲜香料是必须的。常用的香料有鲜薄荷、九层塔、鲜紫苏、胡椒、生姜和黄姜。它们赋予海鲜独特的植物香气，搭配酸爽浓郁的番茄汤底，清新解腻，鲜美多汁，十分诱人。", "route": "从名片中不难发现，海鲜羹带有浓厚的东南亚风格。海鲜羹最早的一批食客，正是从南洋回乡的侨民。他们带回外汇、咖啡、炼乳，也带回了香料、香草和南洋风味的烹饪手法。海南与东南亚各国气候水文条件相似，又都面向大海讨生活。因此东南亚菜系一经引进，就在全岛广受欢迎，成为华侨饮食文化的重要部分。", "memory": "做gĕing这一块，老妈完全是家里的主力。老实说，老妈的厨艺在家里只能勉强属于中游，但年幼的我对于食物有不可遏制的欲望，于是老妈发愤图强，回忆起她外婆（也就是我的祖外婆，是泰国人）的传统菜系。不知是血脉天赋还是灵光一现，老妈做起来得心应手，获得了我的高度认可。这份来自异国的味道，也从此留在我对于家乡的回忆中。", "recipe": "做法：番茄切小块，海鲜洗净，鱼肉切块。砂锅放油烧热，生姜拍扁下锅，小火炒出姜味，转大火，下番茄块与番茄酱炒香，加水煮至汤汁浓郁。加入所有海鲜，加入全部黄姜、紫苏、胡椒粒和一半九层塔鲜叶，煮至海鲜熟透，关火。酱油调味，并撒入剩下的九层塔鲜叶、薄荷、小米辣，淋入花生油或橄榄油即可出锅。", "contrib": "张一丁"}, {"id": "ch4-04", "region": "hainan", "ch": 4, "chName": "第四章 · 海南·椰风临琼", "name": "海南粉", "idx": 4, "total": 7, "img": "assets/图片/ch4-04.jpg", "audioStd": "assets/音频汇总/ch4-04.mp3", "audioCandidates": ["assets/音频汇总/ch4-04.mp3"], "audioLabel": "音频 · ch4-04.mp3", "card": "吃米粉是岭南地区以至整个华南的风俗，海南也是如此。海南粉是海南流行最广的米粉之一，采用半发酵的微酸细粉制作，分为干腌和湿腌两种做法。海南方言中，“腌”是更类似于卤汁或浇头的做法。正宗的海南粉除了米粉与卤汁，还包括牛肉干、酸芥菜、腌酸笋等诸多配料，现吃现做，酸爽咸鲜。海南粉通常作为早餐，正宗的吃法，应当加入黄灯笼辣酱或本地土山椒酱，拌匀食用。痛快嗦完后，在碗里冲入一勺海白螺冬瓜清汤，撒上少许胡椒粉，混合着碗里剩余的卤汁，暖暖地喝下去，满意离开。", "route": "海南粉的起源实在难以追溯，有说法是福建籍汉族南迁琼崖时期带入，也有人认为是海南本地农民为了治病开胃发明。诸多说法已不可考，但从配料中可以管中窥豹：卤汁、酸笋与肉干制品，与两广地区的各种腌粉十分相似；半发酵米粉的做法，则与中南半岛的米粉异曲同工。事实上，作为全岛最普及的大众饮食之一，海南粉是一道“山头并立”的美食，一条街有一条街的老店，每一家有每一家的正宗，风味各异，遍地开花，实在是海南早餐当之无愧的代表作。", "memory": "说到海南粉，大部分海口人也许会立刻想到两家粉店：一家是以龙泉为代表的，高度标准化的头部连锁品牌；另一家，则是自家楼下那个白瓷砖、木板桌、红色塑料凳的小粉摊。高三时走读，早上出门，第一件事就是拿着饭盒，到小区门口的粉店买一碗十块钱的粉，边嗦边上车。老板娘是文昌人，儿子也上高中，久而久之就熟起来。每天早上，老板娘都给我多抓半碗粉，几乎要溢出饭盒，再狠狠切几刀梅花肉。肉片之大，和杀猪菜一般。“吃饱了才好读书呀，阿侬！”一碗粉下去，踏踏实实，一个上午都不会觉得饿。", "recipe": "做法：生姜、肉末、酱油、蚝油、南乳、水淀粉熬成浓稠卤汁备用。丝苗米泡水磨成米浆，大火烧水漏成细粉，捞出过凉，于阴凉通风处静置一晚自然发酵，使米粉颜色微微发灰，闻起来微微发酸，米香浓郁即可，牛肉干、酸笋、酸菜切丝、豆芽过水、其余小料备用。烧水，将米粉二次过水捞出沥干，淋入花生油拌匀，浇入卤汁，放入所有小料即可。另起锅烧水，下入姜片和冬瓜块煮沸，加入新鲜海白，撒入胡椒粉和盐，装碗撒葱花，佐粉食用。", "contrib": "张一丁"}, {"id": "ch4-05", "region": "hainan", "ch": 4, "chName": "第四章 · 海南·椰风临琼", "name": "斑斓及其制品", "idx": 5, "total": 7, "img": "assets/图片/ch4-05.jpg", "audioStd": "assets/音频汇总/ch4-05.mp3", "audioCandidates": ["assets/音频汇总/ch4-05.mp3"], "audioLabel": "音频 · ch4-05.mp3", "card": "斑斓，音译自“pandan”，又名香露兜，是一种多年生热带草本植物，具有独特香气。用新鲜斑斓叶榨汁过滤，加入米浆、椰子冻或其他食材中，就可以得到颜色鲜绿，清香扑鼻的斑斓糕点。由于在全国的种植和食用并不广泛，斑斓并没有在国标层面取得普通食品原料的身份。针对斑斓鲜叶的商业加工，至今仍执行DBS 46/004-2022，即海南省食品安全地方标准《香露兜叶（粉）》进行，是具有鲜明东南亚特色的地方食材。", "route": "斑斓原产于东南亚热带地区，是马来西亚、菲律宾、印度尼西亚等地餐桌的常客。上世纪20年代，归国华侨将斑斓叶引种到海南，随后在全省沿海地区普及开来，成为海南“三棵树”（椰子、橡胶、槟榔）的林下经济作物。近年来，因其独特的香气与纯天然的色素，在甜品市场中广受欢迎。", "memory": "对斑斓最早的印象是斑斓糕。小时候跟大人去喝茶，见到一种白绿相间，Q弹得活蹦乱跳的糕点。甜甜的，带有独特的青草和椰奶香气，甚爱。大姨婆相当擅长做米糕，萝卜糕、咖啡糕，当然也包括咖啡糕。每次姨婆家蒸斑斓糕，总是要往我家送，用方形不锈钢蒸盘装着，一路从门口香到客厅。相比于茶店里精致的菱形小块，我更爱切下二指宽的一整条，就着茶水大快朵颐。满口清香，甜而不腻，实在过瘾。", "recipe": "做法：斑斓叶榨汁，过滤备用。椰子水与椰肉榨成椰奶，过滤备用。米浆加糖，分成两半，一半加斑斓汁，一半加椰浆，混合均匀。取蒸盘刷油，倒入约两三毫米斑斓汁，上锅蒸至凝固。随后反复叠加椰浆米浆与斑斓米浆，层层蒸制，形成由上到下绿白相间的分层。取出放凉，切菱形块，可撒少许甜椰蓉，搭配红茶或咖啡食用。", "contrib": "张一丁"}, {"id": "ch4-06", "region": "hainan", "ch": 4, "chName": "第四章 · 海南·椰风临琼", "name": "歌碧欧", "idx": 6, "total": 7, "img": "assets/图片/ch4-06.jpg", "audioStd": "assets/音频汇总/ch4-06.mp3", "audioCandidates": ["assets/音频汇总/ch4-06.mp3"], "audioLabel": "音频 · ch4-06.mp3", "card": "歌碧欧，其实是海南方言中咖啡的意思，发音“gōbÌóu”。这并不是普通话转译词，而是直接从英文coffee音译而来。不同于市面上大部分咖啡使用的阿拉比卡咖啡豆，海南咖啡主要使用本地种植的罗布斯塔豆种，反酸和涩味更轻，搭配炼乳和砂糖，香气浓郁，回味悠长。", "route": "19世纪末，返乡琼侨将咖啡豆和种植技术带回海南，喝咖啡的文化传统也在这里萌芽。此外，清末民国时期的新加坡，马来西亚等地，早餐行业的从业者也大多是海南籍侨民，他们本土化改造了欧式茶点，新加坡国民早餐“炼奶咖啡+半熟鸡蛋”便是其中的代表作。也正因引进历史悠久、种植加工技术普及，在海南，喝咖啡从来不是一件代表所谓“高雅情调”的事情，而是和柴米油盐一道，作为日常生活的一部分，装在最朴素的不锈钢大茶壶里，为岛民们提供味蕾和精神的乐趣。", "memory": "我打小就非常爱咖啡，家里最常喝的是澄迈县的福山牌。上高中后，有了零花钱，终于能喝上连锁咖啡。于是斥巨资购入星巴克一杯，满怀期待，优雅地小口啜饮——啧，简直是洗锅水！后来，跟做咖啡师的表舅吐槽，才知海南的豆种与星巴克的豆种不同，味道也大相径庭。从此，星巴克滤镜在我心中荡然无存，每次离家返校，都要在箱子里塞上两罐家里的咖啡，以备日常过瘾。", "recipe": "做法：用水煮咖啡，过滤，加适量炼乳，用嘴喝。", "contrib": "张一丁"}, {"id": "ch4-07", "region": "hainan", "ch": 4, "chName": "第四章 · 海南·椰风临琼", "name": "清补凉", "idx": 7, "total": 7, "img": "assets/图片/ch4-07.jpg", "audioStd": "assets/音频汇总/ch4-07.mp3", "audioCandidates": ["assets/音频汇总/ch4-07.mp3"], "audioLabel": "音频 · ch4-07.mp3", "card": "清补凉是海南广受欢迎的甜品，可热可冰，一般用椰奶、椰子水或糖水打底，加入椰肉、绿豆、赤小豆、薏仁、芸豆、西米露、葡萄干、芋泥、汤圆、鹌鹑蛋、鸡屎藤、通心粉、冰沙和水果等等，喜冰则加入冰块，喜热则加入热椰奶。回味绵长，口感丰富，甘甜可口。配上店里同售的香脆虾饼和煎萝卜糕，实在是糖水之首，夏日一绝。", "route": "清补凉来源于岭南地区的糖水。岭南夏天高温湿热，能量消耗大，水盐流失快，素有“夏补”的传统。传到海南后，结合本地的芋头、椰子和其他热带水果特产，又加上南洋引进的通心粉、西米露，形成了今天的清补凉的雏形。", "memory": "没有海南人的童年能拒绝清补凉！成年了也一样无法拒绝。赴厦求学后，竟发现学校附近有一家海南老乡阿姐开的清补凉店，遂不停光顾。每次到店里，一面吃着完全正宗的家乡味，一面附和着老板娘，痛骂用椰奶粉冲水冒充鲜榨椰汁的无良商家。出于成本和产量原因，省外大多使用菲律宾、越南和泰国产的椰子，海南椰子十分少见。因此，对于鼻子灵敏的海南仔而言，一家使用海南椰子的正宗清补凉店，足以成为代表家乡的唯一物质寄托。", "recipe": "做法：椰子肉与椰子水榨汁，滤出椰奶。喜冰则加冰块或冰沙，喜热则微微煮沸。按照喜好放入所有小料，最后撒上花生碎，即可食用。", "contrib": "张一丁"}, {"id": "ch5-01", "region": "guangfu", "ch": 5, "chName": "第五章 · 广府·粤韵入穗", "name": "烧鹅", "idx": 1, "total": 3, "img": "assets/图片/ch5-01.jpg", "audioStd": "", "audioCandidates": [], "audioLabel": "", "card": "烧鹅古称“鹅炙”，南北朝《食珍录》已有记载。相传南宋末年，宫廷御厨随宋室南迁来到广东，把烤鸭手艺带了过来；但岭南不盛产北方砚鸭，厨师便改用本地乌鬃鹅，以荔枝木明火烤制，改良出皮脆肉嫩的广府烧鹅。新会古井更流传着御厨携女避乱、把宫廷秘方带入乡里的传说。如今古井烧鹅已入选广东省非遗名录，深井烧鹅则称雄广州。一只鹅，藏着中原饮食南迁、落地生根的故事。", "route": "海外迁徙：广府五邑是著名侨乡，近代大批乡亲下南洋、赴港澳、闯欧美，也把烧鹅手艺带往异乡。香港深井烧鹅在港澳发扬光大，成为粤菜招牌；东南亚与欧美唐人街的烧腊店里，油亮的烧鹅总是最抢手的招牌。对离乡的广府人而言，斩料加鹅髀、蘸酸梅酱，是最熟悉的家乡味。烧鹅随侨胞跨海传播，又在异乡守住乡愁，成为粤菜文化走向世界的味道名片。", "memory": "粤式烧鹅，是广东人心中最正宗的，好的烧鹅要用荔枝木柴来烧，这样做的烧鹅才好吃。不用荔枝木烤出的烧鹅，就算好吃也不是正宗的。不过现在还能用荔枝木烤鹅的店没多少家了，大多数的店都是用电烤箱。烧鹅是刚出来不久的才好吃，不能放太久了，那样味道就变了，必须是现砍现吃。广东人吃烧鹅，有些人总要搭配一种酸梅酱，解腻又提鲜，吃烧鹅没有比这更好的搭档了。", "recipe": "配料：乌鬃鹅（约3.5公斤）、荔枝木、生抽、砂糖、盐、米酒、蒜蓉、五香粉、麦芽糖、酸梅酱\n做法：鹅宰净去翼脚内脏，充气使皮肉分离，填入生抽、砂糖、盐、酒、蒜蓉、五香粉拌成的料，缝肚。淋滚水烫皮、过冷水，抹麦芽糖水，吊风干。荔枝木烧炉约180℃，入鹅烤约一小时至枣红酥脆，斩件，蘸酸梅酱食用。", "contrib": "小红书博主"}, {"id": "ch5-02", "region": "guangfu", "ch": 5, "chName": "第五章 · 广府·粤韵入穗", "name": "豉汁蒸排骨", "idx": 2, "total": 3, "img": "assets/图片/ch5-02.jpg", "audioStd": "", "audioCandidates": [], "audioLabel": "", "card": "豆豉是中国最古老的发酵调味品之一，古称“幽菽”。豉汁蒸排骨的源头，一说出自川菜，随商路南下，被讲究清鲜的广府厨师改了做法：豆豉只用刀背拍扁、绝不剁碎，不加老抽上色，追求“雪白粉嫩、豉香纯粹”。广府人吃它有个讲究——豆豉必用阳江所产。相传明末窦氏娘把剩下的熟黑豆撒盐封进瓦罐，月余后开罐异香扑鼻，乡人便称此豆为“窦氏豆”，后写作“豆豉”。阳江豆豉与漆器、小刀并称“阳江三宝”。", "route": "海内迁徙：豆豉入馔，早于粤菜成形的年代。汉代已有“作豉法”的记载，《齐民要术》《本草纲目》亦录其工艺，古人既以之调味，也用于入药。广东豆豉属黑豆豉，阳江所产尤受青睐：漠阳江的水、沙扒的盐与湿热气候，配上十余道工序，历时四十余天，方能制成乌黑油润、松软化渣的豆豉，其酿制技艺2012年列入广东省第四批省级非遗名录，次年被批准为国家地理标志保护产品。广式茶楼把这味“黄金配角”用在排骨上，讲究“拍而不剁”：豆豉刀背拍扁，形体仍在，蒸后豉香透而不夺肉味。广州、香港的酒楼还把它铺在白饭上做成“豉汁排骨饭”。\n海外迁徙：粤人出海，先带出去的是茶楼。豉汁蒸排骨随“一盅两件”进入东南亚与欧美的唐人街，在英文菜单上定型为 Steamed Spare Ribs in Black Bean Sauce，常与豉汁凤爪成对出现。伦敦、曼谷、新加坡的中餐厅至今沿用这一译名，有的以黑豚排骨升级食材；旧金山、温哥华的唐人街茶楼则把它与“豉汁排骨饭”一同卖出，成了海外华人午餐的常客。而阳江豆豉本身也远销港澳、东南亚与欧美，被港澳客商誉为“一枝独秀”。一罐豆豉鲮鱼，更是几代华侨的佐粥思乡味。一只蒸笼、几粒黑豆，把广府的早茶时间搬到了万里之外。", "memory": "早茶是小时候周末的保留节目。以前老茶楼还没拆，爸妈经常带我去饮茶，豉汁蒸排骨必点一笼。回到家妈妈也会复刻这道点心。选好小排，阳江豆豉拍碎，简单调味上锅蒸。蒸好的排骨嫩乎乎的。我特别爱拿汤汁拌米饭吃。小时候总喜欢吃这种排骨，因为吃起来特别方便，一咬一拽一大块肉就出来，剩下光溜溜一根骨头，简直是完美的食物。", "recipe": "配料：猪小排500克、阳江豆豉、蒜蓉、姜末、糖、料酒、蚝油、生粉、花生油\n做法：①小排斩小段，清水浸洗去血水，沥干；②豆豉温水泡软后刀背拍扁，与蒜蓉小火煸香；③加糖、料酒、蚝油、生粉、油与排骨拌匀，腌30分钟以上；④沥干平铺浅盘、块间留缝，水沸上汽后大火蒸3分钟，转中火蒸12—15分钟即可。", "contrib": "小红书博主"}, {"id": "ch5-03", "region": "guangfu", "ch": 5, "chName": "第五章 · 广府·粤韵入穗", "name": "蒜蓉时蔬", "idx": 3, "total": 3, "img": "assets/图片/ch5-03.jpg", "audioStd": "", "audioCandidates": [], "audioLabel": "", "card": "蒜蓉时蔬是广府人饭桌上最不起眼、也最不可少的一碟。这道菜的冷知识藏在一个“蒜”字上。中国原有的是小蒜，汉代张骞通西域带回个头更大的“胡蒜”，才有了大蒜与小蒜之分。李时珍《本草纲目》说得明白，“大蒜之种，自胡地移来，至汉始有”。粤人把它用在最家常的做法上——猪油起镬，蒜蓉拍碎爆至金黄，猛火快炒，讲究“镬气”与“干身”：碟底不许见水，菜叶油亮爽脆。老广点菜时有句口头禅“炒个青菜”，说的就是这一碟。", "route": "海外迁徙：粤人出洋，青菜比肉更难。唐人街的菜种来自家乡：菜心、芥兰、通菜、白菜在异国菜园里复种，蒜蓉炒青菜也随之进入英文菜单，通称 Stir-fried Greens with Garlic，也常按菜点名写作 Gai Lan with Garlic、Pak Choi with Garlic。伦敦、旧金山的粤菜馆仍以猛火快炒为正宗，讲究上桌时菜叶油绿不塌。往南走，通菜在马来西亚与印尼的街市里遇上虾酱与辣椒，变成“马来风光”，蒜蓉的炒法则留在华人家庭的灶上。", "memory": "“唔食青菜唔得，饭桌最后一定要有一盘青菜。” 蒜蓉时蔬就是我们家餐桌上的常客。猛火热锅下猪油，蒜蓉爆香，再下青菜快速翻炒，不会放乱七八糟重调料，吃的就是青菜本身的清甜，但因为有了蒜蓉，又有一丝香味，刚刚好用来解腻。其实小时候我总是不理解其它小孩为什么不喜欢吃青菜，因为我总觉得青菜清甜可口，特别好吃。", "recipe": "配料：菜心500克、蒜蓉、猪油、盐、糖、食粉（小苏打）、烧酒\n做法：①菜心择净去老梗；②水沸后下食粉、烧酒与糖，菜心焯至九成熟，捞出过冷水沥干；③猪油起镬，蒜蓉爆至金黄不焦；④下菜心猛火快炒，加盐、少许糖，翻匀即起碟，不加芡、不加酱油。", "contrib": "小红书博主"}, {"id": "ch6-01", "region": "guangxi", "ch": 6, "chName": "第六章 · 广西·酸香漫桂", "name": "酸嘢", "idx": 1, "total": 4, "img": "assets/图片/ch6-01.jpg", "audioStd": "assets/音频汇总/ch6-01.mp3", "audioCandidates": ["assets/音频汇总/ch6-01.mp3"], "audioLabel": "音频 · ch6-01.mp3", "card": "“酸嘢”是白话，字面意思就是“酸的东西”。做法极简单：时令果蔬洗净切片，米醋、白糖、粗盐、辣椒一拌，静置片刻就能吃。萝卜、木瓜、黄瓜、芒果、李子、菠萝皆可入坛，酸、甜、辣三味随人调，各地口味又自有轻重。在广西，它是街头最常见的小食——夏天开胃，饭后解腻，一只塑料袋装着几块酸萝卜边走边吃，是许多人的日常；逢年过节、待客赶圩，桌上也少不了一碟。入口先是一激灵，酸得人眉头一皱，紧接着回甜，牙齿咬下去“咔嚓”一声，汁水四溅，越嚼越开胃。", "route": "酸嘢本是湿热之地久存果蔬的办法，随人口迁徙与商贸在广西内部流布，与沿线口味交融：桂柳近湘黔，腌得久、辣得烈；桂南与沿海偏酸甜、重酸鲜，南宁兼收各路。它几乎没有传出海，形貌最近的是东南亚的罗惹，同样鲜果现拌、酸甜辣并举，但味底是虾酱、酸柑、棕榈糖，与酸嘢平行而非同源。近年它才随广西非遗美食展销走出国门。", "memory": "小的时候妈妈总会阻拦我吃热气的炸鸡烧烤，但她却也总忍不住在我们快离开的时候走向街尾那个木桌上摆着一罐罐坛子酸嘢水果的摊位。青得扎眼的生芒果切片、酸甜可口的菠萝、红润润的三华李浸在凉丝丝的老酸水里，红心番石榴块沾着细碎的甘草盐，还有脆生生的白萝卜、胡萝卜，老板总是先从坛里挑出一块递给我们尝尝。我眼睛总是离不开那擦的透亮的坛子，看着大人在每个坛都挑上一点，心满意足地拎着那袋凉丝丝的酸嘢在手里，就知道可以踏踏实实地回家了。", "recipe": "做法：时令果蔬洗净去皮，切片或刨丝。米醋、白糖、粗盐按口味调汁，果蔬浸没其中，静置入味，久腌则酸浓。食前浇一勺辣椒水或撒上辣椒盐。水果可改用红糖汁现拌，即拌即食。", "contrib": "lmh"}, {"id": "ch6-02", "region": "guangxi", "ch": 6, "chName": "第六章 · 广西·酸香漫桂", "name": "螺狮粉", "idx": 2, "total": 4, "img": "assets/图片/ch6-02.jpg", "audioStd": "assets/音频汇总/ch6-02.mp3", "audioCandidates": ["assets/音频汇总/ch6-02.mp3"], "audioLabel": "音频 · ch6-02.mp3", "card": "螺蛳粉是柳州人的日常，早饭能嗦，宵夜也能嗦。粉用陈米榨成，煮后软滑带韧；汤以螺蛳为主，加猪骨和十几种香料久熬，清而不淡。魂在酸笋——鲜笋发酵而成，闻着冲，吃着鲜。碗里再码上酸豆角、木耳丝、炸腐竹、花生、黄花菜和一把时令青菜，浇一勺红油。端上桌先是一股酸香直冲鼻子，嗦一口，粉滑、汤烫、辣得干脆，酸味在后面慢慢顶上来，越嗦越开胃，额头冒汗也舍不得放筷。在柳州，它不只是小吃，更是这座工业城市的味觉名片，在2021年制作技艺列入国家级非遗。", "route": "上世纪七八十年代，谷埠街夜市把螺蛳汤兑进米粉，螺蛳粉在柳州的摊上成形；2014年第一包袋装粉下线，保质期从几天拉到半年，它才真正离开柳州——电商一通，全国都能嗦上一碗。海外线近十年才走通。2016年柳州有了第一家出口资质的螺蛳粉企业，如今远销三十多个国家，纽约、墨尔本的粉店里，用叉子吃粉的人越来越多；为过进口关，汤料改成不含动物源，味道照样还原。", "memory": "我对螺蛳粉的记忆很零散，印象最深刻的是在家附近那棵遮天蔽日的老榕树下。那时候爸妈工作都忙，中午常赶不及回家开火，每天塞给我跟哥哥午饭钱，一放学我们就攥着钱往树下的粉店跑——开粉店的阿姨都眼熟了我们，不用开口就知道要两碗二两螺蛳粉，一碗微辣一碗不辣。螺蛳粉与空心菜是绝配，家人口味各异，我钟爱豆角多加，妈妈喜欢放紫苏、哥哥爱多放酸笋，我喜欢有嚼劲的粉条，妈妈偏爱煮软。初中的时候去柳州接哥哥放寒假，刚接到他就被他拉着去巷口一家“百年老字号”，起源地“正宗”的螺蛳粉，我才第一次吃到炸蛋——金黄蓬软的一大个，往热汤里一压就吸饱了红亮的螺汤，咬开时鲜辣的汁顺着嘴角往下淌，我连吃两个，辣得直吸溜还舍不得放筷子。 现在老家的螺蛳粉店也都加上了炸蛋、鸭爪、猪蹄等选项，每次我和哥哥回家，一家人出去吃粉还是照旧报各自的老要求，热汤腾起来的雾糊住眼镜时，就觉得十多年的暖日子，全煮进这碗粉里了。", "recipe": "做法：干米粉冷水泡软，煮至断生捞入碗中。螺蛳吐净泥沙，剪去尾尖，与猪骨、八角、肉桂、丁香等香料同熬成汤。碗内码酸笋、酸豆角、木耳丝、炸腐竹、花生、黄花菜与时令青菜，浇滚汤和红油即可。", "contrib": "lmh"}, {"id": "ch6-03", "region": "guangxi", "ch": 6, "chName": "第六章 · 广西·酸香漫桂", "name": "桂林米粉", "idx": 3, "total": 4, "img": "assets/图片/ch6-03.jpg", "audioStd": "", "audioCandidates": [], "audioLabel": "", "card": "桂林人的一天是从一碗米粉开始的。粉有圆有切，圆粉爽滑，切粉薄软。真正定味道的是卤水——几十种香料加罗汉果、猪牛骨久熬，各家配方不同，也就分出各家高下。碗里铺粉，浇一勺卤水，码上锅烧、卤牛肉、酸豆角、炸黄豆和葱花，讲究干拌，不泡汤。拌开时卤水稠稠地裹住每一根粉，锅烧皮脆肉香，酸豆角一咬解腻，几筷子就见底。吃到一半再冲一勺骨头汤，一碗粉吃出两样味。", "route": "桂北是中原南下岭南的通道，米粉顺着湘桂古商道一路走。元至正年间，这条道上已有“米粉店村”；清道光年间，桂林籍官员把北方卤牛肉的做法搬进碗里，添上锅烧、猪肝，卤菜粉的风味就此定下。抗战时各地人涌进桂林，米粉店“五步一轩，十步一馆”，随人流站住了脚；此后桂林人走到哪里，粉店就跟到哪里。", "memory": "没有来过桂林的朋友们可能不清楚，米粉店在桂林大街小巷的普及程度，比海南的清补凉、上海的咖啡厅、西北的面馆更甚，五米一小店，十米一大店，从我出生到现在二十年，均价上涨一块钱，从4块变成了5块。如果人比较懒，一日三餐都吃米粉也不失划算，到了夏天，再搭上一瓶冰豆奶，完全开始享受人生。以前天天在桂林的时候，觉得这东西根本没什么好吃的，粉不就是粉嘛，有多好吃呢，现在来厦门上大学了，出去旅游的机会也多了，才发现繁华的世界连碗物美价廉的粉都吃不到，也不时怀念起米粉来了：谁说这粉不好吃啊，这粉可太好吃了！转而越来越不理解小时候的自己。所以我说，桂林人不能失去米粉，就像北京人不能失去儿化音！现在提到广西的粉，大家可能第一时间想到的还是螺蛳粉吧？不了解桂林米粉的朋友们，如果你们能接受螺蛳粉的味道，那有什么理由不尝一下桂林米粉呢？我愿拿出我的存款招待20个人吃三顿米粉以细细品鉴此上等美食。", "recipe": "做法：圆粉或切粉入沸水烫至回软，捞起沥干装碗。卤水以猪牛骨、罗汉果与数十味香料熬成。码锅烧、卤牛肉、酸豆角、炸黄豆、葱花，淋卤水拌匀即食；吃到一半冲骨头汤。", "contrib": "61+"}, {"id": "ch6-04", "region": "guangxi", "ch": 6, "chName": "第六章 · 广西·酸香漫桂", "name": "冬瓜盅", "idx": 4, "total": 4, "img": "assets/图片/ch6-04.jpg", "audioStd": "", "audioCandidates": [], "audioLabel": "", "card": "冬瓜盅是从清宫御膳“西瓜盅”演变而来。清代朝官外放，随身厨师把这道菜带到各地；传到盛产冬瓜的广东，厨师改用冬瓜做盅，正应了清人“内馔外瓜，皆美味也”之说。广州人又在瓜口插上夜来香，创出“夜香冬瓜盅”；民国时配料定型为八样，更名“八宝冬瓜盅”，被誉为“仲夏夜之梦”。它是广州夏令名菜，清热解暑，把最普通的冬瓜做成了宴席上的压轴大菜。", "route": "海外迁徙：冬瓜盅随粤籍华侨的足迹走向海外。东南亚与欧美的粤菜馆里，在夏日总能见到这道汤清味鲜的炖盅；广西产的迷你冬瓜更被东盟中餐馆广泛采用，雕花瓜皮成了海外华人饮食文化的符号。顺德粤菜大师林壤明曾背冬瓜远赴卢森堡，在世界烹饪大赛以“雕刻冬瓜盅”夺金。一只冬瓜，载着粤菜技艺跨海远行。", "memory": "粤菜的精髓从来都不是浓烈张扬，而是“以清为美，以鲜为魂”。冬瓜盅挖瓤为器，端上来像个小器皿——整只冬瓜挖空，边缘刻成花瓣样，淡青的皮还挂着水珠，在铜锅里咕嘟冒泡，热气一上来就是清甜。汤底有肉鲜和海味慢慢融进去的感觉，瓜肉吸了汤汁以后更润，喝着不油也不齁，清甜的冬瓜汤底能连喝好几碗。", "recipe": "配料：小冬瓜、清汤（二汤）、鸭肉、烤鸭肉、虾仁、干贝、鲜莲、冬菇、火腿、蟹肉、盐、胡椒粉\n做法：冬瓜对切，刻锯齿口、挖瓤，外皮雕花，沸水汆透后浸凉，入瓷盅摆稳。鸭肉、干贝、冬菇、火腿切丁焯熟，与虾仁、鲜莲同入瓜盅，注入清汤调味，上笼蒸约一小时至瓜肉软绵、汤清味鲜，撒胡椒粉即成。", "contrib": "小红书博主"}];
+  var BARS=[
+    {ord:'一',title:'闽南 · 海风入厦',sub:'9 道菜 · 厦门 / 泉州 / 漳州',id:'minnan',accent:'#0288D1'},
+    {ord:'二',title:'闽东 · 山潮赴福',sub:'7 道菜 · 福州 / 福鼎 / 福安',id:'mindong',accent:'#0277BD'},
+    {ord:'三',title:'客家 · 山香绕汀',sub:'4 道菜 · 长汀 / 梅州',id:'kejia',accent:'#039BE5'},
+    {ord:'四',title:'海南 · 椰风临琼',sub:'7 道菜 · 海口 / 文昌',id:'hainan',accent:'#2E9FD8'},
+    {ord:'五',title:'广府 · 粤韵入穗',sub:'3 道菜 · 广州 / 江门（五邑）',id:'guangfu',accent:'#01579B'},
+    {ord:'六',title:'广西 · 酸香漫桂',sub:'4 道菜 · 桂林 / 柳州 / 南宁',id:'guangxi',accent:'#03A9F4'},
+    {ord:'·',title:'迁徙全览',sub:'直接进入地图，不放大',id:'all',accent:'#3E7BA8',wide:true}
+  ];
+  var seeds=[1,7,13,19,23,29,31,37,41,43];
+
+  function pinAt(cx,cy,color,op,sc){
+    // 水滴形大头针：尖端落在 (cx,cy)，头部圆心在 (cx,cy-14)，总高 21；sc 为主图缩放补偿（1 时与 v11 输出一致）
+    var tf='translate('+cx+' '+cy+')'+((sc&&sc!==1)?' scale('+sc+')':'');
+    return '<g class="pin" transform="'+tf+'" opacity="'+op+'">'+
+      '<path d="M0 0 C-1.9 -4.4 -7 -8.6 -7 -14 A7 7 0 1 1 7 -14 C7 -8.6 1.9 -4.4 0 0 Z" fill="'+color+'"/>'+
+      '<circle cx="0" cy="-14" r="2.5" fill="#FFEB3B" opacity=".92"/></g>';
+  }
+  function buildRegions(dots){
+    var html=[];
+    Object.keys(R).forEach(function(k,ki){
+      var d=R[k], a=ANCHORS[k]||{};
+      var color=a.color||'#0288D1', dir=a.dir||'right';
+      if(!dots){                       // 目录页底图：只留极淡地点针，不写字、不撒点
+        html.push('<g class="region mini" data-id="'+k+'">'+pinAt(d.cx,d.cy,color,'.5')+'</g>');
+        return;
+      }
+      // v12：主图整幅（含南海诸岛）约缩至 0.86，点位/字号/热区放大补偿，读感与 v11 持平
+      var dotHtml=[], base=(dir==='right'?Math.PI:0);
+      for(var i=0;i<d.count2;i++){
+        var ang=base+((((i*47+ki*23)%160)-80)*Math.PI/180);
+        var rr=9+((i*5+ki*3)%14);
+        var x=(d.cx+Math.cos(ang)*rr).toFixed(1);
+        var y=(d.cy+Math.sin(ang)*rr*0.72).toFixed(1);
+        dotHtml.push('<circle cx="'+x+'" cy="'+y+'" r="2.8" fill="'+color+'" opacity=".5"/>');
+      }
+      var lx=(dir==='right'? d.cx+17 : d.cx-17);
+      var ta=(dir==='right'?'start':'end');
+      html.push('<g class="region" data-id="'+k+'" style="--ox:'+d.cx+'px;--oy:'+d.cy+'px">'+
+        '<circle class="hit" cx="'+d.cx+'" cy="'+(d.cy-10)+'" r="21" fill="transparent"/>'+
+        dotHtml.join('')+pinAt(d.cx,d.cy,color,'1',1.15)+
+        '<text class="rlabel" x="'+lx+'" y="'+(d.cy-8)+'" text-anchor="'+ta+'" style="fill:#0A3B66;font-size:15px">'+d.name+'</text>'+
+        '</g>');
+    });
+    return html.join('');
+  }
+
+  var PROVS_HTML="<path class=\"prov\" data-prov=\"fujian\" fill=\"#4FC3F7\" fill-rule=\"evenodd\" d=\"M296.8 166.4 L298.9 167.0 L296.9 170.2 L294.8 170.6 L295.4 166.7 L296.8 166.4 Z M313.8 151.9 L313.0 152.2 L313.2 151.4 L313.6 151.2 L313.9 151.4 L313.8 151.9 Z M317.2 149.7 L317.7 152.0 L314.5 152.5 L314.7 150.5 L316.1 151.1 L317.2 149.7 Z M312.1 151.0 L310.2 151.6 L310.3 149.3 L312.4 149.6 L312.1 151.0 Z M316.1 149.4 L314.4 148.7 L316.1 149.4 Z M331.4 138.3 L331.6 137.1 L331.4 138.3 Z M339.9 135.4 L337.7 134.1 L339.9 135.4 Z M343.4 131.3 L343.0 131.3 L342.8 131.1 L343.4 130.8 L343.4 131.3 Z M343.2 124.5 L342.3 125.2 L343.2 124.5 Z M344.4 125.1 L346.6 126.9 L345.2 127.3 L346.1 129.0 L344.3 130.5 L342.4 128.9 L342.8 125.9 L344.4 125.1 Z M341.0 124.8 L340.5 125.3 L340.4 125.0 L340.8 124.5 L341.1 124.5 L341.0 124.8 Z M348.5 118.2 L348.5 117.7 L348.5 118.2 Z M347.9 117.7 L347.7 117.9 L347.4 117.7 L347.6 117.6 L347.9 117.6 L347.9 117.7 Z M341.9 115.6 L339.7 115.3 L340.6 114.4 L341.9 115.6 Z M347.5 113.4 L348.4 113.6 L347.5 113.4 Z M342.0 113.8 L341.9 114.2 L341.2 114.0 L340.9 113.7 L341.4 113.4 L342.0 113.8 Z M349.3 112.2 L348.3 112.8 L349.3 112.2 Z M359.0 109.3 L358.6 108.8 L359.0 109.3 Z M350.2 106.2 L349.6 106.3 L349.7 105.9 L350.3 105.6 L350.2 106.2 Z M351.9 104.5 L352.1 103.9 L351.9 104.5 Z M345.0 103.7 L344.4 103.9 L344.1 103.5 L344.9 103.3 L345.0 103.7 Z M343.8 102.2 L342.0 102.6 L343.8 102.2 Z M347.8 101.9 L347.6 102.4 L347.0 102.0 L347.8 101.9 Z M356.6 96.6 L355.5 96.1 L356.6 96.6 Z M323.3 67.1 L324.8 67.9 L323.2 73.7 L326.6 79.4 L326.8 84.9 L331.2 84.5 L333.6 85.9 L336.3 83.4 L338.1 83.6 L338.7 80.7 L341.6 80.4 L344.3 88.4 L354.1 85.6 L356.0 86.5 L357.8 91.4 L354.8 88.7 L352.9 89.1 L352.8 90.5 L356.2 89.9 L357.4 92.1 L352.6 95.8 L353.7 97.0 L350.1 97.6 L351.6 103.1 L348.2 103.8 L346.6 105.8 L345.6 105.5 L346.3 104.0 L348.2 103.3 L350.6 99.6 L347.7 99.8 L346.3 102.9 L344.7 101.6 L345.9 98.4 L343.8 101.0 L343.0 99.3 L343.6 101.6 L340.6 99.9 L342.0 101.5 L339.8 103.4 L343.6 103.7 L345.3 106.9 L344.3 108.2 L341.0 107.2 L342.5 109.6 L345.4 107.9 L346.1 109.5 L347.5 109.3 L341.8 111.2 L342.0 112.7 L339.2 115.4 L343.2 117.2 L341.3 119.6 L340.8 124.0 L338.1 124.8 L341.0 126.7 L342.1 131.0 L341.1 131.6 L340.1 129.1 L339.3 130.8 L338.0 128.1 L335.8 127.6 L335.7 130.1 L334.0 129.6 L334.0 128.2 L331.2 130.2 L336.3 133.3 L334.8 135.0 L332.4 135.2 L331.6 133.9 L332.0 136.2 L330.1 136.8 L329.2 135.7 L330.2 134.6 L328.2 134.0 L329.1 132.9 L326.2 133.8 L328.4 135.5 L326.0 137.2 L328.7 139.1 L328.9 140.2 L326.7 140.4 L328.4 141.8 L322.7 142.5 L322.3 140.6 L321.7 143.4 L324.2 144.8 L321.8 146.1 L322.3 147.8 L320.1 149.8 L317.3 146.4 L317.0 147.9 L313.2 149.5 L312.2 146.7 L309.1 149.2 L309.4 151.5 L306.7 150.7 L306.6 152.5 L309.8 152.2 L311.0 155.3 L303.3 163.3 L303.9 161.4 L302.7 160.5 L300.3 167.0 L300.4 164.1 L296.5 162.5 L298.5 164.2 L297.9 165.6 L293.8 167.0 L292.9 169.8 L293.1 168.6 L292.1 169.6 L289.2 167.7 L286.6 159.3 L288.0 157.2 L283.2 149.2 L284.1 146.3 L278.7 147.8 L275.6 143.6 L275.9 142.0 L272.9 143.8 L271.8 141.8 L269.4 142.4 L265.7 140.8 L265.3 138.7 L266.5 138.0 L265.0 134.5 L267.9 132.5 L269.0 124.0 L271.5 122.1 L270.6 120.2 L275.3 117.9 L277.9 114.4 L275.9 113.1 L276.0 111.2 L278.4 108.3 L280.2 108.7 L280.8 106.5 L278.3 101.5 L279.0 98.6 L281.7 95.6 L286.9 94.7 L291.6 89.1 L288.7 80.6 L290.2 81.3 L290.3 80.1 L292.3 80.1 L294.2 78.1 L294.0 75.9 L298.7 73.4 L303.2 77.4 L305.5 74.3 L310.3 73.9 L311.0 71.9 L315.3 71.1 L316.0 69.0 L314.9 68.4 L316.1 67.1 L323.3 67.1 Z\"/><path class=\"prov\" data-prov=\"guangdong\" fill=\"#4FC3F7\" fill-rule=\"evenodd\" d=\"M153.9 233.9 L154.0 234.6 L153.5 234.4 L153.6 233.9 L153.9 233.9 Z M282.8 233.7 L282.4 233.7 L282.8 233.7 Z M155.4 234.2 L154.7 234.3 L154.6 233.9 L154.9 233.4 L155.3 233.9 L155.4 234.2 Z M282.8 233.2 L281.7 234.3 L282.8 233.2 Z M286.5 233.1 L286.3 236.2 L284.1 237.0 L283.5 236.2 L285.5 235.8 L286.1 234.1 L283.7 232.8 L286.5 233.1 Z M159.4 228.6 L157.9 230.0 L159.4 228.6 Z M267.9 229.3 L266.1 227.6 L267.9 229.3 Z M268.9 227.1 L266.4 224.9 L269.0 225.0 L268.9 227.1 Z M155.6 223.8 L155.4 224.2 L154.9 223.7 L155.4 223.5 L155.6 223.8 Z M157.0 222.9 L159.2 222.6 L158.0 225.1 L155.2 223.2 L157.0 222.9 Z M196.3 212.5 L196.1 212.8 L195.8 212.7 L196.2 212.0 L196.3 212.5 Z M199.9 213.2 L197.7 213.6 L200.1 211.4 L199.9 213.2 Z M203.8 210.8 L202.6 214.6 L201.7 213.7 L202.9 212.5 L201.4 211.7 L204.7 210.5 L203.8 210.8 Z M210.4 208.3 L211.3 208.1 L210.4 208.3 Z M227.7 208.4 L228.0 208.0 L227.7 208.4 Z M208.1 208.3 L207.6 208.5 L207.4 208.0 L207.9 207.8 L208.1 208.3 Z M228.7 207.1 L228.1 207.7 L228.7 207.1 Z M222.4 206.5 L222.0 206.8 L221.7 206.5 L221.9 206.1 L222.4 206.5 Z M221.5 206.3 L221.0 206.4 L221.5 206.3 Z M222.9 205.7 L222.4 205.7 L222.3 205.3 L222.8 205.2 L222.9 205.7 Z M230.8 205.5 L230.0 205.5 L230.8 205.5 Z M224.1 205.3 L223.9 205.4 L223.9 205.1 L224.0 205.2 L224.2 205.2 L224.1 205.3 Z M231.8 205.3 L231.1 205.3 L231.3 204.9 L231.8 204.9 L231.8 205.3 Z M221.9 204.8 L221.6 205.0 L221.4 204.9 L221.3 204.6 L221.7 204.5 L221.9 204.8 Z M226.1 204.3 L225.8 204.4 L225.7 204.2 L225.9 204.1 L226.1 204.2 L226.1 204.3 Z M233.7 204.2 L231.9 204.7 L233.7 204.2 Z M228.5 203.2 L228.4 203.2 L228.0 203.0 L228.2 202.8 L228.4 202.8 L228.5 203.2 Z M225.5 202.5 L225.3 202.7 L225.1 202.6 L225.2 202.5 L225.3 202.4 L225.5 202.5 Z M224.1 202.1 L223.7 201.7 L224.1 202.1 Z M223.8 196.2 L223.1 196.0 L223.8 196.2 Z M220.6 196.0 L219.6 196.3 L220.6 196.0 Z M291.1 173.0 L290.6 174.5 L287.2 173.9 L291.1 173.0 Z M288.2 171.4 L286.9 171.4 L288.2 171.4 Z M287.4 171.3 L287.7 170.0 L287.4 171.3 Z M213.2 127.9 L214.6 130.4 L218.8 132.3 L223.7 132.0 L226.7 129.1 L228.1 133.6 L235.2 132.2 L238.2 130.0 L241.6 132.2 L242.2 136.6 L238.8 137.3 L235.4 140.2 L234.2 144.6 L230.8 146.0 L236.1 150.5 L240.7 148.5 L241.7 149.5 L242.5 147.7 L245.0 148.9 L245.9 146.6 L249.1 145.7 L250.1 146.6 L256.0 143.7 L262.6 149.3 L264.7 148.6 L263.0 144.8 L264.2 141.3 L271.8 141.8 L272.9 143.8 L275.9 142.0 L275.6 143.6 L278.3 147.7 L284.1 146.3 L283.2 149.2 L288.0 157.2 L286.6 159.3 L287.5 163.3 L289.2 167.7 L292.1 169.6 L290.1 171.1 L289.8 169.6 L287.1 169.9 L283.7 176.1 L279.5 174.5 L279.6 175.8 L282.9 175.8 L284.3 177.9 L279.5 179.3 L278.2 184.4 L273.6 184.2 L270.7 186.8 L264.4 188.9 L263.4 186.7 L261.2 185.9 L258.5 188.2 L259.1 190.5 L255.5 190.0 L254.8 188.1 L252.1 186.8 L248.7 188.0 L247.4 190.0 L244.9 188.5 L247.1 190.3 L245.5 193.1 L242.3 190.8 L243.6 187.0 L238.2 189.8 L239.3 191.2 L237.6 192.9 L240.1 193.9 L238.0 195.3 L235.4 191.7 L225.5 195.0 L222.6 188.9 L221.1 188.8 L221.3 192.4 L219.2 192.0 L219.9 194.1 L218.7 196.6 L219.9 197.0 L218.2 203.3 L215.6 203.8 L214.7 205.4 L212.4 204.3 L212.6 207.9 L209.5 203.9 L209.0 200.7 L207.6 202.6 L207.9 206.3 L205.8 208.4 L203.8 206.1 L198.5 210.6 L195.4 209.1 L195.1 211.0 L192.3 211.8 L190.7 209.5 L187.4 209.8 L185.2 212.0 L187.1 213.6 L183.5 214.8 L183.8 212.8 L185.3 212.5 L181.4 210.4 L183.0 212.8 L180.3 215.5 L176.4 216.1 L175.5 214.6 L175.8 215.5 L172.0 218.1 L172.2 216.2 L168.9 217.1 L167.8 216.0 L168.5 216.9 L166.6 217.9 L161.6 218.9 L158.9 222.4 L155.2 222.8 L154.1 218.1 L155.1 222.0 L153.2 225.6 L157.6 225.8 L157.2 228.8 L154.9 227.1 L150.6 228.4 L152.4 225.0 L149.9 228.8 L150.7 230.5 L154.3 231.1 L153.4 234.5 L155.9 234.2 L156.4 236.4 L155.4 235.5 L155.1 236.4 L157.0 239.6 L152.9 243.4 L149.2 243.9 L147.7 242.8 L144.6 244.3 L145.2 242.8 L143.7 240.1 L146.0 240.0 L141.3 235.2 L141.7 231.9 L139.7 229.3 L141.8 219.4 L144.7 219.3 L145.2 217.6 L142.3 216.9 L141.7 212.5 L144.5 212.7 L146.1 207.8 L154.2 207.5 L153.4 201.0 L159.4 201.9 L160.6 199.1 L162.4 198.9 L160.3 194.7 L161.5 194.9 L162.0 192.4 L167.8 190.8 L167.8 189.1 L171.2 188.6 L173.9 185.6 L175.4 182.4 L173.9 176.9 L174.8 172.8 L176.5 169.3 L179.1 169.0 L180.0 165.0 L183.0 165.3 L183.9 162.3 L185.5 161.7 L184.3 156.5 L188.2 153.2 L185.4 147.3 L190.0 142.7 L189.2 139.9 L190.7 135.2 L200.2 136.3 L202.8 141.5 L206.9 141.0 L206.5 135.7 L207.8 134.8 L204.5 133.7 L204.3 132.0 L205.6 132.5 L210.4 128.5 L213.2 127.9 Z\"/><path class=\"prov\" data-prov=\"guangxi\" fill=\"#4FC3F7\" fill-rule=\"evenodd\" d=\"M129.1 226.1 L128.8 226.8 L128.0 226.5 L127.9 226.1 L128.7 225.6 L129.1 226.1 Z M95.5 212.8 L93.1 214.0 L91.9 210.9 L90.1 211.5 L86.0 209.1 L86.2 206.4 L80.9 204.9 L79.3 205.6 L79.5 199.1 L76.9 197.5 L76.8 195.0 L77.9 191.8 L80.1 192.3 L82.1 187.2 L76.1 184.3 L71.2 186.1 L69.6 183.6 L67.2 183.2 L63.1 185.0 L59.9 181.8 L56.6 181.5 L55.9 177.8 L59.2 175.9 L58.4 174.4 L62.4 171.5 L65.5 173.2 L68.2 170.7 L68.2 165.6 L69.4 164.0 L66.4 159.1 L63.8 158.4 L62.2 160.5 L58.6 160.2 L57.4 158.1 L55.1 160.6 L51.7 158.5 L50.4 159.5 L48.9 158.1 L49.9 156.8 L49.2 153.7 L47.1 151.7 L40.2 151.1 L39.2 154.1 L34.1 146.9 L35.7 145.0 L39.8 147.5 L45.9 143.6 L46.7 141.0 L49.5 139.2 L50.7 140.6 L53.8 140.6 L55.5 143.4 L61.6 145.7 L64.1 145.1 L65.9 147.1 L69.0 144.2 L68.5 140.0 L85.5 133.8 L84.9 129.6 L87.0 126.8 L89.8 125.8 L92.6 128.4 L92.0 129.8 L94.3 130.6 L95.3 134.4 L99.0 132.2 L99.7 134.8 L100.9 133.8 L101.4 136.5 L102.6 136.5 L108.2 134.7 L108.9 129.6 L110.8 129.8 L112.2 127.5 L118.2 132.1 L118.0 128.9 L120.5 125.5 L121.8 125.3 L122.3 127.6 L126.8 127.8 L127.7 123.1 L125.0 124.4 L124.1 123.5 L128.6 121.4 L128.8 122.6 L129.6 121.4 L131.0 123.2 L132.9 122.9 L135.9 116.5 L139.1 116.1 L140.8 117.5 L139.6 119.8 L142.5 119.9 L142.4 116.4 L143.8 116.4 L145.7 112.8 L148.2 113.4 L148.4 116.7 L150.4 115.6 L151.7 118.0 L158.9 109.8 L161.4 110.2 L161.8 111.6 L165.1 111.5 L166.3 108.7 L172.4 111.3 L171.1 119.4 L176.6 120.2 L172.8 123.5 L172.7 129.4 L166.6 135.7 L165.8 139.2 L167.6 140.8 L172.1 136.0 L174.6 136.3 L176.1 138.9 L175.5 146.4 L178.1 147.1 L180.6 144.0 L186.1 144.2 L187.3 144.9 L185.4 147.3 L188.2 153.2 L184.3 156.5 L185.2 162.3 L183.9 162.3 L183.0 165.3 L180.0 165.0 L179.1 169.0 L176.5 169.3 L174.8 172.8 L173.9 176.9 L175.4 182.4 L172.5 187.4 L168.0 189.0 L167.8 190.8 L162.0 192.4 L161.5 194.9 L160.3 194.7 L162.3 199.0 L160.6 199.1 L159.2 201.9 L153.4 201.0 L154.2 207.5 L146.1 207.8 L144.5 212.7 L141.7 212.5 L141.5 217.1 L139.6 215.7 L139.9 213.8 L138.6 214.5 L137.5 211.9 L138.3 210.5 L137.1 212.8 L135.7 212.5 L138.1 214.3 L137.4 216.7 L132.9 216.5 L129.5 218.3 L127.1 217.3 L129.5 215.8 L129.3 214.5 L125.6 214.1 L123.2 212.1 L125.0 210.4 L123.3 210.4 L123.5 213.4 L120.8 213.6 L120.1 211.5 L119.1 212.5 L118.0 211.5 L118.4 208.6 L116.9 207.5 L115.6 208.6 L116.8 210.7 L115.8 210.9 L117.6 212.1 L114.1 215.3 L114.8 212.3 L113.6 212.4 L113.2 215.0 L113.4 212.3 L112.4 212.5 L112.6 214.3 L110.7 216.1 L110.4 213.4 L109.0 215.7 L105.3 215.5 L103.2 212.9 L96.6 214.2 L95.5 212.8 Z\"/><path class=\"prov\" data-prov=\"hainan\" fill=\"#4FC3F7\" fill-rule=\"evenodd\" d=\"M225.3 267.7 L223.5 266.3 L225.8 266.2 L225.3 267.7 Z M207.9 260.6 L207.1 259.6 L207.9 260.6 Z M170.9 251.2 L170.8 251.1 L170.9 251.2 Z M172.3 249.6 L172.2 249.5 L172.3 249.6 Z M156.2 246.6 L155.3 246.9 L154.7 246.7 L155.3 246.6 L156.2 246.6 Z M160.6 246.2 L162.4 248.9 L165.4 248.9 L167.3 257.2 L164.0 259.7 L163.0 257.4 L163.5 259.3 L160.2 262.6 L155.4 274.8 L156.9 275.6 L156.9 273.8 L157.3 275.7 L154.9 278.5 L150.3 279.9 L147.5 284.7 L145.9 284.7 L147.0 283.4 L141.7 284.7 L139.9 287.2 L141.0 288.5 L139.0 288.2 L137.8 289.6 L137.4 288.2 L135.8 288.8 L136.0 287.3 L130.0 286.9 L119.9 282.0 L119.0 264.5 L131.8 255.3 L131.6 254.2 L129.3 255.6 L131.6 251.4 L137.2 252.7 L137.1 250.4 L138.7 249.3 L143.9 250.6 L145.3 249.4 L146.5 250.7 L149.6 247.9 L152.1 248.7 L153.9 247.2 L159.3 250.9 L158.1 247.1 L160.6 246.2 Z M154.5 277.7 L154.0 278.1 L154.6 278.1 L154.5 277.7 Z\"/>";
+
+  /* NH_FULL：目录页底图（与 v11 完全一致，含海南本岛） */
+  var NH_FULL='<g class="nh-islands"><path d="M201.9 577.8 L201.6 578.1 L200.3 578.0 L200.1 577.3 L200.5 576.5 L201.9 577.8 Z M199.4 577.4 L198.3 577.0 L198.5 576.4 L199.1 576.1 L199.4 577.4 Z M200.0 571.5 L198.6 570.9 L199.0 570.6 L200.3 570.5 L200.0 571.5 Z M197.7 568.9 L195.9 568.0 L197.7 568.9 Z M199.7 569.0 L198.6 566.3 L199.7 569.0 Z M198.3 564.8 L198.2 566.0 L197.8 566.0 L197.4 564.2 L198.3 564.8 Z M197.0 562.1 L196.6 563.3 L196.2 563.2 L197.0 562.1 Z M198.6 562.4 L197.3 562.0 L198.1 560.6 L198.6 562.4 Z M135.0 527.8 L134.4 528.2 L133.9 528.0 L133.8 527.7 L134.0 526.7 L138.0 522.1 L143.4 523.2 L137.5 524.7 L135.0 527.8 Z M241.7 522.8 L240.6 522.0 L241.7 522.8 Z M177.3 523.4 L176.9 521.8 L178.6 521.7 L177.3 523.4 Z M224.4 521.5 L222.8 521.5 L224.4 521.5 Z M181.1 519.8 L179.6 520.6 L180.7 518.4 L181.1 519.8 Z M155.2 518.0 L154.6 518.1 L154.3 517.7 L155.1 516.6 L155.2 518.0 Z M178.0 517.5 L177.2 516.8 L178.4 515.5 L178.0 517.5 Z M232.1 521.4 L227.8 522.7 L226.2 521.2 L228.4 521.2 L233.1 516.2 L237.7 514.1 L238.4 515.2 L238.4 515.8 L236.0 517.5 L235.4 519.0 L235.4 520.2 L232.1 521.4 Z M180.8 514.9 L178.6 514.5 L179.1 514.0 L180.2 513.9 L180.8 514.9 Z M145.1 517.3 L144.3 517.6 L143.4 517.5 L143.3 516.6 L143.4 515.6 L146.8 513.7 L145.1 517.3 Z M256.4 513.5 L256.0 511.9 L256.4 513.5 Z M157.7 514.0 L157.8 511.1 L157.7 514.0 Z M239.0 510.7 L241.2 510.0 L239.7 510.5 L239.0 510.7 Z M186.9 510.7 L186.3 511.0 L185.1 510.7 L184.4 509.9 L184.4 509.0 L186.9 508.8 L186.9 510.7 Z M155.4 511.4 L154.1 509.4 L157.4 508.5 L155.4 511.4 Z M214.6 508.7 L212.6 510.2 L214.6 506.0 L214.6 508.7 Z M252.0 505.0 L253.3 505.4 L252.0 505.0 Z M231.6 498.1 L230.9 496.5 L231.6 498.1 Z M228.4 495.9 L227.6 496.7 L226.0 494.8 L228.4 495.9 Z M192.4 494.0 L190.7 494.5 L192.4 494.0 Z M220.7 491.7 L222.2 490.7 L222.1 491.2 L220.7 491.7 Z M264.9 476.6 L265.5 473.6 L264.9 476.6 Z M259.6 471.3 L259.0 471.9 L258.1 471.8 L257.9 471.6 L258.0 470.7 L259.6 471.3 Z M224.6 469.2 L224.7 466.4 L224.8 466.7 L224.6 469.2 Z M233.6 463.0 L234.7 462.0 L234.7 462.4 L233.6 463.0 Z M241.4 462.6 L240.6 462.1 L242.2 461.0 L241.4 462.6 Z M238.9 461.5 L239.5 460.1 L238.9 461.5 Z M278.9 461.3 L281.8 461.1 L278.3 462.4 L279.1 459.4 L278.9 461.3 Z M270.0 459.5 L269.7 459.9 L268.7 459.8 L268.2 458.1 L270.0 459.5 Z M283.5 458.2 L281.2 458.2 L282.6 456.7 L283.5 458.2 Z M297.4 454.7 L294.2 453.7 L295.2 452.3 L296.0 452.2 L297.4 454.7 Z M235.0 453.3 L236.5 452.1 L235.0 453.3 Z M238.7 453.2 L239.2 451.6 L238.7 453.2 Z M304.4 452.9 L305.1 450.1 L305.7 451.3 L305.5 451.8 L304.4 452.9 Z M239.3 450.0 L237.1 451.7 L239.3 450.0 Z M242.2 447.0 L243.3 445.6 L242.2 447.0 Z M295.2 446.3 L294.7 446.8 L294.3 446.7 L293.6 444.5 L295.0 444.4 L295.5 445.5 L295.2 446.3 Z M242.4 437.5 L241.5 436.0 L242.4 437.5 Z M240.5 437.8 L240.4 435.6 L240.5 437.8 Z M256.2 382.7 L255.7 382.8 L255.0 382.3 L256.2 381.7 L256.2 382.7 Z M303.5 354.2 L305.4 356.6 L303.2 354.3 L302.9 356.3 L305.0 356.7 L302.7 356.7 L303.5 354.2 Z M233.3 336.5 L233.2 336.7 L231.5 336.6 L233.3 336.5 Z M246.5 336.8 L245.4 335.6 L246.5 336.8 Z M198.1 336.4 L195.9 336.3 L199.1 335.4 L199.1 335.6 L198.1 336.4 Z M244.0 332.8 L241.4 333.3 L244.0 332.8 Z M178.6 333.0 L179.9 333.0 L178.3 333.4 L179.6 331.8 L178.6 333.0 Z M182.7 331.2 L182.4 332.8 L181.7 332.9 L181.0 332.6 L182.5 331.5 L179.8 331.7 L180.5 331.3 L182.7 331.2 Z M196.9 330.3 L194.8 331.0 L196.9 330.3 Z M188.9 329.7 L186.2 330.2 L188.9 329.7 Z M282.8 330.5 L282.6 328.9 L282.8 330.5 Z M197.6 326.0 L198.5 325.6 L198.3 325.8 L197.6 326.0 Z M178.1 313.0 L175.9 313.5 L178.1 313.0 Z M225.3 267.7 L223.5 266.3 L224.4 266.0 L225.8 266.2 L225.3 267.7 Z M207.9 260.6 L207.1 259.6 L207.9 260.6 Z M160.6 246.2 L162.4 248.9 L165.4 248.9 L167.3 257.2 L164.0 259.7 L163.0 257.4 L162.8 258.1 L163.5 259.3 L160.2 262.6 L155.4 274.8 L156.9 275.6 L156.9 273.8 L157.0 274.7 L157.3 275.7 L154.9 278.5 L150.3 279.9 L147.5 284.7 L145.9 284.7 L147.0 283.4 L141.7 284.7 L139.9 287.2 L141.0 288.5 L139.0 288.2 L137.8 289.6 L137.4 288.2 L135.8 288.8 L136.0 287.3 L130.0 286.9 L119.9 282.0 L119.0 264.5 L131.8 255.3 L131.6 254.2 L129.3 255.6 L131.6 251.4 L137.2 252.7 L137.1 250.4 L138.7 249.3 L143.9 250.6 L145.3 249.4 L145.8 250.2 L146.5 250.7 L149.6 247.9 L152.1 248.7 L153.9 247.2 L159.3 250.9 L158.1 247.1 L160.6 246.2 Z" fill="#3FA9DC"/><g fill="#1F7FBF"><circle cx="188.0" cy="604.4" r=".85"/><circle cx="192.3" cy="603.6" r=".85"/><circle cx="192.7" cy="602.0" r=".85"/><circle cx="198.0" cy="581.2" r=".85"/><circle cx="199.1" cy="579.8" r=".85"/><circle cx="200.2" cy="578.9" r=".85"/><circle cx="197.3" cy="578.7" r=".85"/><circle cx="205.9" cy="578.8" r=".85"/><circle cx="198.1" cy="567.3" r=".85"/><circle cx="194.2" cy="565.4" r=".85"/><circle cx="198.4" cy="559.6" r=".85"/><circle cx="197.6" cy="558.9" r=".85"/><circle cx="197.6" cy="557.8" r=".85"/><circle cx="212.6" cy="550.0" r=".85"/><circle cx="219.7" cy="536.3" r=".85"/><circle cx="245.0" cy="531.1" r=".85"/><circle cx="224.3" cy="526.4" r=".85"/><circle cx="248.4" cy="524.2" r=".85"/><circle cx="205.1" cy="516.1" r=".85"/><circle cx="228.6" cy="514.6" r=".85"/><circle cx="226.3" cy="513.4" r=".85"/><circle cx="245.5" cy="513.6" r=".85"/><circle cx="230.2" cy="510.9" r=".85"/><circle cx="212.2" cy="511.0" r=".85"/><circle cx="243.6" cy="510.4" r=".85"/><circle cx="242.4" cy="509.5" r=".85"/><circle cx="256.3" cy="505.9" r=".85"/><circle cx="267.4" cy="503.3" r=".85"/><circle cx="206.5" cy="503.2" r=".85"/><circle cx="258.5" cy="502.9" r=".85"/><circle cx="234.6" cy="502.2" r=".85"/><circle cx="253.0" cy="502.4" r=".85"/><circle cx="234.8" cy="501.8" r=".85"/><circle cx="176.1" cy="501.1" r=".85"/><circle cx="184.8" cy="499.0" r=".85"/><circle cx="180.4" cy="498.5" r=".85"/><circle cx="227.1" cy="496.1" r=".85"/><circle cx="226.5" cy="495.8" r=".85"/><circle cx="198.9" cy="495.3" r=".85"/><circle cx="198.6" cy="495.2" r=".85"/><circle cx="199.3" cy="495.2" r=".85"/><circle cx="200.0" cy="495.1" r=".85"/><circle cx="198.3" cy="494.8" r=".85"/><circle cx="191.6" cy="494.8" r=".85"/><circle cx="225.7" cy="495.2" r=".85"/><circle cx="240.7" cy="494.3" r=".85"/><circle cx="204.1" cy="493.1" r=".85"/><circle cx="203.7" cy="493.0" r=".85"/><circle cx="273.6" cy="493.4" r=".85"/><circle cx="194.1" cy="492.7" r=".85"/><circle cx="280.2" cy="490.7" r=".85"/><circle cx="281.5" cy="490.2" r=".85"/><circle cx="277.4" cy="487.3" r=".85"/><circle cx="220.6" cy="486.1" r=".85"/><circle cx="176.8" cy="484.4" r=".85"/><circle cx="266.7" cy="484.0" r=".85"/><circle cx="180.6" cy="483.5" r=".85"/><circle cx="231.9" cy="482.8" r=".85"/><circle cx="256.9" cy="483.0" r=".85"/><circle cx="286.8" cy="481.1" r=".85"/><circle cx="195.3" cy="481.1" r=".85"/><circle cx="277.0" cy="479.8" r=".85"/><circle cx="205.1" cy="479.1" r=".85"/><circle cx="205.7" cy="478.4" r=".85"/><circle cx="272.0" cy="477.8" r=".85"/><circle cx="206.4" cy="477.2" r=".85"/><circle cx="207.9" cy="476.9" r=".85"/><circle cx="206.9" cy="476.9" r=".85"/><circle cx="208.3" cy="476.7" r=".85"/><circle cx="207.3" cy="476.7" r=".85"/><circle cx="236.6" cy="475.5" r=".85"/><circle cx="241.9" cy="475.3" r=".85"/><circle cx="233.2" cy="475.5" r=".85"/><circle cx="280.8" cy="475.0" r=".85"/><circle cx="280.0" cy="474.6" r=".85"/><circle cx="279.4" cy="474.4" r=".85"/><circle cx="232.8" cy="474.3" r=".85"/><circle cx="235.0" cy="474.0" r=".85"/><circle cx="283.3" cy="474.0" r=".85"/><circle cx="235.7" cy="473.7" r=".85"/><circle cx="278.0" cy="474.0" r=".85"/><circle cx="277.1" cy="473.7" r=".85"/><circle cx="278.1" cy="473.3" r=".85"/><circle cx="236.9" cy="472.9" r=".85"/><circle cx="237.5" cy="472.5" r=".85"/><circle cx="233.2" cy="472.4" r=".85"/><circle cx="280.6" cy="472.4" r=".85"/><circle cx="237.9" cy="472.1" r=".85"/><circle cx="233.8" cy="471.9" r=".85"/><circle cx="234.2" cy="471.7" r=".85"/><circle cx="238.3" cy="471.6" r=".85"/><circle cx="235.5" cy="471.5" r=".85"/><circle cx="238.9" cy="471.3" r=".85"/><circle cx="237.0" cy="471.3" r=".85"/><circle cx="239.6" cy="471.2" r=".85"/><circle cx="237.6" cy="471.1" r=".85"/><circle cx="238.1" cy="470.7" r=".85"/><circle cx="239.0" cy="470.0" r=".85"/><circle cx="239.5" cy="469.7" r=".85"/><circle cx="227.6" cy="469.2" r=".85"/><circle cx="240.7" cy="469.5" r=".85"/><circle cx="251.4" cy="469.2" r=".85"/><circle cx="236.3" cy="468.8" r=".85"/><circle cx="296.3" cy="466.4" r=".85"/><circle cx="271.0" cy="466.2" r=".85"/><circle cx="232.7" cy="465.6" r=".85"/><circle cx="234.9" cy="465.3" r=".85"/><circle cx="232.0" cy="464.6" r=".85"/><circle cx="253.7" cy="464.8" r=".85"/><circle cx="236.1" cy="464.5" r=".85"/><circle cx="220.2" cy="464.1" r=".85"/><circle cx="237.5" cy="464.0" r=".85"/><circle cx="255.2" cy="463.7" r=".85"/><circle cx="239.1" cy="463.5" r=".85"/><circle cx="239.9" cy="462.1" r=".85"/><circle cx="249.4" cy="461.7" r=".85"/><circle cx="237.2" cy="461.0" r=".85"/><circle cx="234.9" cy="460.9" r=".85"/><circle cx="294.8" cy="461.5" r=".85"/><circle cx="280.1" cy="460.3" r=".85"/><circle cx="281.8" cy="460.1" r=".85"/><circle cx="262.5" cy="459.0" r=".85"/><circle cx="263.6" cy="459.0" r=".85"/><circle cx="262.0" cy="458.3" r=".85"/><circle cx="285.8" cy="458.2" r=".85"/><circle cx="262.6" cy="457.4" r=".85"/><circle cx="263.8" cy="457.4" r=".85"/><circle cx="250.6" cy="457.2" r=".85"/><circle cx="287.9" cy="456.8" r=".85"/><circle cx="288.7" cy="456.1" r=".85"/><circle cx="289.7" cy="456.1" r=".85"/><circle cx="292.6" cy="455.7" r=".85"/><circle cx="271.4" cy="455.4" r=".85"/><circle cx="236.1" cy="454.5" r=".85"/><circle cx="302.2" cy="454.7" r=".85"/><circle cx="236.9" cy="454.4" r=".85"/><circle cx="235.5" cy="454.2" r=".85"/><circle cx="264.0" cy="453.1" r=".85"/><circle cx="272.1" cy="452.6" r=".85"/><circle cx="292.6" cy="452.9" r=".85"/><circle cx="269.9" cy="451.4" r=".85"/><circle cx="264.4" cy="451.2" r=".85"/><circle cx="285.8" cy="451.0" r=".85"/><circle cx="265.1" cy="450.8" r=".85"/><circle cx="245.2" cy="450.5" r=".85"/><circle cx="282.4" cy="450.2" r=".85"/><circle cx="277.1" cy="449.4" r=".85"/><circle cx="246.1" cy="450.0" r=".85"/><circle cx="266.7" cy="449.6" r=".85"/><circle cx="282.4" cy="448.5" r=".85"/><circle cx="229.3" cy="448.8" r=".85"/><circle cx="240.9" cy="448.0" r=".85"/><circle cx="241.6" cy="447.3" r=".85"/><circle cx="241.1" cy="447.0" r=".85"/><circle cx="231.3" cy="446.3" r=".85"/><circle cx="233.3" cy="446.0" r=".85"/><circle cx="231.7" cy="446.0" r=".85"/><circle cx="232.1" cy="445.9" r=".85"/><circle cx="234.2" cy="445.9" r=".85"/><circle cx="301.9" cy="446.1" r=".85"/><circle cx="243.9" cy="445.8" r=".85"/><circle cx="232.7" cy="445.6" r=".85"/><circle cx="248.2" cy="445.4" r=".85"/><circle cx="235.1" cy="445.2" r=".85"/><circle cx="298.3" cy="445.1" r=".85"/><circle cx="242.3" cy="445.2" r=".85"/><circle cx="243.8" cy="444.7" r=".85"/><circle cx="242.9" cy="444.2" r=".85"/><circle cx="243.6" cy="443.9" r=".85"/><circle cx="240.0" cy="440.1" r=".85"/><circle cx="239.1" cy="439.9" r=".85"/><circle cx="240.1" cy="439.3" r=".85"/><circle cx="233.7" cy="438.7" r=".85"/><circle cx="234.8" cy="438.4" r=".85"/><circle cx="234.1" cy="438.2" r=".85"/><circle cx="235.1" cy="438.1" r=".85"/><circle cx="234.2" cy="437.8" r=".85"/><circle cx="235.3" cy="437.6" r=".85"/><circle cx="234.7" cy="437.3" r=".85"/><circle cx="235.4" cy="437.1" r=".85"/><circle cx="284.7" cy="427.0" r=".85"/><circle cx="302.9" cy="357.2" r=".85"/><circle cx="303.6" cy="357.2" r=".85"/><circle cx="304.6" cy="357.1" r=".85"/><circle cx="304.7" cy="356.5" r=".85"/><circle cx="305.0" cy="356.2" r=".85"/><circle cx="303.0" cy="354.7" r=".85"/><circle cx="232.1" cy="349.8" r=".85"/><circle cx="231.3" cy="349.6" r=".85"/><circle cx="227.6" cy="349.7" r=".85"/><circle cx="225.1" cy="348.7" r=".85"/><circle cx="223.2" cy="347.8" r=".85"/><circle cx="233.1" cy="347.5" r=".85"/><circle cx="237.1" cy="346.4" r=".85"/><circle cx="236.0" cy="346.1" r=".85"/><circle cx="222.1" cy="345.7" r=".85"/><circle cx="239.8" cy="345.6" r=".85"/><circle cx="225.7" cy="344.4" r=".85"/><circle cx="241.5" cy="344.3" r=".85"/><circle cx="192.0" cy="343.4" r=".85"/><circle cx="234.1" cy="343.0" r=".85"/><circle cx="225.9" cy="342.2" r=".85"/><circle cx="242.4" cy="342.1" r=".85"/><circle cx="170.9" cy="341.9" r=".85"/><circle cx="237.5" cy="341.8" r=".85"/><circle cx="236.3" cy="340.7" r=".85"/><circle cx="226.2" cy="340.6" r=".85"/><circle cx="239.2" cy="340.7" r=".85"/><circle cx="241.7" cy="340.2" r=".85"/><circle cx="243.6" cy="340.3" r=".85"/><circle cx="240.7" cy="339.6" r=".85"/><circle cx="227.2" cy="339.9" r=".85"/><circle cx="239.0" cy="339.3" r=".85"/><circle cx="237.4" cy="339.4" r=".85"/><circle cx="244.7" cy="339.1" r=".85"/><circle cx="228.9" cy="338.2" r=".85"/><circle cx="238.7" cy="337.8" r=".85"/><circle cx="240.8" cy="337.8" r=".85"/><circle cx="229.9" cy="337.7" r=".85"/><circle cx="243.3" cy="337.0" r=".85"/><circle cx="233.6" cy="336.3" r=".85"/><circle cx="182.7" cy="336.0" r=".85"/><circle cx="244.2" cy="336.1" r=".85"/><circle cx="236.4" cy="335.9" r=".85"/><circle cx="235.2" cy="335.7" r=".85"/><circle cx="243.1" cy="335.7" r=".85"/><circle cx="237.9" cy="335.5" r=".85"/><circle cx="240.5" cy="333.8" r=".85"/><circle cx="180.5" cy="332.7" r=".85"/><circle cx="200.2" cy="329.6" r=".85"/><circle cx="201.1" cy="329.8" r=".85"/><circle cx="200.6" cy="328.3" r=".85"/><circle cx="177.0" cy="327.4" r=".85"/><circle cx="181.0" cy="327.3" r=".85"/><circle cx="181.2" cy="327.3" r=".85"/><circle cx="180.2" cy="327.2" r=".85"/><circle cx="181.8" cy="327.0" r=".85"/><circle cx="178.8" cy="327.1" r=".85"/><circle cx="178.6" cy="326.1" r=".85"/><circle cx="179.1" cy="325.5" r=".85"/><circle cx="181.9" cy="325.2" r=".85"/><circle cx="181.2" cy="325.2" r=".85"/><circle cx="180.7" cy="324.7" r=".85"/><circle cx="200.0" cy="324.5" r=".85"/><circle cx="181.1" cy="324.5" r=".85"/><circle cx="180.5" cy="324.4" r=".85"/><circle cx="181.0" cy="324.4" r=".85"/><circle cx="201.8" cy="322.5" r=".85"/><circle cx="191.7" cy="320.0" r=".85"/><circle cx="205.0" cy="319.1" r=".85"/><circle cx="193.8" cy="318.8" r=".85"/><circle cx="194.1" cy="317.0" r=".85"/><circle cx="194.0" cy="316.9" r=".85"/><circle cx="194.0" cy="316.8" r=".85"/><circle cx="194.0" cy="316.7" r=".85"/><circle cx="193.9" cy="316.6" r=".85"/><circle cx="193.8" cy="316.4" r=".85"/><circle cx="193.6" cy="316.2" r=".85"/><circle cx="191.4" cy="316.0" r=".85"/><circle cx="193.3" cy="316.0" r=".85"/><circle cx="191.3" cy="315.7" r=".85"/><circle cx="192.5" cy="315.6" r=".85"/><circle cx="170.8" cy="251.2" r=".85"/><circle cx="172.2" cy="249.6" r=".85"/><circle cx="155.5" cy="246.7" r=".85"/></g></g>';
+
+  /* NH_ISL：地图页主图专属——17.8°N 以南岛礁（西沙、中沙、南沙），
+     不含海南本岛（PROVS 已绘，避免重绘错色）；点位半径加大保证缩放后可见 */
+  var NH_ISL='<g class="nh-islands"><path d="M201.9 577.8 L201.6 578.1 L200.3 578.0 L200.1 577.3 L200.5 576.5 L201.9 577.8 Z M199.4 577.4 L198.3 577.0 L198.5 576.4 L199.1 576.1 L199.4 577.4 Z M200.0 571.5 L198.6 570.9 L199.0 570.6 L200.3 570.5 L200.0 571.5 Z M197.7 568.9 L195.9 568.0 L197.7 568.9 Z M199.7 569.0 L198.6 566.3 L199.7 569.0 Z M198.3 564.8 L198.2 566.0 L197.8 566.0 L197.4 564.2 L198.3 564.8 Z M197.0 562.1 L196.6 563.3 L196.2 563.2 L197.0 562.1 Z M198.6 562.4 L197.3 562.0 L198.1 560.6 L198.6 562.4 Z M135.0 527.8 L134.4 528.2 L133.9 528.0 L133.8 527.7 L134.0 526.7 L138.0 522.1 L143.4 523.2 L137.5 524.7 L135.0 527.8 Z M241.7 522.8 L240.6 522.0 L241.7 522.8 Z M177.3 523.4 L176.9 521.8 L178.6 521.7 L177.3 523.4 Z M224.4 521.5 L222.8 521.5 L224.4 521.5 Z M181.1 519.8 L179.6 520.6 L180.7 518.4 L181.1 519.8 Z M155.2 518.0 L154.6 518.1 L154.3 517.7 L155.1 516.6 L155.2 518.0 Z M178.0 517.5 L177.2 516.8 L178.4 515.5 L178.0 517.5 Z M232.1 521.4 L227.8 522.7 L226.2 521.2 L228.4 521.2 L233.1 516.2 L237.7 514.1 L238.4 515.2 L238.4 515.8 L236.0 517.5 L235.4 519.0 L235.4 520.2 L232.1 521.4 Z M180.8 514.9 L178.6 514.5 L179.1 514.0 L180.2 513.9 L180.8 514.9 Z M145.1 517.3 L144.3 517.6 L143.4 517.5 L143.3 516.6 L143.4 515.6 L146.8 513.7 L145.1 517.3 Z M256.4 513.5 L256.0 511.9 L256.4 513.5 Z M157.7 514.0 L157.8 511.1 L157.7 514.0 Z M239.0 510.7 L241.2 510.0 L239.7 510.5 L239.0 510.7 Z M186.9 510.7 L186.3 511.0 L185.1 510.7 L184.4 509.9 L184.4 509.0 L186.9 508.8 L186.9 510.7 Z M155.4 511.4 L154.1 509.4 L157.4 508.5 L155.4 511.4 Z M214.6 508.7 L212.6 510.2 L214.6 506.0 L214.6 508.7 Z M252.0 505.0 L253.3 505.4 L252.0 505.0 Z M231.6 498.1 L230.9 496.5 L231.6 498.1 Z M228.4 495.9 L227.6 496.7 L226.0 494.8 L228.4 495.9 Z M192.4 494.0 L190.7 494.5 L192.4 494.0 Z M220.7 491.7 L222.2 490.7 L222.1 491.2 L220.7 491.7 Z M264.9 476.6 L265.5 473.6 L264.9 476.6 Z M259.6 471.3 L259.0 471.9 L258.1 471.8 L257.9 471.6 L258.0 470.7 L259.6 471.3 Z M224.6 469.2 L224.7 466.4 L224.8 466.7 L224.6 469.2 Z M233.6 463.0 L234.7 462.0 L234.7 462.4 L233.6 463.0 Z M241.4 462.6 L240.6 462.1 L242.2 461.0 L241.4 462.6 Z M238.9 461.5 L239.5 460.1 L238.9 461.5 Z M278.9 461.3 L281.8 461.1 L278.3 462.4 L279.1 459.4 L278.9 461.3 Z M270.0 459.5 L269.7 459.9 L268.7 459.8 L268.2 458.1 L270.0 459.5 Z M283.5 458.2 L281.2 458.2 L282.6 456.7 L283.5 458.2 Z M297.4 454.7 L294.2 453.7 L295.2 452.3 L296.0 452.2 L297.4 454.7 Z M235.0 453.3 L236.5 452.1 L235.0 453.3 Z M238.7 453.2 L239.2 451.6 L238.7 453.2 Z M304.4 452.9 L305.1 450.1 L305.7 451.3 L305.5 451.8 L304.4 452.9 Z M239.3 450.0 L237.1 451.7 L239.3 450.0 Z M242.2 447.0 L243.3 445.6 L242.2 447.0 Z M295.2 446.3 L294.7 446.8 L294.3 446.7 L293.6 444.5 L295.0 444.4 L295.5 445.5 L295.2 446.3 Z M242.4 437.5 L241.5 436.0 L242.4 437.5 Z M240.5 437.8 L240.4 435.6 L240.5 437.8 Z M256.2 382.7 L255.7 382.8 L255.0 382.3 L256.2 381.7 L256.2 382.7 Z M303.5 354.2 L305.4 356.6 L303.2 354.3 L302.9 356.3 L305.0 356.7 L302.7 356.7 L303.5 354.2 Z M233.3 336.5 L233.2 336.7 L231.5 336.6 L233.3 336.5 Z M246.5 336.8 L245.4 335.6 L246.5 336.8 Z M198.1 336.4 L195.9 336.3 L199.1 335.4 L199.1 335.6 L198.1 336.4 Z M244.0 332.8 L241.4 333.3 L244.0 332.8 Z M178.6 333.0 L179.9 333.0 L178.3 333.4 L179.6 331.8 L178.6 333.0 Z M182.7 331.2 L182.4 332.8 L181.7 332.9 L181.0 332.6 L182.5 331.5 L179.8 331.7 L180.5 331.3 L182.7 331.2 Z M196.9 330.3 L194.8 331.0 L196.9 330.3 Z M188.9 329.7 L186.2 330.2 L188.9 329.7 Z M282.8 330.5 L282.6 328.9 L282.8 330.5 Z M197.6 326.0 L198.5 325.6 L198.3 325.8 L197.6 326.0 Z M178.1 313.0 L175.9 313.5 L178.1 313.0 Z" fill="#3FA9DC"/><g fill="#1F7FBF"><circle cx="188.0" cy="604.4" r="1.7"/><circle cx="192.3" cy="603.6" r="1.7"/><circle cx="192.7" cy="602.0" r="1.7"/><circle cx="198.0" cy="581.2" r="1.7"/><circle cx="199.1" cy="579.8" r="1.7"/><circle cx="200.2" cy="578.9" r="1.7"/><circle cx="197.3" cy="578.7" r="1.7"/><circle cx="205.9" cy="578.8" r="1.7"/><circle cx="198.1" cy="567.3" r="1.7"/><circle cx="194.2" cy="565.4" r="1.7"/><circle cx="198.4" cy="559.6" r="1.7"/><circle cx="197.6" cy="558.9" r="1.7"/><circle cx="197.6" cy="557.8" r="1.7"/><circle cx="212.6" cy="550.0" r="1.7"/><circle cx="219.7" cy="536.3" r="1.7"/><circle cx="245.0" cy="531.1" r="1.7"/><circle cx="224.3" cy="526.4" r="1.7"/><circle cx="248.4" cy="524.2" r="1.7"/><circle cx="205.1" cy="516.1" r="1.7"/><circle cx="228.6" cy="514.6" r="1.7"/><circle cx="226.3" cy="513.4" r="1.7"/><circle cx="245.5" cy="513.6" r="1.7"/><circle cx="230.2" cy="510.9" r="1.7"/><circle cx="212.2" cy="511.0" r="1.7"/><circle cx="243.6" cy="510.4" r="1.7"/><circle cx="242.4" cy="509.5" r="1.7"/><circle cx="256.3" cy="505.9" r="1.7"/><circle cx="267.4" cy="503.3" r="1.7"/><circle cx="206.5" cy="503.2" r="1.7"/><circle cx="258.5" cy="502.9" r="1.7"/><circle cx="234.6" cy="502.2" r="1.7"/><circle cx="253.0" cy="502.4" r="1.7"/><circle cx="234.8" cy="501.8" r="1.7"/><circle cx="176.1" cy="501.1" r="1.7"/><circle cx="184.8" cy="499.0" r="1.7"/><circle cx="180.4" cy="498.5" r="1.7"/><circle cx="227.1" cy="496.1" r="1.7"/><circle cx="226.5" cy="495.8" r="1.7"/><circle cx="198.9" cy="495.3" r="1.7"/><circle cx="198.6" cy="495.2" r="1.7"/><circle cx="199.3" cy="495.2" r="1.7"/><circle cx="200.0" cy="495.1" r="1.7"/><circle cx="198.3" cy="494.8" r="1.7"/><circle cx="191.6" cy="494.8" r="1.7"/><circle cx="225.7" cy="495.2" r="1.7"/><circle cx="240.7" cy="494.3" r="1.7"/><circle cx="204.1" cy="493.1" r="1.7"/><circle cx="203.7" cy="493.0" r="1.7"/><circle cx="273.6" cy="493.4" r="1.7"/><circle cx="194.1" cy="492.7" r="1.7"/><circle cx="280.2" cy="490.7" r="1.7"/><circle cx="281.5" cy="490.2" r="1.7"/><circle cx="277.4" cy="487.3" r="1.7"/><circle cx="220.6" cy="486.1" r="1.7"/><circle cx="176.8" cy="484.4" r="1.7"/><circle cx="266.7" cy="484.0" r="1.7"/><circle cx="180.6" cy="483.5" r="1.7"/><circle cx="231.9" cy="482.8" r="1.7"/><circle cx="256.9" cy="483.0" r="1.7"/><circle cx="286.8" cy="481.1" r="1.7"/><circle cx="195.3" cy="481.1" r="1.7"/><circle cx="277.0" cy="479.8" r="1.7"/><circle cx="205.1" cy="479.1" r="1.7"/><circle cx="205.7" cy="478.4" r="1.7"/><circle cx="272.0" cy="477.8" r="1.7"/><circle cx="206.4" cy="477.2" r="1.7"/><circle cx="207.9" cy="476.9" r="1.7"/><circle cx="206.9" cy="476.9" r="1.7"/><circle cx="208.3" cy="476.7" r="1.7"/><circle cx="207.3" cy="476.7" r="1.7"/><circle cx="236.6" cy="475.5" r="1.7"/><circle cx="241.9" cy="475.3" r="1.7"/><circle cx="233.2" cy="475.5" r="1.7"/><circle cx="280.8" cy="475.0" r="1.7"/><circle cx="280.0" cy="474.6" r="1.7"/><circle cx="279.4" cy="474.4" r="1.7"/><circle cx="232.8" cy="474.3" r="1.7"/><circle cx="235.0" cy="474.0" r="1.7"/><circle cx="283.3" cy="474.0" r="1.7"/><circle cx="235.7" cy="473.7" r="1.7"/><circle cx="278.0" cy="474.0" r="1.7"/><circle cx="277.1" cy="473.7" r="1.7"/><circle cx="278.1" cy="473.3" r="1.7"/><circle cx="236.9" cy="472.9" r="1.7"/><circle cx="237.5" cy="472.5" r="1.7"/><circle cx="233.2" cy="472.4" r="1.7"/><circle cx="280.6" cy="472.4" r="1.7"/><circle cx="237.9" cy="472.1" r="1.7"/><circle cx="233.8" cy="471.9" r="1.7"/><circle cx="234.2" cy="471.7" r="1.7"/><circle cx="238.3" cy="471.6" r="1.7"/><circle cx="235.5" cy="471.5" r="1.7"/><circle cx="238.9" cy="471.3" r="1.7"/><circle cx="237.0" cy="471.3" r="1.7"/><circle cx="239.6" cy="471.2" r="1.7"/><circle cx="237.6" cy="471.1" r="1.7"/><circle cx="238.1" cy="470.7" r="1.7"/><circle cx="239.0" cy="470.0" r="1.7"/><circle cx="239.5" cy="469.7" r="1.7"/><circle cx="227.6" cy="469.2" r="1.7"/><circle cx="240.7" cy="469.5" r="1.7"/><circle cx="251.4" cy="469.2" r="1.7"/><circle cx="236.3" cy="468.8" r="1.7"/><circle cx="296.3" cy="466.4" r="1.7"/><circle cx="271.0" cy="466.2" r="1.7"/><circle cx="232.7" cy="465.6" r="1.7"/><circle cx="234.9" cy="465.3" r="1.7"/><circle cx="232.0" cy="464.6" r="1.7"/><circle cx="253.7" cy="464.8" r="1.7"/><circle cx="236.1" cy="464.5" r="1.7"/><circle cx="220.2" cy="464.1" r="1.7"/><circle cx="237.5" cy="464.0" r="1.7"/><circle cx="255.2" cy="463.7" r="1.7"/><circle cx="239.1" cy="463.5" r="1.7"/><circle cx="239.9" cy="462.1" r="1.7"/><circle cx="249.4" cy="461.7" r="1.7"/><circle cx="237.2" cy="461.0" r="1.7"/><circle cx="234.9" cy="460.9" r="1.7"/><circle cx="294.8" cy="461.5" r="1.7"/><circle cx="280.1" cy="460.3" r="1.7"/><circle cx="281.8" cy="460.1" r="1.7"/><circle cx="262.5" cy="459.0" r="1.7"/><circle cx="263.6" cy="459.0" r="1.7"/><circle cx="262.0" cy="458.3" r="1.7"/><circle cx="285.8" cy="458.2" r="1.7"/><circle cx="262.6" cy="457.4" r="1.7"/><circle cx="263.8" cy="457.4" r="1.7"/><circle cx="250.6" cy="457.2" r="1.7"/><circle cx="287.9" cy="456.8" r="1.7"/><circle cx="288.7" cy="456.1" r="1.7"/><circle cx="289.7" cy="456.1" r="1.7"/><circle cx="292.6" cy="455.7" r="1.7"/><circle cx="271.4" cy="455.4" r="1.7"/><circle cx="236.1" cy="454.5" r="1.7"/><circle cx="302.2" cy="454.7" r="1.7"/><circle cx="236.9" cy="454.4" r="1.7"/><circle cx="235.5" cy="454.2" r="1.7"/><circle cx="264.0" cy="453.1" r="1.7"/><circle cx="272.1" cy="452.6" r="1.7"/><circle cx="292.6" cy="452.9" r="1.7"/><circle cx="269.9" cy="451.4" r="1.7"/><circle cx="264.4" cy="451.2" r="1.7"/><circle cx="285.8" cy="451.0" r="1.7"/><circle cx="265.1" cy="450.8" r="1.7"/><circle cx="245.2" cy="450.5" r="1.7"/><circle cx="282.4" cy="450.2" r="1.7"/><circle cx="277.1" cy="449.4" r="1.7"/><circle cx="246.1" cy="450.0" r="1.7"/><circle cx="266.7" cy="449.6" r="1.7"/><circle cx="282.4" cy="448.5" r="1.7"/><circle cx="229.3" cy="448.8" r="1.7"/><circle cx="240.9" cy="448.0" r="1.7"/><circle cx="241.6" cy="447.3" r="1.7"/><circle cx="241.1" cy="447.0" r="1.7"/><circle cx="231.3" cy="446.3" r="1.7"/><circle cx="233.3" cy="446.0" r="1.7"/><circle cx="231.7" cy="446.0" r="1.7"/><circle cx="232.1" cy="445.9" r="1.7"/><circle cx="234.2" cy="445.9" r="1.7"/><circle cx="301.9" cy="446.1" r="1.7"/><circle cx="243.9" cy="445.8" r="1.7"/><circle cx="232.7" cy="445.6" r="1.7"/><circle cx="248.2" cy="445.4" r="1.7"/><circle cx="235.1" cy="445.2" r="1.7"/><circle cx="298.3" cy="445.1" r="1.7"/><circle cx="242.3" cy="445.2" r="1.7"/><circle cx="243.8" cy="444.7" r="1.7"/><circle cx="242.9" cy="444.2" r="1.7"/><circle cx="243.6" cy="443.9" r="1.7"/><circle cx="240.0" cy="440.1" r="1.7"/><circle cx="239.1" cy="439.9" r="1.7"/><circle cx="240.1" cy="439.3" r="1.7"/><circle cx="233.7" cy="438.7" r="1.7"/><circle cx="234.8" cy="438.4" r="1.7"/><circle cx="234.1" cy="438.2" r="1.7"/><circle cx="235.1" cy="438.1" r="1.7"/><circle cx="234.2" cy="437.8" r="1.7"/><circle cx="235.3" cy="437.6" r="1.7"/><circle cx="234.7" cy="437.3" r="1.7"/><circle cx="235.4" cy="437.1" r="1.7"/><circle cx="284.7" cy="427.0" r="1.7"/><circle cx="302.9" cy="357.2" r="1.7"/><circle cx="303.6" cy="357.2" r="1.7"/><circle cx="304.6" cy="357.1" r="1.7"/><circle cx="304.7" cy="356.5" r="1.7"/><circle cx="305.0" cy="356.2" r="1.7"/><circle cx="303.0" cy="354.7" r="1.7"/><circle cx="232.1" cy="349.8" r="1.7"/><circle cx="231.3" cy="349.6" r="1.7"/><circle cx="227.6" cy="349.7" r="1.7"/><circle cx="225.1" cy="348.7" r="1.7"/><circle cx="223.2" cy="347.8" r="1.7"/><circle cx="233.1" cy="347.5" r="1.7"/><circle cx="237.1" cy="346.4" r="1.7"/><circle cx="236.0" cy="346.1" r="1.7"/><circle cx="222.1" cy="345.7" r="1.7"/><circle cx="239.8" cy="345.6" r="1.7"/><circle cx="225.7" cy="344.4" r="1.7"/><circle cx="241.5" cy="344.3" r="1.7"/><circle cx="192.0" cy="343.4" r="1.7"/><circle cx="234.1" cy="343.0" r="1.7"/><circle cx="225.9" cy="342.2" r="1.7"/><circle cx="242.4" cy="342.1" r="1.7"/><circle cx="170.9" cy="341.9" r="1.7"/><circle cx="237.5" cy="341.8" r="1.7"/><circle cx="236.3" cy="340.7" r="1.7"/><circle cx="226.2" cy="340.6" r="1.7"/><circle cx="239.2" cy="340.7" r="1.7"/><circle cx="241.7" cy="340.2" r="1.7"/><circle cx="243.6" cy="340.3" r="1.7"/><circle cx="240.7" cy="339.6" r="1.7"/><circle cx="227.2" cy="339.9" r="1.7"/><circle cx="239.0" cy="339.3" r="1.7"/><circle cx="237.4" cy="339.4" r="1.7"/><circle cx="244.7" cy="339.1" r="1.7"/><circle cx="228.9" cy="338.2" r="1.7"/><circle cx="238.7" cy="337.8" r="1.7"/><circle cx="240.8" cy="337.8" r="1.7"/><circle cx="229.9" cy="337.7" r="1.7"/><circle cx="243.3" cy="337.0" r="1.7"/><circle cx="233.6" cy="336.3" r="1.7"/><circle cx="182.7" cy="336.0" r="1.7"/><circle cx="244.2" cy="336.1" r="1.7"/><circle cx="236.4" cy="335.9" r="1.7"/><circle cx="235.2" cy="335.7" r="1.7"/><circle cx="243.1" cy="335.7" r="1.7"/><circle cx="237.9" cy="335.5" r="1.7"/><circle cx="240.5" cy="333.8" r="1.7"/><circle cx="180.5" cy="332.7" r="1.7"/><circle cx="200.2" cy="329.6" r="1.7"/><circle cx="201.1" cy="329.8" r="1.7"/><circle cx="200.6" cy="328.3" r="1.7"/><circle cx="177.0" cy="327.4" r="1.7"/><circle cx="181.0" cy="327.3" r="1.7"/><circle cx="181.2" cy="327.3" r="1.7"/><circle cx="180.2" cy="327.2" r="1.7"/><circle cx="181.8" cy="327.0" r="1.7"/><circle cx="178.8" cy="327.1" r="1.7"/><circle cx="178.6" cy="326.1" r="1.7"/><circle cx="179.1" cy="325.5" r="1.7"/><circle cx="181.9" cy="325.2" r="1.7"/><circle cx="181.2" cy="325.2" r="1.7"/><circle cx="180.7" cy="324.7" r="1.7"/><circle cx="200.0" cy="324.5" r="1.7"/><circle cx="181.1" cy="324.5" r="1.7"/><circle cx="180.5" cy="324.4" r="1.7"/><circle cx="181.0" cy="324.4" r="1.7"/><circle cx="201.8" cy="322.5" r="1.7"/><circle cx="191.7" cy="320.0" r="1.7"/><circle cx="205.0" cy="319.1" r="1.7"/><circle cx="193.8" cy="318.8" r="1.7"/><circle cx="194.1" cy="317.0" r="1.7"/><circle cx="194.0" cy="316.9" r="1.7"/><circle cx="194.0" cy="316.8" r="1.7"/><circle cx="194.0" cy="316.7" r="1.7"/><circle cx="193.9" cy="316.6" r="1.7"/><circle cx="193.8" cy="316.4" r="1.7"/><circle cx="193.6" cy="316.2" r="1.7"/><circle cx="191.4" cy="316.0" r="1.7"/><circle cx="193.3" cy="316.0" r="1.7"/><circle cx="191.3" cy="315.7" r="1.7"/><circle cx="192.5" cy="315.6" r="1.7"/></g></g>';
+
+  function buildSVG(dots){
+    if(dots){
+      /* 地图页 / 地域详情：南海诸岛以真实坐标直接绘入主图（非附图）。
+         viewBox 加高至 640，四省区 + 海南 + 南海诸岛整幅一次呈现 */
+      var content='<g class="provs mainmap">'+PROVS_HTML+NH_ISL+'</g>'+
+        '<g class="arc-layer">'+
+        '<path class="arc-out" d="M300 212 Q240 315 100 348"/>'+
+        '<path class="arc-out" d="M226 246 Q170 330 90 356" opacity=".55"/>'+
+        '<path class="arc-back" d="M100 348 Q250 270 300 212"/>'+
+        '</g>'+
+        '<g class="regions">'+buildRegions(true)+'</g>'+
+        '<g class="deco-south">'+
+        /* v17：南洋改用与地域同款的大头针（放大 2 倍）；v18：标注只留地名；v19：地理名称「中南半岛和马来群岛」 */
+        pinAt(64,397,'#0B2E4F','1',2.0)+
+        '<text x="64" y="424" text-anchor="middle" font-size="17" font-weight="600" fill="#0A3B66" font-family="sans-serif">南洋</text>'+
+        '<text x="64" y="442" text-anchor="middle" font-size="8.8" letter-spacing="0.2" fill="#1E5A8C" font-family="sans-serif">中南半岛和马来群岛</text>'+
+        '<text x="312" y="487" font-size="13" letter-spacing="2" fill="#0A3B66" font-family="sans-serif">南海诸岛</text></g>';
+      return '<svg viewBox="0 0 375 640" preserveAspectRatio="xMidYMid meet" role="img" aria-label="华南四省区行政区轮廓、六个文化地域点位与南海诸岛（主图组成部分）">'+
+        '<rect x="0" y="0" width="375" height="640" fill="#B3E5FC"/><g id="mapRoot">'+content+'</g></svg>';
+    }
+    /* 目录页：与 v11 完全一致——整幅南海缩放进画框，底图上浮地区条 */
+    var content='<g class="provs">'+PROVS_HTML+NH_FULL+'</g>'+
+      '<g class="regions">'+buildRegions(false)+'</g>';
+    content='<g transform="translate(42,-23) scale(0.72)">'+content+'</g>';
+    return '<svg viewBox="0 0 375 470" preserveAspectRatio="xMidYMid meet" role="img" aria-label="华南四省区行政区轮廓、六个文化地域点位与南海诸岛">'+
+      '<rect x="0" y="0" width="375" height="470" fill="#B3E5FC"/>'+content+'</svg>';
+  }
+
+  document.getElementById('mapSvgHost').innerHTML=buildSVG(true);
+  document.getElementById('indexBg').innerHTML=buildSVG(false);
+  document.getElementById('bars').innerHTML=BARS.map(function(b){
+    return '<div class="bar'+(b.wide?' wide':'')+'" data-id="'+b.id+'" style="--accent:'+b.accent+'">'+
+      '<span class="ord">'+b.ord+'</span>'+
+      '<span class="bmid"><div class="bt">'+b.title+'</div><div class="bs">'+b.sub+'</div></span>'+
+      '<span class="arw">›</span></div>';
+  }).join('');
+
+  var wrap=document.getElementById('mapwrap');
+  var mapHost=document.getElementById('mapSvgHost');
+  var audEl=null, current=null, curPage='cover', inDetail=false;
+  function updateFlow(){
+    var step=curPage==='dish'?4:(inDetail?3:({cover:0,index:1,map:2})[curPage]);
+    document.querySelectorAll('#flowbar .fnode').forEach(function(n){
+      n.classList.toggle('on', Number(n.getAttribute('data-step'))===step);
+    });
+  }
+  function go(name){
+    curPage=name;
+    ['Cover','Index','Map','Dish'].forEach(function(n){
+      document.getElementById('page'+n).classList.toggle('active', n.toLowerCase()===name);
+    });
+    if(name!=='index'){
+      document.querySelectorAll('#pageIndex .bar').forEach(function(b){b.classList.remove('in');});
+    }
+    updateFlow();
+  }
+  function animateBars(){
+    var bars=document.querySelectorAll('#pageIndex .bar');
+    bars.forEach(function(b,i){ b.style.transitionDelay=(i*60)+'ms'; b.classList.remove('in'); });
+    void document.getElementById('pageIndex').offsetWidth;
+    bars.forEach(function(b){ b.classList.add('in'); });
+  }
+  function goIndex(){ go('index'); animateBars(); }
+
+  function fill(d){
+    document.getElementById('dTag').textContent=d.ch;
+    document.getElementById('dName').textContent=d.name;
+    document.getElementById('dMeta').textContent='共 '+d.count+' 道菜品 · 主要落点 '+d.cities;
+    document.getElementById('dLead').textContent=d.lead;
+    var dl=DISHES.filter(function(x){return x.region===current;});
+    document.getElementById('dDishCount').textContent=dl.length;
+    document.getElementById('dPills').innerHTML=dl.map(function(x,i){
+      return '<div class="dishitem" data-dish="'+x.id+'" style="background-image:url(&quot;'+x.img+'&quot;)">'+
+        '<span class="di">'+(i+1<10?'0':'')+(i+1)+'</span><span class="dn">'+x.name+'</span><span class="da">›</span></div>';
+    }).join('');
+    document.getElementById('dPills').querySelectorAll('.dishitem').forEach(function(it){
+      it.onclick=function(){openDish(it.getAttribute('data-dish'));};
+    });
+    var ov=d.overview||{sum:d.route,cases:[]};
+    document.getElementById('dRoute').innerHTML=
+      '<div class="route-block"><p class="ov">'+ov.sum+'</p><div class="cases">'+
+      ov.cases.map(function(c){return '<div class="case">'+c+'</div>';}).join('')+
+      '</div></div>';
+  }
+  var currentDishId=null, dishAudioUrls=[], dishAud=null;
+
+  function setSec(id,v){
+    var el=document.getElementById(id);
+    el.textContent=v||'内容位 · 正式版从书稿补齐';
+    el.className=v?'':'pending';
+  }
+  function fillDish(x){
+    var r=R[x.region];
+    var _db=document.querySelector('#pageDish .dishbody'); if(_db)_db.scrollTop=0;
+    document.getElementById('dishCrumb').textContent=x.chName+' · 第 '+x.idx+' / '+x.total+' 道';
+    document.getElementById('dishName').textContent=x.name;
+    document.getElementById('dishRegion').textContent=r.name+' · '+r.cities;
+    // 图片：默认占位，加载成功才换上真图；有图时去掉虚线占位框
+    var ph=document.getElementById('dishImgPh'), im=document.getElementById('dishImgEl');
+    var ibox=document.getElementById('dishImgBox');
+    ph.style.display='flex'; im.style.display='none'; ibox.classList.remove('hasimg');
+    document.getElementById('dishImgPath').textContent=x.img;
+    im.onload=function(){im.style.display='block';ph.style.display='none';ibox.classList.add('hasimg');};
+    im.onerror=function(){im.style.display='none';ph.style.display='flex';ibox.classList.remove('hasimg');};
+    im.src=x.img;
+    // v10：有音频才显示播放器；无音频整块隐藏，不留空框
+    var aw=document.getElementById('dishAudioWrap');
+    if(x.audioStd){
+      aw.style.display='flex';
+      document.getElementById('dishAudioNote').textContent=x.audioLabel;
+      document.getElementById('dishAudioPath').textContent=x.audioStd;
+      dishAudioUrls=x.audioCandidates.slice();
+    }else{
+      aw.style.display='none';
+      dishAudioUrls=[];
+    }
+    if(dishAud){dishAud.pause();}
+    // 四模块内容位
+    setSec('dishCard',x.card); setSec('dishRoute',x.route);
+    setSec('dishMemory',x.memory); setSec('dishRecipe',x.recipe);
+    // v21：家族记忆来稿人（破折号 + 姓名，右对齐）；无署名的菜隐藏该行
+    var ce=document.getElementById('dishContrib');
+    ce.textContent=x.contrib?('\u2014\u2014'+x.contrib):'';
+    ce.style.display=x.contrib?'block':'none';
+    // 本章迁徙背景：取自书稿地域级精简文案，不编造单菜史实
+    document.getElementById('dishBg').innerHTML='<b>本章迁徙背景 · '+r.name+'</b><br>'+r.route;
+    document.getElementById('dishPos').textContent='第 '+x.idx+' / '+x.total+' 道';
+  }
+  function openDish(id){
+    var x=DISHES.filter(function(d){return d.id===id;})[0];
+    if(!x)return;
+    var fromOther=(curPage!=='dish');
+    currentDishId=id;
+    fillDish(x);
+    document.getElementById('pageDish').setAttribute('data-id',id);
+    go('dish');
+    if(fromOther) showSwipeGuide();
+  }
+  function closeDish(){ go('map'); }
+  // v6：引导 3 秒、跨地域边界提示
+  var guideTimer=null, toastTimer=null, crossPending=null;
+  var REGION_ORDER=['minnan','mindong','kejia','hainan','guangfu','guangxi'];
+  function showSwipeGuide(){
+    var g=document.getElementById('swipeGuide'); if(!g)return;
+    g.classList.add('on'); clearTimeout(guideTimer);
+    guideTimer=setTimeout(function(){g.classList.remove('on');},3000);
+  }
+  function toast(msg,ms){
+    var t=document.getElementById('crossToast'); if(!t)return;
+    t.textContent=msg; t.classList.add('on'); clearTimeout(toastTimer);
+    toastTimer=setTimeout(function(){t.classList.remove('on');},ms||2600);
+  }
+  function switchDish(step){
+    var cur=DISHES.filter(function(d){return d.id===currentDishId;})[0];
+    if(!cur)return;
+    var list=DISHES.filter(function(d){return d.region===cur.region;});
+    var i=list.indexOf(cur), ni=i+step;
+    if(ni>=0 && ni<list.length){ crossPending=null; openDish(list[ni].id); return; }
+    // 已到本章边界：先提示即将进入的地域，3 秒内再次同向滑动才跨过去
+    var ri=REGION_ORDER.indexOf(cur.region), ti=ri+(step>0?1:-1);
+    if(ti<0||ti>=REGION_ORDER.length){ toast('已经是'+(step>0?'最后':'第一')+'个地域',1800); return; }
+    var tkey=REGION_ORDER[ti], tname=R[tkey].name;
+    var label=step>0?'下一个':'上一个';
+    if(crossPending && crossPending.step===step && Date.now()-crossPending.t<3000){
+      crossPending=null;
+      var tl=DISHES.filter(function(d){return d.region===tkey;});
+      var nx=step>0?tl[0]:tl[tl.length-1];
+      openDish(nx.id);
+      toast('已进入「'+tname+'」· 第 '+nx.idx+' 道',2200);
+      return;
+    }
+    crossPending={step:step,t:Date.now()};
+    toast('即将进入'+label+'地域「'+tname+'」· 再滑一次',2800);
+  }
+  function playDishAudio(){
+    if(!dishAudioUrls||!dishAudioUrls.length)return;
+    if(!dishAud)dishAud=new Audio();
+    if(window.__bgmDuck)window.__bgmDuck(true);
+    /* 只在解说真正播完时恢复；不用 onpause——换 src 会触发 pause，会把刚压低的音量顶回去 */
+    dishAud.onended=function(){ if(window.__bgmDuck)window.__bgmDuck(false); };
+    var i=0, done=false;
+    function next(){
+      if(done)return;
+      if(i>=dishAudioUrls.length){
+        document.getElementById('dishAudioNote').textContent='音频素材后续统一补齐（当前文件尚未就位）';
+        return;
+      }
+      var u=dishAudioUrls[i++];
+      dishAud.onerror=function(){if(!done)next();};
+      dishAud.src=u;
+      var p=dishAud.play();
+      if(p&&p.then){p.then(function(){done=true;},function(){if(!done)next();});}
+    }
+    next();
+  }
+  function fromHash(){
+    var h=location.hash||'';
+    var m=h.match(/^#dish-(ch\d+-\d+)$/);
+    if(m){
+      var x=DISHES.filter(function(d){return d.id===m[1];})[0];
+      if(!x)return false;
+      openDish(x.id); return true;
+    }
+    m=h.match(/^#region-([a-z]+)$/);          // v12：地域深链，#region-all 仅打开地图
+    if(m&&(R[m[1]]||m[1]==='all')){ enterMap(m[1]); return true; }
+    return false;
+  }
+
+  /* ===== v13：放大落幅——目标省份外接框在可见地图区内居中并铺满 ===== */
+  /* 省份 path 含大量离岸小岛，直接 getBBox 会把画框拉宽、主体被挤到一侧；
+     这里按「面积不小于主块 12% 的子路径」取并集，得到主体轮廓的外接框 */
+  function bodyBox(prov){
+    var d=prov.getAttribute('d')||'';
+    var parts=d.split('M'), boxes=[], maxA=0;
+    for(var i=1;i<parts.length;i++){
+      var nums=parts[i].replace(/[Zz]/g,' ').match(/-?\d+(?:\.\d+)?/g);
+      if(!nums||nums.length<4)continue;
+      var x0=1e9,y0=1e9,x1=-1e9,y1=-1e9;
+      for(var j=0;j+1<nums.length;j+=2){
+        var x=+nums[j], y=+nums[j+1];
+        if(x<x0)x0=x; if(x>x1)x1=x;
+        if(y<y0)y0=y; if(y>y1)y1=y;
+      }
+      var a=(x1-x0)*(y1-y0);
+      boxes.push({x:x0,y:y0,w:x1-x0,h:y1-y0,a:a});
+      if(a>maxA)maxA=a;
+    }
+    if(!boxes.length)return null;
+    var ux0=1e9,uy0=1e9,ux1=-1e9,uy1=-1e9;
+    for(var k2=0;k2<boxes.length;k2++){
+      var b=boxes[k2];
+      if(b.a<maxA*0.12)continue;
+      if(b.x<ux0)ux0=b.x; if(b.y<uy0)uy0=b.y;
+      if(b.x+b.w>ux1)ux1=b.x+b.w; if(b.y+b.h>uy1)uy1=b.y+b.h;
+    }
+    if(ux1<=ux0)return null;
+    return {x:ux0,y:uy0,width:ux1-ux0,height:uy1-uy0};
+  }
+  function zoomTo(d){
+    var root=document.getElementById('mapRoot'); if(!root)return;
+    var svg=mapHost.querySelector('svg'); if(!svg)return;
+    var prov=mapHost.querySelector('.prov[data-prov="'+d.prov+'"]'); if(!prov)return;
+    var bb=null;
+    try{bb=bodyBox(prov);}catch(e){bb=null;}
+    if(!bb){try{bb=prov.getBBox();}catch(e2){return;}}
+    if(!bb||!bb.width||!bb.height)return;
+    var sr=svg.getBoundingClientRect(); if(!sr.width||!sr.height)return;
+    var mr=wrap.getBoundingClientRect();
+    var card=document.querySelector('.detail-card');
+    var cardH=card?card.offsetHeight:0;
+    var strip=Math.max(150, mr.height-cardH);        /* 详情卡上方的可见地图条高度（px） */
+    var s=Math.min(sr.width/375, sr.height/640);     /* meet 缩放比 */
+    var oy=(sr.height-640*s)/2;                      /* 纵向留白 */
+    var top=-oy/s, bottom=(strip-oy)/s;              /* 可见条带在 viewBox 中的上下界 */
+    var availH=bottom-top;
+    var k=Math.min(375*0.92/bb.width, availH*0.88/bb.height);
+    k=Math.max(1.2, Math.min(7, k));   /* 不设硬性下限，避免大省被裁；上限只防极小岛屿过度放大 */
+    var cx=187.5, cy=(top+bottom)/2;
+    var tx=cx-k*(bb.x+bb.width/2), ty=cy-k*(bb.y+bb.height/2);
+    root.style.transform='translate('+tx.toFixed(2)+'px,'+ty.toFixed(2)+'px) scale('+k.toFixed(3)+')';
+  }
+  function resetZoom(){
+    var root=document.getElementById('mapRoot');
+    if(root)root.style.transform='translate(0px,0px) scale(1)';
+  }
+
+  function open(id){
+    var d=R[id]; if(!d)return;
+    current=id; inDetail=true;
+    mapHost.querySelectorAll('.region').forEach(function(g){
+      g.classList.toggle('zoomed', g.getAttribute('data-id')===id);
+    });
+    mapHost.querySelectorAll('.prov').forEach(function(p){
+      var hit=p.getAttribute('data-prov')===d.prov;
+      p.classList.toggle('zoomed', hit);
+      if(hit){ p.style.setProperty('--ox',d.cx+'px'); p.style.setProperty('--oy',d.cy+'px'); }
+    });
+    fill(d);
+    zoomTo(d);
+    wrap.classList.add('detail');
+    document.querySelectorAll('#filters .chip').forEach(function(c){
+      if(c.getAttribute('data-id'))c.classList.toggle('on',c.getAttribute('data-id')===id);
+    });
+    updateFlow();
+  }
+  function close(){
+    wrap.classList.remove('detail');
+    resetZoom();
+    mapHost.querySelectorAll('.region').forEach(function(g){g.classList.remove('zoomed');});
+    mapHost.querySelectorAll('.prov').forEach(function(p){p.classList.remove('zoomed');});
+    if(audEl){audEl.pause();}
+    inDetail=false;
+    document.querySelectorAll('#filters .chip').forEach(function(c){
+      c.classList.toggle('on',c.getAttribute('data-id')==='all');
+    });
+    updateFlow();
+  }
+  function enterMap(id){
+    go('map');
+    if(id&&id!=='all'){ setTimeout(function(){open(id);},480); }
+    else { close(); }
+  }
+
+  document.getElementById('toIndexFromCover').onclick=goIndex;
+  document.getElementById('toCover').onclick=function(){go('cover');};
+  document.getElementById('toIndexFromMap').onclick=function(){close();goIndex();};
+  document.getElementById('bars').addEventListener('click',function(e){
+    var b=e.target.closest('.bar'); if(b) enterMap(b.getAttribute('data-id'));
+  });
+  mapHost.addEventListener('click',function(e){
+    var g=e.target.closest('.region'); if(g) open(g.getAttribute('data-id'));
+  });
+  document.getElementById('filters').addEventListener('click',function(e){
+    var c=e.target.closest('.chip'), id=c&&c.getAttribute('data-id');
+    if(id&&id!=='all')open(id); else if(id==='all')close();
+  });
+  document.getElementById('dBack').onclick=close;
+  // v6：地域详情卡下滑退出（内容已滚动时不接管，避免与原生滚动冲突）
+  (function(){
+    var card=document.querySelector('.detail-card'); if(!card)return;
+    var sy=0,sx=0,track=false;
+    card.addEventListener('pointerdown',function(e){
+      if(card.scrollTop>2)return;
+      sy=e.clientY; sx=e.clientX; track=true;
+    });
+    card.addEventListener('pointerup',function(e){
+      if(!track)return; track=false;
+      var dy=e.clientY-sy, dx=e.clientX-sx;
+      if(dy>55 && Math.abs(dy)>Math.abs(dx)*1.2){ close(); }
+    });
+    card.addEventListener('pointercancel',function(){track=false;});
+  })();
+
+  document.getElementById('dishBack').onclick=closeDish;
+  document.getElementById('dishBackIndex').onclick=function(){close();goIndex();};
+  document.getElementById('dishPrev').onclick=function(){switchDish(-1);};
+  document.getElementById('dishNext').onclick=function(){switchDish(1);};
+  document.getElementById('dishPlay').onclick=playDishAudio;
+  // v6：菜品页左右滑切换（垂直滚动不误触）
+  (function(){
+    var p=document.getElementById('pageDish'); if(!p)return;
+    var body=document.querySelector('#pageDish .dishbody');
+    var sx=0,sy=0,st=0,track=false;
+    p.addEventListener('pointerdown',function(e){ sx=e.clientX; sy=e.clientY; st=body?body.scrollTop:0; track=true; });
+    p.addEventListener('pointerup',function(e){
+      if(!track)return; track=false;
+      var dx=e.clientX-sx, dy=e.clientY-sy;
+      /* v13：下滑返回上一级（地域详情）。正文未回顶时不接管，避免与滚动冲突 */
+      if(dy>60 && Math.abs(dy)>Math.abs(dx)*1.25 && st<=2 && (!body||body.scrollTop<=2)){ closeDish(); return; }
+      if(Math.abs(dx)>50 && Math.abs(dx)>Math.abs(dy)*1.3){ switchDish(dx<0?1:-1); }
+    });
+    p.addEventListener('pointercancel',function(){track=false;});
+  })();
+
+
+  if(!fromHash()) updateFlow();
+})();
+</script>
+<script>
+/* ===== v14：背景音乐 01→02→03 循环（环境音，跨页常驻） ===== */
+(function(){
+  var TRACKS=['assets/音频背景/bgm-01.mp3',
+              'assets/音频背景/bgm-02.mp3',
+              'assets/音频背景/bgm-03.mp3'];
+  var VOL=0.26, DUCK=0.07, FADE_IN=2600;
+  var au=document.getElementById('bgm'), btn=document.getElementById('bgmBtn');
+  if(!au||!btn) return;
+  var i=0, muted=false, ducked=false, timer=null;
+
+  au.loop=false; au.volume=0;
+
+  function want(){ return muted?0:(ducked?DUCK:VOL); }
+  /* 用 setInterval 而非 rAF：后台标签页 rAF 会暂停，音量会卡在淡入途中的 0 */
+  function fade(to,ms){
+    if(timer){ clearInterval(timer); timer=null; }
+    var from=au.volume, t0=Date.now(), dur=Math.max(1,ms||600);
+    timer=setInterval(function(){
+      var k=Math.min(1,(Date.now()-t0)/dur);
+      au.volume=Math.max(0,Math.min(1,from+(to-from)*k));
+      if(k>=1){ clearInterval(timer); timer=null; }
+    },40);
+  }
+  function paint(){
+    var playing=!au.paused && !au.ended;
+    btn.classList.toggle('playing', playing && !muted);
+    btn.classList.toggle('muted', muted);
+    btn.setAttribute('aria-label', muted?'开启背景音乐':'关闭背景音乐');
+  }
+  function load(){ au.src=TRACKS[i]; }
+  function play(){ if(muted) return; if(!au.getAttribute('src')) load();
+    var p=au.play(); if(p&&p.catch) p.catch(function(){}); }
+
+  function unlock(){ play(); }
+  function onPlaying(){
+    fade(want(), FADE_IN); paint();
+    document.removeEventListener('pointerdown',unlock,true);
+    document.removeEventListener('touchstart',unlock,true);
+    document.removeEventListener('keydown',unlock,true);
+  }
+  au.addEventListener('playing', onPlaying);
+  au.addEventListener('pause', paint);
+  au.addEventListener('ended', function(){
+    i=(i+1)%TRACKS.length;    /* 01→02→03→01，无限循环 */
+    load(); play();
+  });
+
+  /* 浏览器默认拦截带声自动播放：先试一次，失败则等首次点击 / 按键 */
+  document.addEventListener('pointerdown',unlock,true);
+  document.addEventListener('touchstart',unlock,true);
+  document.addEventListener('keydown',unlock,true);
+
+  btn.addEventListener('click', function(e){
+    e.preventDefault(); e.stopPropagation();
+    muted=!muted;
+    if(!muted) play();
+    fade(want(), muted?420:900);
+    paint();
+  });
+
+  /* 菜品解说播放时压低背景音，避免两条音轨打架 */
+  window.__bgmDuck=function(f){ ducked=!!f; if(!au.paused) fade(want(),600); };
+
+  paint();
+  play();
+})();
+</script>
+</body>
+</html>
